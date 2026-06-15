@@ -1,0 +1,6 @@
+@AlmoxarifadoSenai.Api_HostAddress = http://localhost:5014
+
+GET {{AlmoxarifadoSenai.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

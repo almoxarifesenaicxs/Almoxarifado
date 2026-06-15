@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\AlmoxarifadoSenai.Api.props" />
+</Project>
