@@ -52,6 +52,9 @@
   font-size: 16px;
   text-align: left;
 }
+.sidebar-item {
+  width: 100%;
+}
 
 .sidebar-item svg {
   font-size: 22px;

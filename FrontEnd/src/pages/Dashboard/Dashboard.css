@@ -5,7 +5,7 @@
 }
 
 .dashboard-main {
-   flex: 1;
+  flex: 1;
   padding: 32px;
 }
 
@@ -192,5 +192,25 @@ tr:last-child td {
 
   .table-panel {
     overflow-x: auto;
+  }
+
+  @media (max-width: 1200px) {
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .charts-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 850px) {
+    .dashboard-layout {
+      flex-direction: column;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
   }
 }
