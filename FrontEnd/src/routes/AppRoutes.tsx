@@ -8,6 +8,8 @@ import AtualizarSenha from "../pages/AtualizarSenha/AtualizarSenha";
 import SenhaRedefinida from "../pages/SenhaRedefinida/SenhaRedefinida";
 import SuporteAcesso from "../pages/SuporteAcesso/SuporteAcesso";
 
+import Dashboard from "../pages/Dashboard/Dashboard";
+
 function AppRoutes() {
   return (
     <BrowserRouter>
@@ -21,6 +23,8 @@ function AppRoutes() {
         <Route path="/atualizar-senha" element={<AtualizarSenha />} />
         <Route path="/senha-redefinida" element={<SenhaRedefinida />} />
         <Route path="/suporte-acesso" element={<SuporteAcesso />} />
+
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );
