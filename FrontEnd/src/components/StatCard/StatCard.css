@@ -2,8 +2,8 @@
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 16px;
-  height: 188px;
-  padding: 28px 30px;
+  min-height: 170px;
+  padding: 26px 28px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -11,30 +11,32 @@
 }
 
 .stat-card h3 {
-  font-size: 16px;
-  margin-bottom: 24px;
+  font-size: 15px;
+  color: #0f172a;
+  margin-bottom: 22px;
 }
 
 .stat-card strong {
   display: block;
-  font-size: 42px;
+  font-size: 40px;
   line-height: 1;
-  margin-bottom: 20px;
+  color: #0f172a;
+  margin-bottom: 18px;
 }
 
 .stat-card p {
-  color: #475569;
-  font-size: 15px;
+  color: #64748b;
+  font-size: 14px;
 }
 
 .stat-icon {
-  width: 68px;
-  height: 68px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   display: grid;
   place-items: center;
   color: white;
-  font-size: 34px;
+  font-size: 32px;
 }
 
 .stat-icon.blue {
@@ -42,7 +44,7 @@
 }
 
 .stat-icon.orange {
-  background: #ff8906;
+  background: #f59e0b;
 }
 
 .stat-icon.green {
@@ -51,6 +53,6 @@
 
 .stat-icon.red {
   background: transparent;
-  color: #ef233c;
-  font-size: 58px;
+  color: #ef4444;
+  font-size: 56px;
 }

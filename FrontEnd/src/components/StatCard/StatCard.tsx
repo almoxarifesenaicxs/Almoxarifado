@@ -1,10 +1,11 @@
+import type { ReactNode } from "react";
 import "./StatCard.css";
 
 type StatCardProps = {
   title: string;
   value: number;
   description: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   variant: "blue" | "orange" | "green" | "red";
 };
 
