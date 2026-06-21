@@ -1,5 +1,5 @@
 .header {
-  height: 86px;
+  height: 90px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -8,7 +8,7 @@
 .header-title {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 24px;
 }
 
 .header-title svg {
@@ -16,14 +16,14 @@
 }
 
 .header-title h2 {
-  font-size: 30px;
+  font-size: 32px;
   font-weight: 800;
 }
 
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
 }
 
 .notification {
@@ -41,23 +41,21 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #ef233c;
-  color: #fff;
-  font-size: 12px;
+  background: red;
+  color: white;
   display: grid;
   place-items: center;
-  font-weight: 700;
+  font-size: 12px;
 }
 
 .profile-button {
-  height: 54px;
+  height: 52px;
   border: 1px solid #e5e7eb;
-  background: #ffffff;
+  background: white;
   border-radius: 12px;
   padding: 0 18px;
   display: flex;
   align-items: center;
   gap: 12px;
   cursor: pointer;
-  font-weight: 600;
 }

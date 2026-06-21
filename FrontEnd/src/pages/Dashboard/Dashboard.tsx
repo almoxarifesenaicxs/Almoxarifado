@@ -21,6 +21,7 @@ import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import StatCard from "../../components/StatCard/StatCard";
 import "../../components/Sidebar/Sidebar.css";
+import "../../components/Header/Header.css";
 
 import "./Dashboard.css";
 
