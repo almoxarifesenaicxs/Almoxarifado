@@ -41,7 +41,7 @@ function Login() {
       localStorage.setItem("token", resposta.data.token);
       localStorage.setItem("usuario", JSON.stringify(resposta.data.usuario));
 
-      alert("Login realizado com sucesso!");
+      navigate("/dashboard");
     } catch {
       setErro("Matrícula ou data de nascimento inválida.");
     } finally {
