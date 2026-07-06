@@ -1,11 +1,14 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   FiArchive,
   FiBarChart2,
   FiBell,
+  FiChevronDown,
   FiClipboard,
   FiFileText,
   FiHome,
+  FiLogOut,
+  FiMoon,
   FiShoppingCart,
   FiUsers,
   FiX,
@@ -57,7 +60,7 @@ const itensMenu: ItemMenu[] = [
     icone: <FiBarChart2 />,
     titulo: "Relatórios",
     caminho: "/relatorios",
-    perfis: ["Admin", "Coordenador"],
+    perfis: ["Admin", "Coordenador", "Professor", "Almoxarife"],
   },
   {
     icone: <FiUsers />,
@@ -101,9 +104,12 @@ function gerarIniciais(nome: string) {
     .toUpperCase();
 }
 
-export default function Sidebar() {const usuario = obterUsuarioLogado();
+export default function Sidebar() {
+  const navigate = useNavigate();
+  const usuario = obterUsuarioLogado();
+
   const [menuAberto, setMenuAberto] = useState(false);
-  
+  const [menuUsuarioAberto, setMenuUsuarioAberto] = useState(false);
 
   const itensPermitidos = itensMenu.filter((item) =>
     item.perfis.includes(usuario.perfil)
@@ -115,8 +121,21 @@ export default function Sidebar() {const usuario = obterUsuarioLogado();
     }
 
     window.addEventListener("abrir-menu-mobile", abrirMenu);
-    return () => window.removeEventListener("abrir-menu-mobile", abrirMenu);
+
+    return () => {
+      window.removeEventListener("abrir-menu-mobile", abrirMenu);
+    };
   }, []);
+
+  function sairDaConta() {
+    localStorage.removeItem("@senai:user");
+    localStorage.removeItem("@senai:token");
+    navigate("/login");
+  }
+
+  function alternarModoEscuro() {
+    document.documentElement.classList.toggle("dark");
+  }
 
   return (
     <>
@@ -144,15 +163,6 @@ export default function Sidebar() {const usuario = obterUsuarioLogado();
             </button>
           </div>
 
-          <div className="sidebar-user sidebar-user-mobile">
-            <div className="avatar">{gerarIniciais(usuario.nome)}</div>
-
-            <div className="sidebar-user-info">
-              <strong>{usuario.nome}</strong>
-              <span>{usuario.perfil}</span>
-            </div>
-          </div>
-
           <nav className="sidebar-menu">
             {itensPermitidos.map((item) => (
               <NavLink
@@ -170,13 +180,39 @@ export default function Sidebar() {const usuario = obterUsuarioLogado();
           </nav>
         </div>
 
-        <div className="sidebar-user sidebar-user-desktop">
-          <div className="avatar">{gerarIniciais(usuario.nome)}</div>
+        <div className="sidebar-user-wrapper">
+          <button
+            type="button"
+            className="sidebar-user"
+            onClick={() => setMenuUsuarioAberto((estadoAtual) => !estadoAtual)}
+          >
+            <div className="avatar">{gerarIniciais(usuario.nome)}</div>
 
-          <div className="sidebar-user-info">
-            <strong>{usuario.nome}</strong>
-            <span>{usuario.perfil}</span>
-          </div>
+            <div className="sidebar-user-info">
+              <strong>{usuario.nome}</strong>
+              <span>{usuario.perfil}</span>
+            </div>
+
+            <FiChevronDown
+              className={`sidebar-user-arrow ${
+                menuUsuarioAberto ? "aberto" : ""
+              }`}
+            />
+          </button>
+
+          {menuUsuarioAberto && (
+            <div className="sidebar-user-menu">
+              <button type="button" onClick={alternarModoEscuro}>
+                <FiMoon />
+                Modo escuro
+              </button>
+
+              <button type="button" className="sair" onClick={sairDaConta}>
+                <FiLogOut />
+                Sair da conta
+              </button>
+            </div>
+          )}
         </div>
       </aside>
     </>
