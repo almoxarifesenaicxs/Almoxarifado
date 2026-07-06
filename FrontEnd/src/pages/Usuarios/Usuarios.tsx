@@ -1,6 +1,7 @@
 import { FiEdit2, FiMoreHorizontal, FiPlus } from "react-icons/fi";
 
 import Sidebar from "../../components/Sidebar/Sidebar";
+import Header from "../../components/Header/Header";
 
 import "./Usuarios.css";
 
@@ -43,6 +44,7 @@ export default function Usuarios() {
             <Sidebar />
 
             <main className="users-main">
+                <Header titulo="Usuários" />
                 <div className="users-header">
                     <div>
                         <h1>Usuários</h1>

@@ -14,7 +14,7 @@ import {
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { getUsuarioLogado } from "../../services/auth";
 import { criarDemandaLocal } from "../../services/localData";
-
+import Header from "../../components/Header/Header";
 import "./NovaDemanda.css";
 
 type Prioridade = "Normal" | "Alta" | "Urgente";
@@ -100,6 +100,7 @@ function NovaDemanda() {
       <Sidebar />
 
       <main className="nova-demanda-main">
+        <Header titulo="Nova Demanda" />
         <header className="nova-demanda-topo">
           <h1>Nova Demanda</h1>
           <div className="nova-demanda-breadcrumb">

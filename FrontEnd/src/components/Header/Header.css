@@ -1,13 +1,11 @@
-/* =========================================================
-   HEADER PRINCIPAL
-   ========================================================= */
-
 .header {
   height: 78px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
+  position: relative;
+  z-index: 20;
 }
 
 .header-title {
@@ -16,9 +14,14 @@
   gap: 18px;
 }
 
-.header-title svg {
-  font-size: 26px;
+.header-menu-button {
+  border: none;
+  background: transparent;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
   color: #0f172a;
+  font-size: 26px;
 }
 
 .header-title h2 {
@@ -27,69 +30,251 @@
   color: #0f172a;
 }
 
-/* =========================================================
-   AÇÕES DO HEADER
-   ========================================================= */
-
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 18px;
+.header-profile-wrapper {
+  position: relative;
 }
 
-.notification {
-  position: relative;
+.header-profile-button {
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: #dbeafe;
+  color: #0057d9;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.profile-popover {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 220px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.16);
+  padding: 10px;
+  z-index: 100;
+}
+
+.profile-popover-user {
+  padding: 10px 12px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 6px;
+}
+
+.profile-popover-user strong {
+  display: block;
+  font-size: 14px;
+  color: #0f172a;
+}
+
+.profile-popover-user span {
+  display: block;
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.profile-popover button {
+  width: 100%;
+  height: 42px;
   border: none;
   background: transparent;
-  font-size: 27px;
-  cursor: pointer;
-  color: #0f172a;
-}
-
-.notification span {
-  position: absolute;
-  top: -9px;
-  right: -8px;
-  width: 21px;
-  height: 21px;
-  border-radius: 50%;
-  background: #ef233c;
-  color: #ffffff;
-  display: grid;
-  place-items: center;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.profile-button {
-  height: 52px;
-  border: 1px solid #e5e7eb;
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 0 18px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  padding: 0 12px;
   cursor: pointer;
-  color: #0f172a;
-  font-size: 15px;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  color: #334155;
+  font-weight: 600;
+  text-align: left;
 }
 
-.profile-button svg:first-child {
-  font-size: 24px;
+.profile-popover button:hover {
+  background: #f1f5f9;
+}
+
+.profile-popover .logout-option {
+  color: #dc2626;
 }
 
 @media (max-width: 760px) {
   .header {
-    height: auto;
-    gap: 18px;
-    align-items: flex-start;
-    flex-direction: column;
+    height: 64px;
+    padding: 0;
+    align-items: center;
+    flex-direction: row;
   }
 
-  .header-actions {
-    width: 100%;
-    justify-content: space-between;
+  .header-title {
+    gap: 12px;
+  }
+
+  .header-title h2 {
+    font-size: 18px;
+  }
+
+  .header-menu-button {
+    font-size: 24px;
+  }
+
+  .header-profile-button {
+    width: 36px;
+    height: 36px;
+    font-size: 13px;
+  }
+
+  .profile-popover {
+    right: 0;
+    width: 210px;
+  }
+}
+
+/* modo escuro básico */
+html.dark body {
+  background: #020617;
+  color: #e5e7eb;
+}
+
+html.dark .dashboard-layout,
+html.dark .users-layout,
+html.dark .demandas-layout,
+html.dark .almoxarifado-layout,
+html.dark .checklists-layout,
+html.dark .compras-layout,
+html.dark .nova-compra-layout,
+html.dark .nova-demanda-layout,
+html.dark .detalhes-compra-layout,
+html.dark .detalhes-demanda-layout,
+html.dark .execucao-layout {
+  background: #020617;
+}
+
+html.dark .dashboard-main,
+html.dark .users-main,
+html.dark .demandas-main,
+html.dark .almoxarifado-main,
+html.dark .checklists-main,
+html.dark .compras-main,
+html.dark .nova-compra-main,
+html.dark .nova-demanda-main,
+html.dark .detalhes-compra-main,
+html.dark .detalhes-demanda-main,
+html.dark .execucao-main {
+  background: #020617;
+}
+
+html.dark .header-title h2,
+html.dark .header-menu-button {
+  color: #f8fafc;
+}
+
+html.dark .profile-popover,
+html.dark .sidebar {
+  background: #0f172a;
+  border-color: #1e293b;
+}
+
+html.dark .profile-popover-user strong,
+html.dark .sidebar-logo span,
+html.dark .sidebar-user-info strong {
+  color: #f8fafc;
+}
+
+html.dark .profile-popover button,
+html.dark .sidebar-item {
+  color: #cbd5e1;
+}
+
+html.dark .profile-popover button:hover,
+html.dark .sidebar-item:hover {
+  background: #1e293b;
+}
+
+.header {
+  position: relative;
+  z-index: 50;
+}
+
+.header-menu-button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0f172a;
+  padding: 0;
+}
+
+.header-profile {
+  position: relative;
+}
+
+.header-avatar {
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: #dbeafe;
+  color: #0057d9;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.header-profile-card {
+  position: absolute;
+  top: 52px;
+  right: 0;
+  width: 190px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 15px 40px rgba(15, 23, 42, 0.18);
+  padding: 8px;
+  z-index: 200;
+}
+
+.header-profile-card button {
+  width: 100%;
+  height: 42px;
+  border: none;
+  background: transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.header-profile-card button:hover {
+  background: #f1f5f9;
+}
+
+.header-profile-card .sair {
+  color: #dc2626;
+}
+
+@media (max-width: 760px) {
+  .header {
+    height: 64px;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .header-title h2 {
+    font-size: 18px;
+  }
+
+  .header-avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 13px;
   }
 }
