@@ -16,7 +16,7 @@ import {
   FiBox,
   FiCheck,
 } from "react-icons/fi";
-
+import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import {
   alterarStatusDemandaLocal,
@@ -139,6 +139,7 @@ function Almoxarifado() {
       <Sidebar />
 
       <main className="almoxarifado-main">
+        <Header titulo="Fila de Demandas" />
         <section className="almoxarifado-conteudo">
           <header className="almoxarifado-cabecalho">
             <div>

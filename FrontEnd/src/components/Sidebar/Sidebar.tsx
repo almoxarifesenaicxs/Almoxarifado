@@ -8,10 +8,12 @@ import {
   FiFileText,
   FiHome,
   FiLogOut,
+  FiMoon,
   FiShoppingCart,
   FiUsers,
+  FiX,
 } from "react-icons/fi";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Sidebar.css";
 
 type Perfil = "Admin" | "Coordenador" | "Professor" | "Almoxarife";
@@ -38,14 +40,8 @@ const itensMenu: ItemMenu[] = [
   },
   {
     icone: <FiArchive />,
-    titulo: "Fila Almoxarifado",
+    titulo: "Fila Operacional",
     caminho: "/almoxarifado",
-    perfis: ["Admin", "Coordenador", "Almoxarife"],
-  },
-  {
-    icone: <FiClipboard />,
-    titulo: "Checklists",
-    caminho: "/checklists",
     perfis: ["Admin", "Coordenador", "Almoxarife"],
   },
   {
@@ -55,10 +51,16 @@ const itensMenu: ItemMenu[] = [
     perfis: ["Admin", "Coordenador", "Almoxarife"],
   },
   {
+    icone: <FiClipboard />,
+    titulo: "Checklists",
+    caminho: "/checklists",
+    perfis: ["Admin", "Coordenador", "Almoxarife"],
+  },
+  {
     icone: <FiBarChart2 />,
     titulo: "Relatórios",
     caminho: "/relatorios",
-    perfis: ["Admin", "Coordenador","Professor", "Almoxarife" ],
+    perfis: ["Admin", "Coordenador", "Professor", "Almoxarife"],
   },
   {
     icone: <FiUsers />,
@@ -71,8 +73,6 @@ const itensMenu: ItemMenu[] = [
     titulo: "Notificações",
     caminho: "/notificacoes",
     perfis: ["Admin", "Coordenador", "Professor", "Almoxarife"],
-
-
   },
 ];
 
@@ -80,11 +80,7 @@ function obterUsuarioLogado() {
   const usuarioSalvo = localStorage.getItem("@senai:user");
 
   if (!usuarioSalvo) {
-    return {
-      nome: "Usuário",
-      matricula: "",
-      perfil: "Coordenador" as Perfil,
-    };
+    return { nome: "Usuário", matricula: "", perfil: "Coordenador" as Perfil };
   }
 
   try {
@@ -94,11 +90,7 @@ function obterUsuarioLogado() {
       perfil: Perfil;
     };
   } catch {
-    return {
-      nome: "Usuário",
-      matricula: "",
-      perfil: "Coordenador" as Perfil,
-    };
+    return { nome: "Usuário", matricula: "", perfil: "Coordenador" as Perfil };
   }
 }
 
@@ -115,71 +107,114 @@ function gerarIniciais(nome: string) {
 export default function Sidebar() {
   const navigate = useNavigate();
   const usuario = obterUsuarioLogado();
+
+  const [menuAberto, setMenuAberto] = useState(false);
   const [menuUsuarioAberto, setMenuUsuarioAberto] = useState(false);
 
   const itensPermitidos = itensMenu.filter((item) =>
-    item.perfis.includes(usuario.perfil),
+    item.perfis.includes(usuario.perfil)
   );
+
+  useEffect(() => {
+    function abrirMenu() {
+      setMenuAberto(true);
+    }
+
+    window.addEventListener("abrir-menu-mobile", abrirMenu);
+
+    return () => {
+      window.removeEventListener("abrir-menu-mobile", abrirMenu);
+    };
+  }, []);
 
   function sairDaConta() {
     localStorage.removeItem("@senai:user");
     localStorage.removeItem("@senai:token");
-
     navigate("/login");
   }
 
+  function alternarModoEscuro() {
+    document.documentElement.classList.toggle("dark");
+  }
+
   return (
-    <aside className="sidebar">
-      <div>
-        <div className="sidebar-logo">
-          <h1>SENAI</h1>
-        </div>
+    <>
+      <div
+        className={`sidebar-overlay ${menuAberto ? "show" : ""}`}
+        onClick={() => setMenuAberto(false)}
+      />
 
-        <nav className="sidebar-menu">
-          {itensPermitidos.map((item) => (
-            <NavLink
-              key={item.titulo}
-              to={item.caminho}
-              className={({ isActive }) =>
-                `sidebar-item ${isActive ? "active" : ""}`
-              }
+      <aside className={`sidebar ${menuAberto ? "mobile-open" : ""}`}>
+        <div>
+          <div className="sidebar-logo-row">
+            <div className="sidebar-logo">
+              <h1>SENAI</h1>
+              <span>AUTOMOTIVO</span>
+              <span>CAXIAS DO SUL</span>
+            </div>
+
+            <button
+              type="button"
+              className="sidebar-close"
+              onClick={() => setMenuAberto(false)}
+              aria-label="Fechar menu"
             >
-              {item.icone}
-              <span>{item.titulo}</span>
-            </NavLink>
-          ))}
-        </nav>
-      </div>
-
-      <div className="sidebar-user-wrapper">
-        <button
-          type="button"
-          className="sidebar-user"
-          onClick={() => setMenuUsuarioAberto((estadoAtual) => !estadoAtual)}
-        >
-          <div className="avatar">{gerarIniciais(usuario.nome)}</div>
-
-          <div className="sidebar-user-info">
-            <strong>{usuario.nome}</strong>
-            <span>{usuario.perfil}</span>
-          </div>
-
-          <FiChevronDown
-            className={`sidebar-user-arrow ${
-              menuUsuarioAberto ? "aberto" : ""
-            }`}
-          />
-        </button>
-
-        {menuUsuarioAberto && (
-          <div className="sidebar-user-menu">
-            <button type="button" onClick={sairDaConta}>
-              <FiLogOut />
-              Sair da conta
+              <FiX />
             </button>
           </div>
-        )}
-      </div>
-    </aside>
+
+          <nav className="sidebar-menu">
+            {itensPermitidos.map((item) => (
+              <NavLink
+                key={item.titulo}
+                to={item.caminho}
+                onClick={() => setMenuAberto(false)}
+                className={({ isActive }) =>
+                  `sidebar-item ${isActive ? "active" : ""}`
+                }
+              >
+                {item.icone}
+                <span>{item.titulo}</span>
+              </NavLink>
+            ))}
+          </nav>
+        </div>
+
+        <div className="sidebar-user-wrapper">
+          <button
+            type="button"
+            className="sidebar-user"
+            onClick={() => setMenuUsuarioAberto((estadoAtual) => !estadoAtual)}
+          >
+            <div className="avatar">{gerarIniciais(usuario.nome)}</div>
+
+            <div className="sidebar-user-info">
+              <strong>{usuario.nome}</strong>
+              <span>{usuario.perfil}</span>
+            </div>
+
+            <FiChevronDown
+              className={`sidebar-user-arrow ${
+                menuUsuarioAberto ? "aberto" : ""
+              }`}
+            />
+          </button>
+
+          {menuUsuarioAberto && (
+            <div className="sidebar-user-menu">
+              <button type="button" onClick={alternarModoEscuro}>
+                <FiMoon />
+                Modo escuro
+              </button>
+
+              <button type="button" className="sair" onClick={sairDaConta}>
+                <FiLogOut />
+                Sair da conta
+              </button>
+            </div>
+          )}
+        </div>
+      </aside>
+    </>
   );
 }
