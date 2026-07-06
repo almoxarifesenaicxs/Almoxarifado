@@ -18,22 +18,30 @@ import {
   duplicarModeloChecklist,
   editarModeloChecklist,
   excluirModeloChecklist,
+  listarExecucoesChecklist,
   listarModelosChecklist,
+  obterRascunhoChecklist,
   type ModeloChecklist,
 } from "../../services/checklistsLocal";
 
 import "./Checklists.css";
 
+function formatarData(data: string) {
+  return new Date(data).toLocaleString("pt-BR");
+}
+
 function Checklists() {
   const navigate = useNavigate();
+
   const [modelos, setModelos] = useState<ModeloChecklist[]>(() =>
-    listarModelosChecklist(),
+    listarModelosChecklist()
   );
 
   const [busca, setBusca] = useState("");
+  const [filtroStatus, setFiltroStatus] = useState("");
   const [modalAberto, setModalAberto] = useState(false);
   const [modeloEditando, setModeloEditando] = useState<ModeloChecklist | null>(
-    null,
+    null
   );
 
   const [nome, setNome] = useState("");
@@ -42,28 +50,109 @@ function Checklists() {
   const [itemAtual, setItemAtual] = useState("");
   const [itens, setItens] = useState<string[]>([]);
 
+  const execucoes = listarExecucoesChecklist();
+
+  function obterInfoModelo(modelo: ModeloChecklist) {
+    const rascunho = obterRascunhoChecklist(modelo.id);
+
+    const execucoesDoModelo = execucoes
+      .filter((execucao) => execucao.modeloId === modelo.id)
+      .sort(
+        (a, b) =>
+          new Date(b.dataExecucao).getTime() -
+          new Date(a.dataExecucao).getTime()
+      );
+
+    const ultimaExecucao = execucoesDoModelo[0];
+
+    if (rascunho) {
+      return {
+        status: "Rascunho",
+        classe: "rascunho",
+        botao: "Continuar execução",
+        ultimaExecucao: ultimaExecucao
+          ? formatarData(ultimaExecucao.dataExecucao)
+          : "—",
+        ultimoAlmoxarife: rascunho.almoxarifeNome,
+      };
+    }
+
+    if (ultimaExecucao) {
+      return {
+        status: "Executado",
+        classe: "executado",
+        botao: "Executar novamente",
+        ultimaExecucao: formatarData(ultimaExecucao.dataExecucao),
+        ultimoAlmoxarife: ultimaExecucao.almoxarifeNome,
+      };
+    }
+
+    return {
+      status: "Nunca executado",
+      classe: "nunca",
+      botao: "Executar",
+      ultimaExecucao: "Nunca",
+      ultimoAlmoxarife: "—",
+    };
+  }
+
+  const modelosComInfo = useMemo(() => {
+    return modelos.map((modelo) => ({
+      ...modelo,
+      info: obterInfoModelo(modelo),
+    }));
+  }, [modelos, execucoes]);
+
+  const indicadores = useMemo(() => {
+    return {
+      total: modelos.length,
+      executados: modelosComInfo.filter((m) => m.info.status === "Executado")
+        .length,
+      rascunhos: modelosComInfo.filter((m) => m.info.status === "Rascunho")
+        .length,
+      inativos: modelos.filter((modelo) => !modelo.ativo).length,
+    };
+  }, [modelos, modelosComInfo]);
+
   const modelosFiltrados = useMemo(() => {
     const termo = busca.toLowerCase();
 
-    return modelos.filter(
-      (modelo) =>
-        modelo.nome.toLowerCase().includes(termo) ||
-        modelo.oficina.toLowerCase().includes(termo),
-    );
-  }, [busca, modelos]);
+    return modelosComInfo
+      .filter((modelo) => {
+        const correspondeBusca =
+          modelo.nome.toLowerCase().includes(termo) ||
+          modelo.oficina.toLowerCase().includes(termo) ||
+          modelo.categoria.toLowerCase().includes(termo);
+
+        let correspondeStatus = true;
+
+        if (filtroStatus === "Inativo") {
+          correspondeStatus = !modelo.ativo;
+        } else if (filtroStatus !== "") {
+          correspondeStatus = modelo.info.status === filtroStatus;
+        }
+
+        return correspondeBusca && correspondeStatus;
+      })
+      .sort((a, b) => {
+        // Ativos primeiro, inativos por último
+        if (a.ativo === b.ativo) return 0;
+        return a.ativo ? -1 : 1;
+      });
+  }, [busca, filtroStatus, modelosComInfo]);
 
   function recarregarModelos() {
     setModelos(listarModelosChecklist());
   }
 
-function limparFormulario() {
-  setNome("");
-  setOficina("");
-  setCategoria("");
-  setItemAtual("");
-  setItens([]);
-  setModeloEditando(null);
-}
+  function limparFormulario() {
+    setNome("");
+    setOficina("");
+    setCategoria("");
+    setItemAtual("");
+    setItens([]);
+    setModeloEditando(null);
+  }
 
   function abrirNovoChecklist() {
     limparFormulario();
@@ -94,7 +183,7 @@ function limparFormulario() {
 
   function removerItem(index: number) {
     setItens((itensAtuais) =>
-      itensAtuais.filter((_, indice) => indice !== index),
+      itensAtuais.filter((_, indice) => indice !== index)
     );
   }
 
@@ -133,13 +222,25 @@ function limparFormulario() {
   }
 
   function alterarStatus(id: string) {
+    const modelo = modelos.find((item) => item.id === id);
+
+    if (!modelo) return;
+
+    const mensagem = modelo.ativo
+      ? "Deseja inativar este modelo? Ele não poderá mais ser executado, mas o histórico será preservado."
+      : "Deseja reativar este modelo para permitir novas execuções?";
+
+    const confirmou = confirm(mensagem);
+
+    if (!confirmou) return;
+
     alternarStatusModeloChecklist(id);
     recarregarModelos();
   }
 
   function removerModelo(id: string) {
     const confirmou = confirm(
-      "Deseja realmente excluir este modelo de checklist?",
+      "Deseja realmente excluir este modelo de checklist?"
     );
 
     if (!confirmou) return;
@@ -158,56 +259,104 @@ function limparFormulario() {
             <div>
               <h1>Modelos de Checklists</h1>
               <p>
-                Crie e gerencie os modelos de conferência das oficinas do SENAI
+                Gerencie os modelos de inspeção das oficinas do SENAI
                 Automotivo.
               </p>
             </div>
 
-            <button
-              type="button"
-              className="checklists-botao-novo"
-              onClick={abrirNovoChecklist}
-            >
-              <FiPlus />
-              Novo Checklist
-            </button>
+            <div className="checklists-acoes-cabecalho">
+              <button
+                type="button"
+                className="checklists-botao-historico"
+                onClick={() => navigate("/checklists/historico")}
+              >
+                Histórico de Execuções
+              </button>
+
+              <button
+                type="button"
+                className="checklists-botao-novo"
+                onClick={abrirNovoChecklist}
+              >
+                <FiPlus />
+                Novo Checklist
+              </button>
+            </div>
           </header>
 
-          <div className="checklists-filtros">
+          <section className="checklists-indicadores">
+            <div>
+              <strong>{indicadores.total}</strong>
+              <span>Modelos cadastrados</span>
+            </div>
+
+            <div className="executado">
+              <strong>{indicadores.executados}</strong>
+              <span>Já executados</span>
+            </div>
+
+            <div className="rascunho">
+              <strong>{indicadores.rascunhos}</strong>
+              <span>Com rascunho</span>
+            </div>
+
+            <div className="nunca">
+              <strong>{indicadores.inativos}</strong>
+              <span>Modelos inativos</span>
+            </div>
+          </section>
+
+          <section className="checklists-filtros">
             <div className="checklists-busca">
               <FiSearch />
               <input
                 type="text"
-                placeholder="Buscar por modelo ou oficina..."
+                placeholder="Buscar por modelo, oficina ou categoria..."
                 value={busca}
                 onChange={(evento) => setBusca(evento.target.value)}
               />
             </div>
-          </div>
+
+            <select
+              value={filtroStatus}
+              onChange={(evento) => setFiltroStatus(evento.target.value)}
+            >
+              <option value="">Todos</option>
+              <option value="Executado">Executados</option>
+              <option value="Rascunho">Rascunhos</option>
+              <option value="Nunca executado">Nunca executados</option>
+              <option value="Inativo">Modelos inativos</option>
+            </select>
+          </section>
 
           <div className="checklists-card">
             <div className="checklists-tabela-wrapper">
               <table className="checklists-tabela">
                 <thead>
                   <tr>
-                    <th>Nome do Modelo</th>
+                    <th>Modelo</th>
                     <th>Oficina</th>
                     <th>Categoria</th>
-                    <th>Itens</th>
-                    <th>Status</th>
+                    <th>Situação</th>
+                    <th>Última execução</th>
+                    <th>Último almoxarife</th>
+                    <th>Execução</th>
                     <th>Ações</th>
                   </tr>
                 </thead>
 
                 <tbody>
                   {modelosFiltrados.map((modelo) => (
-                    <tr key={modelo.id}>
+                    <tr
+                      key={modelo.id}
+                      className={!modelo.ativo ? "modelo-inativo" : ""}
+                    >
                       <td>
                         <strong className="checklists-modelo-nome">
                           {modelo.nome}
                         </strong>
                         <span className="checklists-modelo-descricao">
-                          {modelo.descricao}
+                          {modelo.itens.length} itens cadastrados
                         </span>
                       </td>
 
@@ -219,11 +368,9 @@ function limparFormulario() {
                         </span>
                       </td>
 
-                      <td>{modelo.itens.length}</td>
-
                       <td>
                         <span
-                          className={`checklists-status ${
+                          className={`checklists-situacao-modelo ${
                             modelo.ativo ? "ativo" : "inativo"
                           }`}
                         >
@@ -231,18 +378,38 @@ function limparFormulario() {
                         </span>
                       </td>
 
+                      <td>{modelo.info.ultimaExecucao}</td>
+                      <td>{modelo.info.ultimoAlmoxarife}</td>
+
+                      <td>
+                        <span
+                          className={`checklists-status-inteligente ${modelo.info.classe}`}
+                        >
+                          {modelo.info.status}
+                        </span>
+                      </td>
                       <td>
                         <div className="checklists-acoes">
-                          <button
-                            type="button"
-                            className="checklists-acao executar"
-                            title="Executar checklist"
-                            onClick={() =>
-                              navigate(`/checklists/execucao/${modelo.id}`)
-                            }
-                          >
-                            Executar
-                          </button>
+                          {modelo.ativo ? (
+                            <button
+                              type="button"
+                              className="checklists-executar"
+                              onClick={() =>
+                                navigate(`/checklists/execucao/${modelo.id}`)
+                              }
+                            >
+                              {modelo.info.botao}
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              className="checklists-executar inativo"
+                              disabled
+                            >
+                              Modelo inativo
+                            </button>
+                          )}
+
                           <button
                             type="button"
                             className="checklists-acao"
@@ -263,15 +430,17 @@ function limparFormulario() {
 
                           <button
                             type="button"
-                            className="checklists-acao"
-                            title={modelo.ativo ? "Inativar" : "Ativar"}
+                            className={`checklists-acao-status ${
+                              modelo.ativo ? "inativar" : "ativar"
+                            }`}
+                            title={
+                              modelo.ativo
+                                ? "Inativar modelo"
+                                : "Reativar modelo"
+                            }
                             onClick={() => alterarStatus(modelo.id)}
                           >
-                            {modelo.ativo ? (
-                              <FiToggleRight />
-                            ) : (
-                              <FiToggleLeft />
-                            )}
+                            {modelo.ativo ? "Inativar" : "Reativar"}
                           </button>
 
                           <button
@@ -289,8 +458,8 @@ function limparFormulario() {
 
                   {modelosFiltrados.length === 0 && (
                     <tr>
-                      <td colSpan={5} className="checklists-vazio">
-                        Nenhum modelo de checklist encontrado.
+                      <td colSpan={7} className="checklists-vazio">
+                        Nenhum modelo encontrado.
                       </td>
                     </tr>
                   )}
@@ -302,14 +471,6 @@ function limparFormulario() {
               <p>
                 Mostrando {modelosFiltrados.length} de {modelos.length} modelos
               </p>
-
-              <div className="checklists-paginacao">
-                <button type="button">Anterior</button>
-                <button type="button" className="ativo">
-                  1
-                </button>
-                <button type="button">Próximo</button>
-              </div>
             </footer>
           </div>
         </section>
