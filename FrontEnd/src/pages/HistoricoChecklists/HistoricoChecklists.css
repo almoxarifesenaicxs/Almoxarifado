@@ -1,0 +1,272 @@
+.historico-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.historico-main {
+  flex: 1;
+  min-width: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.historico-conteudo {
+  height: 100vh;
+  padding: 56px 44px 34px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.historico-cabecalho {
+  margin-bottom: 24px;
+}
+
+.historico-voltar {
+  height: 40px;
+  border: 1px solid #dbe3ef;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #344054;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.historico-cabecalho h1 {
+  margin: 0;
+  font-size: 31px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.historico-cabecalho p {
+  margin: 12px 0 0;
+  color: #667085;
+  font-size: 16px;
+}
+
+.historico-filtros {
+  margin-bottom: 18px;
+}
+
+.historico-busca {
+  width: min(460px, 100%);
+  height: 44px;
+  border: 1px solid #dbe3ef;
+  border-radius: 10px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #667085;
+}
+
+.historico-busca input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+.historico-card {
+  flex: 1;
+  min-height: 0;
+  border: 1px solid #e1e7ef;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.historico-tabela-wrapper {
+  height: 100%;
+  overflow: auto;
+}
+
+.historico-tabela {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: collapse;
+}
+
+.historico-tabela th {
+  position: sticky;
+  top: 0;
+  background: #f8fafc;
+  color: #475467;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 16px 18px;
+  border-bottom: 1px solid #e1e7ef;
+}
+
+.historico-tabela td {
+  padding: 18px;
+  border-bottom: 1px solid #edf1f6;
+  color: #111827;
+  font-size: 14px;
+}
+
+.historico-categoria {
+  display: inline-flex;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #eef4ff;
+  color: #0046c7;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.historico-acao {
+  height: 34px;
+  border: 1px solid #dbe3ef;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #0046c7;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.historico-vazio {
+  text-align: center;
+  color: #667085;
+  padding: 28px;
+}
+
+.historico-indicadores {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.historico-indicadores div {
+  background: #ffffff;
+  border: 1px solid #e1e7ef;
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.historico-indicadores strong {
+  display: block;
+  font-size: 26px;
+  color: #111827;
+}
+
+.historico-indicadores span {
+  color: #667085;
+  font-size: 14px;
+}
+
+.historico-indicadores .ok strong {
+  color: #15803d;
+}
+
+.historico-indicadores .alerta strong {
+  color: #b45309;
+}
+
+.historico-indicadores .critico strong {
+  color: #dc2626;
+}
+
+.historico-filtros {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.historico-filtros select,
+.historico-filtros input[type="date"] {
+  height: 44px;
+  border: 1px solid #dbe3ef;
+  border-radius: 10px;
+  padding: 0 12px;
+  background: #ffffff;
+  color: #344054;
+  font-size: 14px;
+}
+
+@media (max-width: 1100px) {
+  .historico-filtros {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .historico-indicadores {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .historico-filtros,
+  .historico-indicadores {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .historico-conteudo {
+    padding: 28px 18px 22px;
+  }
+
+  .historico-cabecalho h1 {
+    font-size: 25px;
+  }
+}
+
+@media (max-width: 900px) {
+  .checklists-main,
+  .execucao-main,
+  .historico-main,
+  .visualizar-main {
+    width: 100%;
+    height: 100vh;
+  }
+
+  .checklists-conteudo,
+  .execucao-conteudo,
+  .historico-conteudo,
+  .visualizar-conteudo {
+    padding: 82px 18px 24px;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .checklists-cabecalho,
+  .execucao-cabecalho {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .checklists-acoes-cabecalho {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .checklists-botao-historico,
+  .checklists-botao-novo {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .checklists-card,
+  .execucao-card,
+  .historico-card,
+  .visualizar-card {
+    min-height: 420px;
+  }
+}
