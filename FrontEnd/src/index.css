@@ -16,3 +16,129 @@ body {
   background: #f8fafc;
   color: #0f172a;
 }
+
+
+@media (max-width: 900px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .dashboard-layout,
+  .demandas-layout,
+  .nova-demanda-layout,
+  .almoxarifado-layout,
+  .checklists-layout,
+  .execucao-layout,
+  .historico-layout,
+  .visualizar-layout,
+  .usuarios-layout {
+    width: 100%;
+    min-height: 100vh;
+    display: block;
+  }
+
+  .dashboard-main,
+  .demandas-main,
+  .nova-demanda-main,
+  .almoxarifado-main,
+  .checklists-main,
+  .execucao-main,
+  .historico-main,
+  .visualizar-main,
+  .usuarios-main {
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .dashboard-conteudo,
+  .demandas-conteudo,
+  .nova-demanda-conteudo,
+  .almoxarifado-conteudo,
+  .checklists-conteudo,
+  .execucao-conteudo,
+  .historico-conteudo,
+  .visualizar-conteudo,
+  .usuarios-conteudo {
+    height: auto;
+    min-height: 100vh;
+    padding: 82px 18px 24px;
+    overflow: visible;
+  }
+
+  .dashboard-header,
+  .header,
+  .app-header {
+    padding-left: 72px;
+  }
+
+  table {
+    min-width: 760px;
+  }
+
+  .checklists-tabela-wrapper,
+  .execucao-tabela-wrapper,
+  .historico-tabela-wrapper,
+  .demandas-tabela-area {
+    overflow-x: auto;
+  }
+
+  .stats-grid,
+  .charts-grid,
+  .execucao-resumo,
+  .visualizar-resumo {
+    grid-template-columns: 1fr;
+  }
+
+  .almoxarifado-kanban {
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+  }
+
+  .almoxarifado-coluna {
+    min-width: 280px;
+  }
+
+  .checklists-cabecalho,
+  .execucao-cabecalho,
+  .historico-cabecalho,
+  .visualizar-cabecalho,
+  .almoxarifado-cabecalho,
+  .demandas-cabecalho {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .checklists-acoes-cabecalho,
+  .demandas-filtros,
+  .checklists-filtros,
+  .almoxarifado-filtros-topo {
+    flex-direction: column;
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .checklists-botao-novo,
+  .checklists-botao-historico,
+  .demandas-botao-novo,
+  .almoxarifado-filtrar,
+  .almoxarifado-select {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .checklists-modal,
+  .nova-demanda-formulario {
+    width: 100%;
+  }
+
+  .checklists-modal-grid,
+  .checklists-categorias-grid,
+  .checklists-adicionar-item {
+    grid-template-columns: 1fr;
+  }
+}

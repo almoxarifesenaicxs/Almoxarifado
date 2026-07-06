@@ -15,6 +15,8 @@ import Demandas from "../pages/Demandas/Demandas";
 import Almoxarifado from "../pages/Almoxarifado/Almoxarifado";
 import Checklists from "../pages/Checklists/Checklists";
 import ExecucaoChecklist from "../pages/ExecucaoChecklist/ExecucaoChecklist";
+import HistoricoChecklists from "../pages/HistoricoChecklists/HistoricoChecklists";
+import VisualizarChecklist from "../pages/VisualizarChecklist/VisualizarChecklist";
 
 import PrivateRoute from "./PrivateRoute";
 
@@ -98,6 +100,24 @@ function AppRoutes() {
   element={
     <PrivateRoute allowedProfiles={["Admin", "Almoxarife"]}>
       <ExecucaoChecklist />
+    </PrivateRoute>
+  }
+/>
+
+<Route
+  path="/checklists/historico"
+  element={
+    <PrivateRoute allowedProfiles={["Admin", "Coordenador", "Almoxarife"]}>
+      <HistoricoChecklists />
+    </PrivateRoute>
+  }
+/>
+
+<Route
+  path="/checklists/visualizar/:id"
+  element={
+    <PrivateRoute allowedProfiles={["Admin", "Coordenador", "Almoxarife"]}>
+      <VisualizarChecklist />
     </PrivateRoute>
   }
 />

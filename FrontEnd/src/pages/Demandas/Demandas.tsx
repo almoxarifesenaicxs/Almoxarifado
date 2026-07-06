@@ -108,7 +108,6 @@ function Demandas() {
         <section className="demandas-conteudo">
           <div className="demandas-cabecalho">
             <div>
-              <h1>Demandas</h1>
               <p>Lista de solicitações de demandas feitas</p>
             </div>
           </div>

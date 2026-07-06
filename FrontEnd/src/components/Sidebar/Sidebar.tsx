@@ -7,11 +7,13 @@ import {
   FiClipboard,
   FiFileText,
   FiHome,
+  FiMenu,
   FiPlusCircle,
   FiShoppingCart,
   FiUsers,
+  FiX,
 } from "react-icons/fi";
-import React from "react";
+import React, { useState } from "react";
 import "./Sidebar.css";
 
 type Perfil = "Admin" | "Coordenador" | "Professor" | "Almoxarife";
@@ -36,12 +38,12 @@ const itensMenu: ItemMenu[] = [
     caminho: "/demandas",
     perfis: ["Admin", "Coordenador", "Professor", "Almoxarife"],
   },
- {
-  icone: <FiPlusCircle />,
-  titulo: "Nova Demanda",
-  caminho: "/nova-demanda",
-  perfis: ["Professor"],
-},
+  {
+    icone: <FiPlusCircle />,
+    titulo: "Nova Demanda",
+    caminho: "/nova-demanda",
+    perfis: ["Professor"],
+  },
   {
     icone: <FiArchive />,
     titulo: "Fila Almoxarifado",
@@ -117,6 +119,8 @@ function gerarIniciais(nome: string) {
 }
 
 export default function Sidebar() {
+  const [menuAberto, setMenuAberto] = useState(false);
+
   const usuario = obterUsuarioLogado();
 
   const itensPermitidos = itensMenu.filter((item) =>
@@ -124,40 +128,60 @@ export default function Sidebar() {
   );
 
   return (
-    <aside className="sidebar">
-      <div>
-        <div className="sidebar-logo">
-          <h1>SENAI</h1>
-          <span>AUTOMOTIVO</span>
-          <span>CAXIAS DO SUL</span>
+    <>
+      <button
+        className="sidebar-mobile-toggle"
+        onClick={() => setMenuAberto(true)}
+      >
+        <FiMenu />
+      </button>
+
+      {menuAberto && (
+        <div className="sidebar-overlay" onClick={() => setMenuAberto(false)} />
+      )}
+
+      <aside className={`sidebar ${menuAberto ? "mobile-open" : ""}`}>
+        <div>
+          <button
+            className="sidebar-mobile-close"
+            onClick={() => setMenuAberto(false)}
+          >
+            <FiX />
+          </button>
+          <div className="sidebar-logo">
+            <h1>SENAI</h1>
+            <span>AUTOMOTIVO</span>
+            <span>CAXIAS DO SUL</span>
+          </div>
+
+          <nav className="sidebar-menu">
+            {itensPermitidos.map((item) => (
+              <NavLink
+                key={item.titulo}
+                to={item.caminho}
+                onClick={() => setMenuAberto(false)}
+                className={({ isActive }) =>
+                  `sidebar-item ${isActive ? "active" : ""}`
+                }
+              >
+                {item.icone}
+                <span>{item.titulo}</span>
+              </NavLink>
+            ))}
+          </nav>
         </div>
 
-        <nav className="sidebar-menu">
-          {itensPermitidos.map((item) => (
-            <NavLink
-              key={item.titulo}
-              to={item.caminho}
-              className={({ isActive }) =>
-                `sidebar-item ${isActive ? "active" : ""}`
-              }
-            >
-              {item.icone}
-              <span>{item.titulo}</span>
-            </NavLink>
-          ))}
-        </nav>
-      </div>
+        <div className="sidebar-user">
+          <div className="avatar">{gerarIniciais(usuario.nome)}</div>
 
-      <div className="sidebar-user">
-        <div className="avatar">{gerarIniciais(usuario.nome)}</div>
+          <div className="sidebar-user-info">
+            <strong>{usuario.nome}</strong>
+            <span>{usuario.perfil}</span>
+          </div>
 
-        <div className="sidebar-user-info">
-          <strong>{usuario.nome}</strong>
-          <span>{usuario.perfil}</span>
+          <FiChevronDown className="sidebar-user-arrow" />
         </div>
-
-        <FiChevronDown className="sidebar-user-arrow" />
-      </div>
-    </aside>
+      </aside>
+    </>
   );
 }
