@@ -82,7 +82,7 @@ var chave = builder.Configuration["Jwt:Key"];
 
 if (string.IsNullOrWhiteSpace(chave))
 {
-    throw new InvalidOperationException("Configure a variavel Jwt__Key antes de iniciar a API.");
+    throw new InvalidOperationException("Configure Jwt__Key antes de iniciar a API.");
 }
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
