@@ -12,7 +12,7 @@ import {
   salvarRascunhoChecklist,
   type StatusItemChecklist,
 } from "../../services/checklistsLocal";
-
+import Header from "../../components/Header/Header";
 import "./ExecucaoChecklist.css";
 
 type ItemExecucao = {
@@ -119,47 +119,32 @@ function ExecucaoChecklist() {
   }
 
   function finalizarChecklist() {
-    const possuiPendente = itens.some((item) => item.status === "Pendente");
+  const possuiPendente = itens.some((item) => item.status === "Pendente");
 
-    if (possuiPendente) {
-      mostrarNotificacao(
-        "aviso",
-        "Checklist incompleto",
-        "Marque todos os itens antes de finalizar."
-      );
-      return;
-    }
-
-    if (!modelo) {
-      mostrarNotificacao(
-        "erro",
-        "Erro ao finalizar",
-        "O modelo de checklist não foi encontrado."
-      );
-      return;
-    }
-
-    salvarExecucaoChecklist({
-      modeloId: modelo.id,
-      nomeModelo: modelo.nome,
-      oficina: modelo.oficina,
-      categoria: modelo.categoria,
-      almoxarifeNome: usuario?.nome || "Almoxarife",
-      itens,
-    });
-
-    removerRascunhoChecklist(modelo.id);
-
-    mostrarNotificacao(
-      "sucesso",
-      "Checklist finalizado",
-      "A execução foi registrada com sucesso."
-    );
-
-    window.setTimeout(() => {
-      navigate("/checklists");
-    }, 1200);
+  if (possuiPendente) {
+    alert("Marque todos os itens antes de finalizar.");
+    return;
   }
+
+  if (!modelo) {
+    alert("Modelo de checklist não encontrado.");
+    return;
+  }
+
+  salvarExecucaoChecklist({
+    modeloId: modelo.id,
+    nomeModelo: modelo.nome,
+    oficina: modelo.oficina,
+    categoria: modelo.categoria,
+    almoxarifeNome: usuario?.nome || "Almoxarife",
+    itens,
+  });
+
+  removerRascunhoChecklist(modelo.id);
+
+  alert("Checklist finalizado com sucesso!");
+  navigate("/checklists");
+}
 
   if (!modelo) {
     return (
@@ -167,6 +152,7 @@ function ExecucaoChecklist() {
         <Sidebar />
 
         <main className="execucao-main">
+          <Header titulo="Execução do Checklist" />
           {notificacao && (
             <div className={`execucao-toast ${notificacao.tipo}`}>
               <strong>{notificacao.titulo}</strong>
@@ -196,6 +182,7 @@ function ExecucaoChecklist() {
       <Sidebar />
 
       <main className="execucao-main">
+        <Header titulo="Execução do Checklist" />
         {notificacao && (
           <div className={`execucao-toast ${notificacao.tipo}`}>
             <strong>{notificacao.titulo}</strong>

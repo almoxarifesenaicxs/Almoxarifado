@@ -14,7 +14,7 @@ import {
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { getUsuarioLogado } from "../../services/auth";
 import { criarDemandaLocal } from "../../services/localData";
-
+import Header from "../../components/Header/Header";
 import "./NovaDemanda.css";
 
 type Prioridade = "Normal" | "Alta" | "Urgente";
@@ -34,6 +34,7 @@ function NovaDemanda() {
   const [dataSolicitada, setDataSolicitada] = useState("");
   const [prioridade, setPrioridade] = useState<Prioridade>("Normal");
   const [descricaoDemanda, setDescricaoDemanda] = useState("");
+  const [anexos, setAnexos] = useState<File[]>([]);
 
   const numeroDemanda = "—";
   const prazoResposta =
@@ -82,11 +83,24 @@ function NovaDemanda() {
     navigate("/demandas");
   }
 
+  function adicionarAnexos(arquivos: FileList | null) {
+    if (!arquivos) return;
+
+    setAnexos((anexosAtuais) => [...anexosAtuais, ...Array.from(arquivos)]);
+  }
+
+  function removerAnexo(nome: string) {
+    setAnexos((anexosAtuais) =>
+      anexosAtuais.filter((anexo) => anexo.name !== nome),
+    );
+  }
+
   return (
     <div className="nova-demanda-layout">
       <Sidebar />
 
       <main className="nova-demanda-main">
+        <Header titulo="Nova Demanda" />
         <header className="nova-demanda-topo">
           <h1>Nova Demanda</h1>
           <div className="nova-demanda-breadcrumb">
@@ -287,8 +301,34 @@ function NovaDemanda() {
             </section>
 
             <section className="nova-demanda-card nova-demanda-anexos">
-              <h2>Files / Anexos</h2>
-              <p>Nenhum file selecionado</p>
+              <h2>Fotos / Anexos</h2>
+
+              <label className="nova-demanda-botao-anexo">
+                Selecionar anexos
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*,.pdf,.doc,.docx,.xls,.xlsx"
+                  onChange={(evento) => adicionarAnexos(evento.target.files)}
+                />
+              </label>
+
+              <div className="nova-demanda-lista-anexos">
+                {anexos.length === 0 && <p>Nenhum anexo selecionado</p>}
+
+                {anexos.map((anexo) => (
+                  <div key={anexo.name} className="nova-demanda-anexo-item">
+                    <span>{anexo.name}</span>
+
+                    <button
+                      type="button"
+                      onClick={() => removerAnexo(anexo.name)}
+                    >
+                      Remover
+                    </button>
+                  </div>
+                ))}
+              </div>
             </section>
           </aside>
 
