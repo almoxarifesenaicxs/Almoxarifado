@@ -4,15 +4,252 @@
   box-sizing: border-box;
 }
 
+:root {
+  color-scheme: light;
+  --app-bg: #f8fafc;
+  --app-surface: #ffffff;
+  --app-surface-soft: #f8fafc;
+  --app-border: #e5e7eb;
+  --app-text: #0f172a;
+  --app-muted: #64748b;
+  --app-primary: #0057d9;
+  --app-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+html.dark {
+  color-scheme: dark;
+  --app-bg: #020617;
+  --app-surface: #0f172a;
+  --app-surface-soft: #111827;
+  --app-border: #1e293b;
+  --app-text: #f8fafc;
+  --app-muted: #94a3b8;
+  --app-primary: #60a5fa;
+  --app-shadow: 0 14px 34px rgba(0, 0, 0, 0.32);
+}
+
 html,
 body,
 #root {
   width: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  background: #f8fafc;
-  color: #0f172a;
+  background: var(--app-bg);
+  color: var(--app-text);
+  overflow-x: hidden;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  min-width: 0;
+}
+
+input,
+select,
+textarea {
+  min-width: 0;
+}
+
+img,
+svg,
+canvas,
+video {
+  max-width: 100%;
+}
+
+html.dark .dashboard-layout,
+html.dark .users-layout,
+html.dark .demandas-layout,
+html.dark .almoxarifado-layout,
+html.dark .checklists-layout,
+html.dark .compras-layout,
+html.dark .nova-compra-layout,
+html.dark .nova-demanda-layout,
+html.dark .detalhes-compra-layout,
+html.dark .detalhes-demanda-layout,
+html.dark .execucao-layout,
+html.dark .historico-layout,
+html.dark .visualizar-layout,
+html.dark .notificacoes-layout,
+html.dark .relatorios-layout {
+  background: var(--app-bg);
+  color: var(--app-text);
+}
+
+html.dark .login-pagina {
+  background: var(--app-bg);
+  color: var(--app-text);
+}
+
+html.dark .dashboard-main,
+html.dark .users-main,
+html.dark .demandas-main,
+html.dark .almoxarifado-main,
+html.dark .checklists-main,
+html.dark .compras-main,
+html.dark .nova-compra-main,
+html.dark .nova-demanda-main,
+html.dark .detalhes-compra-main,
+html.dark .detalhes-demanda-main,
+html.dark .execucao-main,
+html.dark .historico-main,
+html.dark .visualizar-main,
+html.dark .notificacoes-main,
+html.dark .relatorios-main {
+  background: var(--app-bg);
+  color: var(--app-text);
+}
+
+html.dark .panel,
+html.dark .stat-card,
+html.dark .users-card,
+html.dark .demandas-tabela-card,
+html.dark .compras-card,
+html.dark .checklists-card,
+html.dark .nova-compra-card,
+html.dark .nova-demanda-card,
+html.dark .detalhes-compra-card,
+html.dark .detalhes-demanda-card,
+html.dark .execucao-card,
+html.dark .almoxarifado-resumo-card,
+html.dark .compras-indicadores div,
+html.dark .relatorios-card {
+  background: var(--app-surface);
+  border-color: var(--app-border);
+  color: var(--app-text);
+  box-shadow: var(--app-shadow);
+}
+
+html.dark .login-card,
+html.dark .campo-input {
+  background: var(--app-surface);
+  border-color: var(--app-border);
+  color: var(--app-text);
+  box-shadow: var(--app-shadow);
+}
+
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark th,
+html.dark td,
+html.dark .stat-card h3,
+html.dark .stat-card strong,
+html.dark .panel h3,
+html.dark .users-header h1,
+html.dark .demandas-cabecalho h1,
+html.dark .compras-cabecalho h1,
+html.dark .checklists-cabecalho h1,
+html.dark .login-card h2,
+html.dark .campo-grupo label,
+html.dark .login-atalhos div,
+html.dark .login-rodape p {
+  color: var(--app-text);
+}
+
+html.dark p,
+html.dark small,
+html.dark .stat-card p,
+html.dark .users-header p,
+html.dark .demandas-cabecalho p,
+html.dark .compras-cabecalho p,
+html.dark .checklists-cabecalho p,
+html.dark .login-card > span {
+  color: var(--app-muted);
+}
+
+html.dark input,
+html.dark select,
+html.dark textarea {
+  background: #111827;
+  color: var(--app-text);
+  border-color: #334155;
+}
+
+html.dark table th {
+  background: #111827;
+  color: #cbd5e1;
+}
+
+html.dark table td {
+  border-color: #1e293b;
+  color: #e5e7eb;
+}
+
+html.dark .badge.status.waiting {
+  background: #1e293b;
+  color: #cbd5e1;
+  border-color: #334155;
+}
+
+html.dark .campo-input input {
+  color: var(--app-text);
+}
+
+html.dark .campo-input input::placeholder {
+  color: #94a3b8;
+}
+
+@media (max-width: 900px) {
+  .dashboard-layout,
+  .users-layout,
+  .demandas-layout,
+  .almoxarifado-layout,
+  .checklists-layout,
+  .compras-layout,
+  .nova-compra-layout,
+  .nova-demanda-layout,
+  .detalhes-compra-layout,
+  .detalhes-demanda-layout,
+  .execucao-layout,
+  .historico-layout,
+  .visualizar-layout,
+  .notificacoes-layout,
+  .relatorios-layout {
+    height: auto !important;
+    min-height: 100dvh !important;
+    overflow: visible !important;
+  }
+
+  .dashboard-main,
+  .users-main,
+  .demandas-main,
+  .almoxarifado-main,
+  .checklists-main,
+  .compras-main,
+  .nova-compra-main,
+  .nova-demanda-main,
+  .detalhes-compra-main,
+  .detalhes-demanda-main,
+  .execucao-main,
+  .historico-main,
+  .visualizar-main,
+  .notificacoes-main,
+  .relatorios-main {
+    height: auto !important;
+    min-height: 100dvh !important;
+    overflow: visible !important;
+    min-width: 0;
+  }
+
+  table {
+    min-width: 680px;
+  }
+
+  .table-panel,
+  .demandas-tabela-wrapper,
+  .compras-tabela-wrapper,
+  .users-table-wrapper,
+  .relatorios-tabela-wrapper {
+    overflow-x: auto !important;
+  }
 }

@@ -134,7 +134,9 @@ export default function Sidebar() {
   }
 
   function alternarModoEscuro() {
-    document.documentElement.classList.toggle("dark");
+    const darkAtivo = document.documentElement.classList.toggle("dark");
+    localStorage.setItem("@senai:theme", darkAtivo ? "dark" : "light");
+    setMenuUsuarioAberto(false);
   }
 
   return (
@@ -166,7 +168,10 @@ export default function Sidebar() {
               <NavLink
                 key={item.titulo}
                 to={item.caminho}
-                onClick={() => setMenuAberto(false)}
+                onClick={() => {
+                  setMenuAberto(false);
+                  setMenuUsuarioAberto(false);
+                }}
                 className={({ isActive }) =>
                   `sidebar-item ${isActive ? "active" : ""}`
                 }
@@ -183,6 +188,7 @@ export default function Sidebar() {
             type="button"
             className="sidebar-user"
             onClick={() => setMenuUsuarioAberto((estadoAtual) => !estadoAtual)}
+            aria-expanded={menuUsuarioAberto}
           >
             <div className="avatar">{gerarIniciais(usuario.nome)}</div>
 

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FiCopy,
@@ -48,9 +48,9 @@ function Checklists() {
   const [itemAtual, setItemAtual] = useState("");
   const [itens, setItens] = useState<string[]>([]);
 
-  const execucoes = listarExecucoesChecklist();
+  const execucoes = useMemo(() => listarExecucoesChecklist(), []);
 
-  function obterInfoModelo(modelo: ModeloChecklist) {
+  const obterInfoModelo = useCallback((modelo: ModeloChecklist) => {
     const rascunho = obterRascunhoChecklist(modelo.id);
 
     const execucoesDoModelo = execucoes
@@ -92,14 +92,14 @@ function Checklists() {
       ultimaExecucao: "Nunca",
       ultimoAlmoxarife: "—",
     };
-  }
+  }, [execucoes]);
 
   const modelosComInfo = useMemo(() => {
     return modelos.map((modelo) => ({
       ...modelo,
       info: obterInfoModelo(modelo),
     }));
-  }, [modelos, execucoes]);
+  }, [modelos, obterInfoModelo]);
 
   const indicadores = useMemo(() => {
     return {
