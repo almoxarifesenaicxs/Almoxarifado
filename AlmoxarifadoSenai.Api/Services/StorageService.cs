@@ -1,87 +1,85 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 
 namespace AlmoxarifadoSenai.Api.Services
 {
     public class StorageService
     {
-        private readonly IConfiguration _configuration;
-
-        public StorageService(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
-        public async Task<(string url, string fileName)> SalvarImagemAsync(string base64Image, string demandaId, string nomeOriginal)
+        public async Task<(string url, string fileName)> SalvarArquivoAsync(
+            string base64File,
+            string demandaId,
+            string nomeOriginal)
         {
             try
             {
-                // Remove o cabeçalho "data:image/png;base64," se existir
-                var base64Data = base64Image;
-                if (base64Image.Contains(","))
+                var base64Data = base64File;
+                if (base64File.Contains(","))
                 {
-                    base64Data = base64Image.Substring(base64Image.IndexOf(",") + 1);
+                    base64Data = base64File[(base64File.IndexOf(",") + 1)..];
                 }
 
-                var imageBytes = Convert.FromBase64String(base64Data);
-
-                // Gera nome único para o arquivo
+                var fileBytes = Convert.FromBase64String(base64Data);
                 var extension = Path.GetExtension(nomeOriginal);
-                if (string.IsNullOrEmpty(extension))
+
+                if (string.IsNullOrWhiteSpace(extension))
                 {
-                    extension = ".jpg";
+                    extension = ".bin";
                 }
 
-                var fileName = $"{demandaId}_{DateTime.Now:yyyyMMddHHmmss}_{Guid.NewGuid():N}{extension}";
+                var fileName = $"{demandaId}_{DateTime.UtcNow:yyyyMMddHHmmss}_{Guid.NewGuid():N}{extension}";
+                var uploadDir = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    "uploads",
+                    demandaId
+                );
 
-                // Em ambiente de desenvolvimento, salva localmente
-                var uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", demandaId);
-                if (!Directory.Exists(uploadDir))
-                {
-                    Directory.CreateDirectory(uploadDir);
-                }
+                Directory.CreateDirectory(uploadDir);
 
                 var filePath = Path.Combine(uploadDir, fileName);
-                await File.WriteAllBytesAsync(filePath, imageBytes);
+                await File.WriteAllBytesAsync(filePath, fileBytes);
 
-                // Gera URL para acesso
-                var url = $"/uploads/{demandaId}/{fileName}";
-
-                Console.WriteLine($"📁 Arquivo salvo: {filePath}");
-                Console.WriteLine($"🔗 URL: {url}");
-
-                return (url, fileName);
+                return ($"/uploads/{demandaId}/{fileName}", fileName);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"❌ Erro ao salvar imagem: {ex.Message}");
+                Console.WriteLine($"Erro ao salvar arquivo: {ex.Message}");
                 throw;
             }
         }
 
-        public async Task<bool> DeletarArquivoAsync(string url)
+        public Task<(string url, string fileName)> SalvarImagemAsync(
+            string base64Image,
+            string demandaId,
+            string nomeOriginal)
+        {
+            return SalvarArquivoAsync(base64Image, demandaId, nomeOriginal);
+        }
+
+        public Task<bool> DeletarArquivoAsync(string url)
         {
             try
             {
-                // Converte URL para caminho físico
                 var relativePath = url.TrimStart('/');
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", relativePath);
+                var filePath = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    relativePath
+                );
 
                 if (File.Exists(filePath))
                 {
                     File.Delete(filePath);
-                    Console.WriteLine($"🗑️ Arquivo deletado: {filePath}");
-                    return true;
+                    return Task.FromResult(true);
                 }
 
-                return false;
+                return Task.FromResult(false);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"❌ Erro ao deletar arquivo: {ex.Message}");
-                return false;
+                Console.WriteLine($"Erro ao deletar arquivo: {ex.Message}");
+                return Task.FromResult(false);
             }
         }
 
@@ -90,7 +88,11 @@ namespace AlmoxarifadoSenai.Api.Services
             try
             {
                 var relativePath = url.TrimStart('/');
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", relativePath);
+                var filePath = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    relativePath
+                );
 
                 if (File.Exists(filePath))
                 {
@@ -101,7 +103,7 @@ namespace AlmoxarifadoSenai.Api.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"❌ Erro ao ler arquivo: {ex.Message}");
+                Console.WriteLine($"Erro ao ler arquivo: {ex.Message}");
                 return null;
             }
         }

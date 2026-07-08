@@ -53,7 +53,7 @@ function AppRoutes() {
           path="/relatorios"
           element={
             <PrivateRoute
-              allowedProfiles={["Admin", "Coordenador", "Professor", "Almoxarife"]}
+              allowedProfiles={["Admin", "Coordenador", "Professor", "Almoxarife", "Almoxarifado"]}
             >
               <Relatorios />
             </PrivateRoute>
@@ -64,7 +64,7 @@ function AppRoutes() {
           path="/notificacoes"
           element={
             <PrivateRoute
-              allowedProfiles={["Admin", "Professor", "Almoxarife", "Coordenador"]}
+              allowedProfiles={["Admin", "Professor", "Almoxarife", "Almoxarifado", "Coordenador"]}
             >
               <Notificacoes />
             </PrivateRoute>
@@ -93,7 +93,7 @@ function AppRoutes() {
           path="/demandas"
           element={
             <PrivateRoute
-              allowedProfiles={["Admin", "Professor", "Almoxarife", "Coordenador"]}
+              allowedProfiles={["Admin", "Professor", "Almoxarife", "Almoxarifado", "Coordenador"]}
             >
               <Demandas />
             </PrivateRoute>
@@ -104,7 +104,7 @@ function AppRoutes() {
           path="/demandas/detalhes/:id"
           element={
             <PrivateRoute
-              allowedProfiles={["Admin", "Coordenador", "Professor", "Almoxarife"]}
+              allowedProfiles={["Admin", "Coordenador", "Professor", "Almoxarife", "Almoxarifado"]}
             >
               <DetalhesDemanda />
             </PrivateRoute>
@@ -114,7 +114,7 @@ function AppRoutes() {
         <Route
           path="/almoxarifado"
           element={
-            <PrivateRoute allowedProfiles={["Admin", "Coordenador", "Almoxarife"]}>
+            <PrivateRoute allowedProfiles={["Admin", "Coordenador", "Almoxarife", "Almoxarifado"]}>
               <Almoxarifado />
             </PrivateRoute>
           }
@@ -123,7 +123,7 @@ function AppRoutes() {
         <Route
           path="/checklists"
           element={
-            <PrivateRoute allowedProfiles={["Admin", "Almoxarife"]}>
+            <PrivateRoute allowedProfiles={["Admin", "Almoxarife", "Almoxarifado"]}>
               <Checklists />
             </PrivateRoute>
           }
@@ -132,7 +132,7 @@ function AppRoutes() {
         <Route
           path="/checklists/execucao/:id"
           element={
-            <PrivateRoute allowedProfiles={["Admin", "Almoxarife"]}>
+            <PrivateRoute allowedProfiles={["Admin", "Almoxarife", "Almoxarifado"]}>
               <ExecucaoChecklist />
             </PrivateRoute>
           }
@@ -141,7 +141,7 @@ function AppRoutes() {
         <Route
           path="/checklists/historico"
           element={
-            <PrivateRoute allowedProfiles={["Admin", "Coordenador", "Almoxarife"]}>
+            <PrivateRoute allowedProfiles={["Admin", "Coordenador", "Almoxarife", "Almoxarifado"]}>
               <HistoricoChecklists />
             </PrivateRoute>
           }
@@ -150,7 +150,7 @@ function AppRoutes() {
         <Route
           path="/checklists/visualizar/:id"
           element={
-            <PrivateRoute allowedProfiles={["Admin", "Coordenador", "Almoxarife"]}>
+            <PrivateRoute allowedProfiles={["Admin", "Coordenador", "Almoxarife", "Almoxarifado"]}>
               <VisualizarChecklist />
             </PrivateRoute>
           }
@@ -159,7 +159,7 @@ function AppRoutes() {
         <Route
           path="/compras"
           element={
-            <PrivateRoute allowedProfiles={["Admin", "Coordenador", "Almoxarife"]}>
+            <PrivateRoute allowedProfiles={["Admin", "Coordenador", "Almoxarife", "Almoxarifado"]}>
               <Compras />
             </PrivateRoute>
           }
@@ -168,7 +168,7 @@ function AppRoutes() {
         <Route
           path="/compras/nova"
           element={
-            <PrivateRoute allowedProfiles={["Admin", "Almoxarife"]}>
+            <PrivateRoute allowedProfiles={["Admin", "Almoxarife", "Almoxarifado"]}>
               <NovaCompra />
             </PrivateRoute>
           }
@@ -177,7 +177,7 @@ function AppRoutes() {
         <Route
           path="/compras/detalhes/:id"
           element={
-            <PrivateRoute allowedProfiles={["Admin", "Coordenador", "Almoxarife"]}>
+            <PrivateRoute allowedProfiles={["Admin", "Coordenador", "Almoxarife", "Almoxarifado"]}>
               <DetalhesCompra />
             </PrivateRoute>
           }

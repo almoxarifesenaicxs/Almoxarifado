@@ -36,7 +36,7 @@ namespace AlmoxarifadoSenai.Api.Controllers
             dashboard.Indicadores.DemandasConcluidas = demandas.Count(d => d.Status == "Concluída");
             dashboard.Indicadores.DemandasCanceladas = demandas.Count(d => d.Status == "Cancelada");
             dashboard.Indicadores.DemandasUrgentes = demandas.Count(d => d.Prioridade == "Urgente");
-            dashboard.Indicadores.TotalAlmoxarifes = usuarios.Count(u => u.Perfil == "Almoxarife");
+            dashboard.Indicadores.TotalAlmoxarifes = usuarios.Count(u => u.Perfil == "Almoxarife" || u.Perfil == "Almoxarifado");
             dashboard.Indicadores.TotalProfessores = usuarios.Count(u => u.Perfil == "Professor");
 
             // 2. Demandas por Status
@@ -136,7 +136,7 @@ namespace AlmoxarifadoSenai.Api.Controllers
             var execucoes = await _firestoreService.ObterTodasExecucoesChecklistAsync();
 
             dashboard.DesempenhoAlmoxarifes = usuarios
-                .Where(u => u.Perfil == "Almoxarife")
+                .Where(u => u.Perfil == "Almoxarife" || u.Perfil == "Almoxarifado")
                 .Select(u =>
                 {
                     var execsAlmoxarife = execucoes.Where(e => e.AlmoxarifeMatricula == u.Matricula).ToList();
@@ -319,7 +319,7 @@ namespace AlmoxarifadoSenai.Api.Controllers
                 {
                     TotalDemandas = demandas.Count,
                     TotalUsuarios = usuarios.Count,
-                    Almoxarifes = usuarios.Count(u => u.Perfil == "Almoxarife"),
+                    Almoxarifes = usuarios.Count(u => u.Perfil == "Almoxarife" || u.Perfil == "Almoxarifado"),
                     Professores = usuarios.Count(u => u.Perfil == "Professor")
                 },
                 Demandas = new

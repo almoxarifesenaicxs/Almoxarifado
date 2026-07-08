@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { FiArrowLeft, FiClock, FiMail, FiPrinter } from "react-icons/fi";
+import { FiArrowLeft, FiCheck, FiClock, FiPrinter, FiX } from "react-icons/fi";
 
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import { getUsuarioLogado } from "../../services/auth";
 import {
+  atualizarStatusCompraApi,
   obterCompraApi,
   type SolicitacaoCompra,
 } from "../../services/compras";
@@ -18,6 +20,9 @@ function formatarData(data: string) {
 function DetalhesCompra() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const usuario = getUsuarioLogado();
+  const podeAprovar =
+    usuario?.perfil === "Admin" || usuario?.perfil === "Coordenador";
   const [compra, setCompra] = useState<SolicitacaoCompra | null>(null);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
@@ -52,6 +57,18 @@ function DetalhesCompra() {
       ativo = false;
     };
   }, [id]);
+
+  async function atualizarStatus(status: string) {
+    if (!compra) return;
+
+    try {
+      const compraAtualizada = await atualizarStatusCompraApi(compra.id, status);
+      setCompra(compraAtualizada);
+      setErro("");
+    } catch {
+      setErro("Nao foi possivel atualizar o status da compra.");
+    }
+  }
 
   if (carregando || !compra) {
     return (
@@ -112,13 +129,43 @@ function DetalhesCompra() {
                   Imprimir
                 </button>
 
-                <button type="button">
-                  <FiMail />
-                  Enviar e-mail
-                </button>
+                {podeAprovar && compra.status === "Aguardando" && (
+                  <>
+                    <button
+                      type="button"
+                      className="aprovar"
+                      onClick={() => void atualizarStatus("Aprovado")}
+                    >
+                      <FiCheck />
+                      Aprovar
+                    </button>
+
+                    <button
+                      type="button"
+                      className="rejeitar"
+                      onClick={() => void atualizarStatus("Rejeitado")}
+                    >
+                      <FiX />
+                      Rejeitar
+                    </button>
+                  </>
+                )}
+
+                {podeAprovar && compra.status === "Aprovado" && (
+                  <button
+                    type="button"
+                    className="aprovar"
+                    onClick={() => void atualizarStatus("Concluído")}
+                  >
+                    <FiCheck />
+                    Concluir
+                  </button>
+                )}
               </div>
             </div>
           </header>
+
+          {erro && <p style={{ color: "#b91c1c", marginBottom: 12 }}>{erro}</p>}
 
           <section className="detalhes-compra-resumo">
             <div>
@@ -192,13 +239,15 @@ function DetalhesCompra() {
                   </section>
                 </div>
 
-                <div>
-                  <FiMail />
-                  <section>
-                    <strong>E-mail institucional</strong>
-                    <span>Aguardando integracao com backend</span>
-                  </section>
-                </div>
+                {podeAprovar && (
+                  <div>
+                    <FiCheck />
+                    <section>
+                      <strong>Fluxo do coordenador</strong>
+                      <span>Aprove, rejeite ou conclua por esta tela.</span>
+                    </section>
+                  </div>
+                )}
               </div>
             </aside>
           </section>

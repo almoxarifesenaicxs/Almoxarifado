@@ -238,6 +238,53 @@ html.dark .sidebar-item:hover {
   z-index: 200;
 }
 
+.header-profile-user {
+  padding: 10px 12px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 6px;
+}
+
+.header-profile-user strong,
+.header-profile-user span {
+  display: block;
+}
+
+.header-profile-user strong {
+  color: #0f172a;
+  font-size: 14px;
+}
+
+.header-profile-user span {
+  color: #64748b;
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+html.dark .header-profile-card {
+  background: #111827;
+  border-color: #334155;
+}
+
+html.dark .header-profile-user {
+  border-color: #334155;
+}
+
+html.dark .header-profile-user strong {
+  color: #f8fafc;
+}
+
+html.dark .header-profile-user span {
+  color: #cbd5e1;
+}
+
+html.dark .header-profile-card button {
+  color: #cbd5e1;
+}
+
+html.dark .header-profile-card button:hover {
+  background: #1e293b;
+}
+
 .header-profile-card button {
   width: 100%;
   height: 42px;

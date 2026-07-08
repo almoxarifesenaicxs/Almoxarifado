@@ -16,8 +16,9 @@ import {
 } from "react-icons/fi";
 
 import "./Sidebar.css";
+import { alternarTema } from "../../services/theme";
 
-type Perfil = "Admin" | "Coordenador" | "Professor" | "Almoxarife";
+type Perfil = "Admin" | "Coordenador" | "Professor" | "Almoxarife" | "Almoxarifado";
 
 type ItemMenu = {
   icone: React.ReactNode;
@@ -31,37 +32,37 @@ const itensMenu: ItemMenu[] = [
     icone: <FiHome />,
     titulo: "Dashboard",
     caminho: "/dashboard",
-    perfis: ["Admin", "Coordenador", "Professor", "Almoxarife"],
+    perfis: ["Admin", "Coordenador", "Professor", "Almoxarife", "Almoxarifado"],
   },
   {
     icone: <FiFileText />,
     titulo: "Demandas",
     caminho: "/demandas",
-    perfis: ["Admin", "Coordenador", "Professor", "Almoxarife"],
+    perfis: ["Admin", "Coordenador", "Professor", "Almoxarife", "Almoxarifado"],
   },
   {
     icone: <FiArchive />,
     titulo: "Fila Operacional",
     caminho: "/almoxarifado",
-    perfis: ["Admin", "Coordenador", "Almoxarife"],
+    perfis: ["Admin", "Coordenador", "Almoxarife", "Almoxarifado"],
   },
   {
     icone: <FiShoppingCart />,
     titulo: "Compras",
     caminho: "/compras",
-    perfis: ["Admin", "Coordenador", "Almoxarife"],
+    perfis: ["Admin", "Coordenador", "Almoxarife", "Almoxarifado"],
   },
   {
     icone: <FiClipboard />,
     titulo: "Checklists",
     caminho: "/checklists",
-    perfis: ["Admin", "Almoxarife"],
+    perfis: ["Admin", "Almoxarife", "Almoxarifado"],
   },
   {
     icone: <FiBarChart2 />,
     titulo: "Relatórios",
     caminho: "/relatorios",
-    perfis: ["Admin", "Coordenador", "Professor", "Almoxarife"],
+    perfis: ["Admin", "Coordenador", "Professor", "Almoxarife", "Almoxarifado"],
   },
   {
     icone: <FiUsers />,
@@ -73,7 +74,7 @@ const itensMenu: ItemMenu[] = [
     icone: <FiBell />,
     titulo: "Notificações",
     caminho: "/notificacoes",
-    perfis: ["Admin", "Coordenador", "Professor", "Almoxarife"],
+    perfis: ["Admin", "Coordenador", "Professor", "Almoxarife", "Almoxarifado"],
   },
 ];
 
@@ -135,7 +136,8 @@ export default function Sidebar() {
   }
 
   function alternarModoEscuro() {
-    document.documentElement.classList.toggle("dark");
+    alternarTema();
+    setMenuUsuarioAberto(false);
   }
 
   return (

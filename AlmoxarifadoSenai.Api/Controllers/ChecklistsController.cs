@@ -22,7 +22,7 @@ namespace AlmoxarifadoSenai.Api.Controllers
 
         // 1. CRIAR CHECKLIST (Apenas Almoxarife e Admin)
         [HttpPost]
-        [Authorize(Roles = $"{Perfis.Almoxarife},{Perfis.Admin}")]
+        [Authorize(Roles = $"{Perfis.OperacaoAlmoxarifado},{Perfis.Admin}")]
         public async Task<IActionResult> CriarChecklist([FromBody] ChecklistCriarDto dto)
         {
             var checklist = new Checklist
@@ -72,7 +72,7 @@ namespace AlmoxarifadoSenai.Api.Controllers
 
         // 4. EDITAR CHECKLIST (Apenas Almoxarife e Admin)
         [HttpPut("{id}")]
-        [Authorize(Roles = $"{Perfis.Almoxarife},{Perfis.Admin}")]
+        [Authorize(Roles = $"{Perfis.OperacaoAlmoxarifado},{Perfis.Admin}")]
         public async Task<IActionResult> EditarChecklist(string id, [FromBody] ChecklistEditarDto dto)
         {
             var checklist = await _firestoreService.ObterChecklistPorIdAsync(id);
@@ -113,7 +113,7 @@ namespace AlmoxarifadoSenai.Api.Controllers
 
         // 6. DUPLICAR CHECKLIST (Apenas Almoxarife e Admin)
         [HttpPost("{id}/duplicar")]
-        [Authorize(Roles = $"{Perfis.Almoxarife},{Perfis.Admin}")]
+        [Authorize(Roles = $"{Perfis.OperacaoAlmoxarifado},{Perfis.Admin}")]
         public async Task<IActionResult> DuplicarChecklist(string id)
         {
             var checklistOriginal = await _firestoreService.ObterChecklistPorIdAsync(id);
@@ -143,7 +143,7 @@ namespace AlmoxarifadoSenai.Api.Controllers
 
         // 7. EXECUTAR CHECKLIST
         [HttpPost("executar")]
-        [Authorize(Roles = $"{Perfis.Almoxarife},{Perfis.Admin}")]
+        [Authorize(Roles = $"{Perfis.OperacaoAlmoxarifado},{Perfis.Admin}")]
         public async Task<IActionResult> ExecutarChecklist([FromBody] ExecutarChecklistDto dto)
         {
             var checklist = await _firestoreService.ObterChecklistPorIdAsync(dto.ChecklistId);

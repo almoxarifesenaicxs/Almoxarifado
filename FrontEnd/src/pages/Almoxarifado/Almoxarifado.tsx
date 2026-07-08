@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FiChevronDown,
   FiFilter,
@@ -18,6 +19,7 @@ import {
 } from "react-icons/fi";
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import { getUsuarioLogado } from "../../services/auth";
 import {
   alterarStatusDemandaApi,
   listarDemandasApi,
@@ -65,6 +67,8 @@ function proximoStatus(status: StatusDemanda): StatusDemanda {
 }
 
 function Almoxarifado() {
+  const navigate = useNavigate();
+  const usuario = getUsuarioLogado();
   const [demandas, setDemandas] = useState<DemandaApi[]>([]);
   const [erro, setErro] = useState("");
 
@@ -180,6 +184,31 @@ function Almoxarifado() {
               <p>Gerencie e priorize as demandas do almoxarifado.</p>
             </div>
           </header>
+
+          <section className="almoxarifado-menu-operacional">
+            <div className="almoxarifado-perfil-operacional">
+              <span>Perfil ativo</span>
+              <strong>{usuario?.nome ?? "Usuario"}</strong>
+              <small>{usuario?.perfil ?? "Almoxarifado"}</small>
+            </div>
+
+            <div className="almoxarifado-atalhos">
+              <button type="button" onClick={() => navigate("/demandas")}>
+                Demandas
+              </button>
+              <button type="button" onClick={() => navigate("/compras")}>
+                Compras
+              </button>
+              {(usuario?.perfil === "Admin" ||
+                usuario?.perfil === "Almoxarife" ||
+                usuario?.perfil === "Almoxarifado") && (
+                  <button type="button" onClick={() => navigate("/checklists")}>
+                    Checklists
+                  </button>
+                )}
+            </div>
+          </section>
+
           {erro && <p style={{ color: "#b91c1c", marginBottom: 12 }}>{erro}</p>}
           <section className="almoxarifado-resumo">
             <article className="almoxarifado-resumo-card abertas">

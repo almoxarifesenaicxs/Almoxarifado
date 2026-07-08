@@ -226,6 +226,10 @@
   color: #b45309;
 }
 
+.compras-acao.aprovar {
+  color: #15803d;
+}
+
 .compras-acao.cancelar {
   color: #dc2626;
 }

@@ -12,7 +12,159 @@ body,
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   background: #f8fafc;
   color: #0f172a;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html.dark body {
+  background: #0b1120;
+  color: #e5e7eb;
+}
+
+html.dark input,
+html.dark select,
+html.dark textarea,
+html.dark button {
+  font-family: inherit;
+}
+
+html.dark .dashboard-layout,
+html.dark .users-layout,
+html.dark .demandas-layout,
+html.dark .almoxarifado-layout,
+html.dark .checklists-layout,
+html.dark .compras-layout,
+html.dark .nova-compra-layout,
+html.dark .nova-demanda-layout,
+html.dark .detalhes-compra-layout,
+html.dark .detalhes-demanda-layout,
+html.dark .execucao-layout,
+html.dark .historico-layout,
+html.dark .visualizar-layout,
+html.dark .notificacoes-layout,
+html.dark .relatorios-layout,
+html.dark .dashboard-main,
+html.dark .users-main,
+html.dark .demandas-main,
+html.dark .almoxarifado-main,
+html.dark .checklists-main,
+html.dark .compras-main,
+html.dark .nova-compra-main,
+html.dark .nova-demanda-main,
+html.dark .detalhes-compra-main,
+html.dark .detalhes-demanda-main,
+html.dark .execucao-main,
+html.dark .historico-main,
+html.dark .visualizar-main,
+html.dark .notificacoes-main,
+html.dark .relatorios-main {
+  background: #0b1120;
+}
+
+html.dark :is(
+  .dashboard-card,
+  .users-card,
+  .users-table-wrap,
+  .demandas-card,
+  .almoxarifado-card,
+  .almoxarifado-modal,
+  .almoxarifado-filtros-topo,
+  .checklists-card,
+  .checklists-modal,
+  .compras-card,
+  .detalhes-compra-card,
+  .detalhes-demanda-card,
+  .nova-demanda-card,
+  .nova-compra-card,
+  .notificacoes-card,
+  .relatorios-card,
+  .historico-card,
+  .visualizar-card
+) {
+  background: #111827;
+  border-color: #253044;
+  color: #e5e7eb;
+}
+
+html.dark :is(input, select, textarea) {
+  background: #0f172a;
+  border-color: #334155;
+  color: #f8fafc;
+}
+
+html.dark :is(input, textarea)::placeholder {
+  color: #94a3b8;
+}
+
+html.dark :is(
+  h1,
+  h2,
+  h3,
+  .header-title h2,
+  .compras-codigo,
+  .compras-item,
+  .detalhes-compra-titulo h1,
+  .detalhes-compra-resumo strong,
+  .detalhes-compra-card h2,
+  .detalhes-compra-info strong,
+  .detalhes-compra-timeline strong,
+  .detalhes-demanda-topo h1,
+  .detalhes-demanda-card h2,
+  .detalhes-demanda-resumo strong,
+  .detalhes-demanda-info strong,
+  .detalhes-demanda-evento strong,
+  .almoxarifado-cabecalho h1,
+  .almoxarifado-card-topo h3,
+  .almoxarifado-card-topo strong,
+  .almoxarifado-modal-topo h2,
+  .almoxarifado-modal-secao h3,
+  .almoxarifado-info-card strong
+) {
+  color: #f8fafc;
+}
+
+html.dark :is(
+  p,
+  small,
+  label,
+  .compras-data,
+  .compras-especificacao,
+  .compras-unidade,
+  .detalhes-compra-titulo p,
+  .detalhes-compra-resumo span,
+  .detalhes-compra-info span,
+  .detalhes-compra-info p,
+  .detalhes-compra-timeline span,
+  .detalhes-demanda-topo p,
+  .detalhes-demanda-resumo span,
+  .detalhes-demanda-info span,
+  .detalhes-demanda-descricao,
+  .detalhes-demanda-evento p,
+  .almoxarifado-cabecalho p,
+  .almoxarifado-prazo,
+  .almoxarifado-professor,
+  .almoxarifado-modal-topo p,
+  .almoxarifado-modal-secao p,
+  .almoxarifado-info-card span
+) {
+  color: #cbd5e1;
+}
+
+html.dark :is(
+  .compras-tabela th,
+  .compras-tabela tr:hover td,
+  .detalhes-demanda-anexos-vazio,
+  .almoxarifado-coluna,
+  .almoxarifado-vazio,
+  .almoxarifado-modal-status,
+  .almoxarifado-info-card
+) {
+  background: #0f172a;
+  border-color: #334155;
 }

@@ -22,6 +22,7 @@ namespace AlmoxarifadoSenai.Api.DTOs
         public string? ExecucaoChecklistId { get; set; } = string.Empty;
         public string Base64Image { get; set; } = string.Empty;
         public string NomeArquivo { get; set; } = string.Empty;
+        public string MimeType { get; set; } = "application/octet-stream";
         public string Tipo { get; set; } = "Foto";
     }
 }

@@ -22,7 +22,7 @@ namespace AlmoxarifadoSenai.Api.Controllers
 
         // 1. CRIAR SOLICITAÇÃO DE COMPRA (Apenas Almoxarife e Admin)
         [HttpPost]
-        [Authorize(Roles = $"{Perfis.Almoxarife},{Perfis.Admin}")]
+        [Authorize(Roles = $"{Perfis.OperacaoAlmoxarifado},{Perfis.Admin}")]
         public async Task<IActionResult> CriarSolicitacao([FromBody] SolicitacaoCompraCriarDto dto)
         {
             var almoxarifeMatricula = User.FindFirst("Matricula")?.Value ?? string.Empty;

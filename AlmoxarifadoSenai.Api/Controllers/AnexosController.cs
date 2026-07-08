@@ -37,8 +37,7 @@ namespace AlmoxarifadoSenai.Api.Controllers
 
             try
             {
-                // Salva a imagem
-                var (url, fileName) = await _storageService.SalvarImagemAsync(
+                var (url, fileName) = await _storageService.SalvarArquivoAsync(
                     dto.Base64Image,
                     dto.DemandaId,
                     dto.NomeArquivo
@@ -52,7 +51,9 @@ namespace AlmoxarifadoSenai.Api.Controllers
                     NomeArquivo = fileName,
                     Url = url,
                     Tipo = dto.Tipo,
-                    MimeType = "image/jpeg",
+                    MimeType = string.IsNullOrWhiteSpace(dto.MimeType)
+                        ? "application/octet-stream"
+                        : dto.MimeType,
                     UsuarioMatricula = usuarioMatricula,
                     UsuarioNome = usuarioNome,
                     Tamanho = dto.Base64Image.Length / 1024 // Tamanho aproximado em KB
@@ -123,7 +124,7 @@ namespace AlmoxarifadoSenai.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = $"{Perfis.Admin},{Perfis.Almoxarife}")]
+        [Authorize(Roles = $"{Perfis.Admin},{Perfis.OperacaoAlmoxarifado}")]
         public async Task<IActionResult> DeletarAnexo(string id)
         {
             var anexo = await _firestoreService.ObterAnexoPorIdAsync(id);

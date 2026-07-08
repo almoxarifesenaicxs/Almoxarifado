@@ -17,7 +17,12 @@ import { api } from "../../services/api";
 
 import "./Usuarios.css";
 
-type PerfilUsuario = "Admin" | "Coordenador" | "Almoxarife" | "Professor";
+type PerfilUsuario =
+  | "Admin"
+  | "Coordenador"
+  | "Almoxarife"
+  | "Almoxarifado"
+  | "Professor";
 
 type Usuario = {
   matricula: string;
@@ -495,6 +500,7 @@ export default function Usuarios() {
                   <option value="Admin">Admin</option>
                   <option value="Coordenador">Coordenador</option>
                   <option value="Almoxarife">Almoxarife</option>
+                  <option value="Almoxarifado">Almoxarifado</option>
                   <option value="Professor">Professor</option>
                 </select>
               </label>

@@ -232,3 +232,57 @@
     padding: 0;
   }
 }
+
+.detalhes-demanda-anexos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detalhes-demanda-anexo {
+  width: 100%;
+  min-height: 58px;
+  border: 1px solid #dbe3ef;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #0046c7;
+  cursor: pointer;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+}
+
+.detalhes-demanda-anexo:hover {
+  background: #eef4ff;
+}
+
+.detalhes-demanda-anexo span {
+  min-width: 0;
+}
+
+.detalhes-demanda-anexo strong,
+.detalhes-demanda-anexo small {
+  display: block;
+}
+
+.detalhes-demanda-anexo strong {
+  color: #111827;
+  word-break: break-word;
+}
+
+.detalhes-demanda-anexo small {
+  color: #667085;
+  margin-top: 3px;
+}
+
+html.dark .detalhes-demanda-anexo {
+  background: #0f172a;
+  border-color: #334155;
+  color: #93c5fd;
+}
+
+html.dark .detalhes-demanda-anexo:hover {
+  background: #1e293b;
+}

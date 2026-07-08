@@ -11,5 +11,7 @@ namespace AlmoxarifadoSenai.Api.Constants
         public const string Coordenador = "Coordenador";
         public const string Professor = "Professor";
         public const string Almoxarife = "Almoxarife";
+        public const string Almoxarifado = "Almoxarifado";
+        public const string OperacaoAlmoxarifado = Almoxarife + "," + Almoxarifado;
     }
 }

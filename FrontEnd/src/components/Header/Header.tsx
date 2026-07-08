@@ -1,6 +1,8 @@
 import { FiMenu, FiLogOut, FiMoon } from "react-icons/fi";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getUsuarioLogado, logout } from "../../services/auth";
+import { alternarTema } from "../../services/theme";
 import "./Header.css";
 
 type HeaderProps = {
@@ -10,17 +12,27 @@ type HeaderProps = {
 export default function Header({ titulo = "Dashboard" }: HeaderProps) {
   const [perfilAberto, setPerfilAberto] = useState(false);
   const navigate = useNavigate();
+  const usuario = getUsuarioLogado();
+  const iniciais =
+    usuario?.nome
+      .split(" ")
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((parte) => parte[0])
+      .join("")
+      .toUpperCase() || "SN";
 
   function abrirMenuMobile() {
     window.dispatchEvent(new CustomEvent("abrir-menu-mobile"));
   }
 
   function alternarModoEscuro() {
-    document.documentElement.classList.toggle("dark");
+    alternarTema();
+    setPerfilAberto(false);
   }
 
   function sair() {
-    localStorage.clear();
+    logout();
     navigate("/");
   }
 
@@ -44,11 +56,16 @@ export default function Header({ titulo = "Dashboard" }: HeaderProps) {
           className="header-avatar"
           onClick={() => setPerfilAberto(!perfilAberto)}
         >
-          JC
+          {iniciais}
         </button>
 
         {perfilAberto && (
           <div className="header-profile-card">
+            <div className="header-profile-user">
+              <strong>{usuario?.nome ?? "Usuário"}</strong>
+              <span>{usuario?.perfil ?? "Perfil"}</span>
+            </div>
+
             <button type="button" onClick={alternarModoEscuro}>
               <FiMoon />
               Modo escuro

@@ -1,4 +1,9 @@
-export type Perfil = "Admin" | "Coordenador" | "Professor" | "Almoxarife";
+export type Perfil =
+  | "Admin"
+  | "Coordenador"
+  | "Professor"
+  | "Almoxarife"
+  | "Almoxarifado";
 
 export interface UsuarioLogado {
   nome: string;

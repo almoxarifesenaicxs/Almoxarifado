@@ -1,18 +1,34 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FiEye, FiPlus, FiSearch } from "react-icons/fi";
+import { FiCheck, FiEye, FiPlus, FiSearch, FiX } from "react-icons/fi";
 
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import { getUsuarioLogado } from "../../services/auth";
 import {
+  atualizarStatusCompraApi,
   listarComprasApi,
   type SolicitacaoCompra,
 } from "../../services/compras";
 
 import "./Compras.css";
 
+function normalizarTexto(texto: string) {
+  return texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
 function Compras() {
   const navigate = useNavigate();
+  const usuario = getUsuarioLogado();
+  const podeCriar =
+    usuario?.perfil === "Admin" ||
+    usuario?.perfil === "Almoxarife" ||
+    usuario?.perfil === "Almoxarifado";
+  const podeAprovar =
+    usuario?.perfil === "Admin" || usuario?.perfil === "Coordenador";
 
   const [compras, setCompras] = useState<SolicitacaoCompra[]>([]);
   const [busca, setBusca] = useState("");
@@ -46,12 +62,12 @@ function Compras() {
 
   const comprasFiltradas = useMemo(() => {
     return compras.filter((compra) => {
-      const termo = busca.toLowerCase();
+      const termo = normalizarTexto(busca);
 
       const correspondeBusca =
-        compra.nomeItem.toLowerCase().includes(termo) ||
-        compra.categoria.toLowerCase().includes(termo) ||
-        compra.id.toLowerCase().includes(termo);
+        normalizarTexto(compra.nomeItem).includes(termo) ||
+        normalizarTexto(compra.categoria).includes(termo) ||
+        normalizarTexto(compra.id).includes(termo);
 
       const correspondeStatus = !statusFiltro || compra.status === statusFiltro;
 
@@ -62,7 +78,24 @@ function Compras() {
   const total = compras.length;
   const aguardando = compras.filter((c) => c.status === "Aguardando").length;
   const aprovadas = compras.filter((c) => c.status === "Aprovado").length;
-  const concluidas = compras.filter((c) => c.status === "Concluido" || c.status === "Concluído").length;
+  const concluidas = compras.filter(
+    (c) => normalizarTexto(c.status) === "concluido",
+  ).length;
+
+  async function atualizarStatus(id: string, status: string) {
+    try {
+      const compraAtualizada = await atualizarStatusCompraApi(id, status);
+
+      setCompras((estadoAtual) =>
+        estadoAtual.map((compra) =>
+          compra.id === id ? compraAtualizada : compra,
+        ),
+      );
+      setErro("");
+    } catch {
+      setErro("Nao foi possivel atualizar o status da compra.");
+    }
+  }
 
   return (
     <div className="compras-layout">
@@ -78,14 +111,16 @@ function Compras() {
               <p>Acompanhe solicitacoes reais registradas na API.</p>
             </div>
 
-            <button
-              type="button"
-              className="compras-botao-novo"
-              onClick={() => navigate("/compras/nova")}
-            >
-              <FiPlus />
-              Nova Solicitacao
-            </button>
+            {podeCriar && (
+              <button
+                type="button"
+                className="compras-botao-novo"
+                onClick={() => navigate("/compras/nova")}
+              >
+                <FiPlus />
+                Nova Solicitacao
+              </button>
+            )}
           </header>
 
           {erro && <p style={{ color: "#b91c1c", marginBottom: 12 }}>{erro}</p>}
@@ -131,7 +166,6 @@ function Compras() {
               <option value="Aguardando">Aguardando</option>
               <option value="Aprovado">Aprovado</option>
               <option value="Rejeitado">Rejeitado</option>
-              <option value="Concluido">Concluido</option>
               <option value="Concluído">Concluido</option>
             </select>
           </section>
@@ -157,7 +191,9 @@ function Compras() {
                       <td>
                         <strong className="compras-codigo">{compra.id}</strong>
                         <span className="compras-data">
-                          {new Date(compra.dataSolicitacao).toLocaleDateString("pt-BR")}
+                          {new Date(compra.dataSolicitacao).toLocaleDateString(
+                            "pt-BR",
+                          )}
                         </span>
                       </td>
 
@@ -181,7 +217,9 @@ function Compras() {
 
                       <td>
                         <span
-                          className={`compras-urgencia ${compra.urgencia.toLowerCase()}`}
+                          className={`compras-urgencia ${normalizarTexto(
+                            compra.urgencia,
+                          )}`}
                         >
                           {compra.urgencia}
                         </span>
@@ -189,11 +227,9 @@ function Compras() {
 
                       <td>
                         <span
-                          className={`compras-status ${compra.status
-                            .toLowerCase()
-                            .replaceAll(" ", "-")
-                            .normalize("NFD")
-                            .replace(/[\u0300-\u036f]/g, "")}`}
+                          className={`compras-status ${normalizarTexto(
+                            compra.status,
+                          ).replaceAll(" ", "-")}`}
                         >
                           {compra.status}
                         </span>
@@ -211,6 +247,45 @@ function Compras() {
                           >
                             <FiEye />
                           </button>
+
+                          {podeAprovar && compra.status === "Aguardando" && (
+                            <>
+                              <button
+                                type="button"
+                                className="compras-acao aprovar"
+                                title="Aprovar"
+                                onClick={() =>
+                                  void atualizarStatus(compra.id, "Aprovado")
+                                }
+                              >
+                                <FiCheck />
+                              </button>
+
+                              <button
+                                type="button"
+                                className="compras-acao cancelar"
+                                title="Rejeitar"
+                                onClick={() =>
+                                  void atualizarStatus(compra.id, "Rejeitado")
+                                }
+                              >
+                                <FiX />
+                              </button>
+                            </>
+                          )}
+
+                          {podeAprovar && compra.status === "Aprovado" && (
+                            <button
+                              type="button"
+                              className="compras-acao aprovar"
+                              title="Concluir"
+                              onClick={() =>
+                                void atualizarStatus(compra.id, "Concluído")
+                              }
+                            >
+                              <FiCheck />
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>

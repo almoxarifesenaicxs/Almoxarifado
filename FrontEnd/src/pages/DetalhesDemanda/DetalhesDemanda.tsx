@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   FiArrowLeft,
   FiClock,
+  FiDownload,
   FiFileText,
   FiImage,
   FiPrinter,
@@ -10,6 +11,11 @@ import {
 
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import {
+  baixarAnexoApi,
+  listarAnexosDemandaApi,
+  type AnexoApi,
+} from "../../services/anexos";
 import { obterDemandaApi, type DemandaApi } from "../../services/demandas";
 
 import "./DetalhesDemanda.css";
@@ -22,8 +28,10 @@ function DetalhesDemanda() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [demanda, setDemanda] = useState<DemandaApi | null>(null);
+  const [anexos, setAnexos] = useState<AnexoApi[]>([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
+  const [erroAnexos, setErroAnexos] = useState("");
 
   useEffect(() => {
     let ativo = true;
@@ -33,10 +41,13 @@ function DetalhesDemanda() {
 
       try {
         const dados = await obterDemandaApi(id);
+        const anexosDemanda = await listarAnexosDemandaApi(id);
 
         if (ativo) {
           setDemanda(dados);
+          setAnexos(anexosDemanda);
           setErro("");
+          setErroAnexos("");
         }
       } catch {
         if (ativo) {
@@ -184,9 +195,42 @@ function DetalhesDemanda() {
                 Anexos
               </h2>
 
-              <div className="detalhes-demanda-anexos-vazio">
-                Nenhum anexo disponivel nesta visualizacao.
-              </div>
+              {erroAnexos && (
+                <div className="detalhes-demanda-anexos-vazio">{erroAnexos}</div>
+              )}
+
+              {!erroAnexos && anexos.length === 0 && (
+                <div className="detalhes-demanda-anexos-vazio">
+                  Nenhum anexo disponivel nesta visualizacao.
+                </div>
+              )}
+
+              {!erroAnexos && anexos.length > 0 && (
+                <div className="detalhes-demanda-anexos-lista">
+                  {anexos.map((anexo) => (
+                    <button
+                      type="button"
+                      key={anexo.id}
+                      className="detalhes-demanda-anexo"
+                      onClick={async () => {
+                        try {
+                          await baixarAnexoApi(anexo);
+                        } catch {
+                          setErroAnexos("Nao foi possivel baixar o anexo.");
+                        }
+                      }}
+                    >
+                      <FiDownload />
+                      <span>
+                        <strong>{anexo.nomeArquivo}</strong>
+                        <small>
+                          {anexo.tipo} - {Math.max(1, anexo.tamanho)} KB
+                        </small>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </article>
 
             <aside className="detalhes-demanda-card detalhes-demanda-timeline">

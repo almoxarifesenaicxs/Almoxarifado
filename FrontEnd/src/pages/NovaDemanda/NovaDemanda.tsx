@@ -13,6 +13,7 @@ import {
 
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { getUsuarioLogado } from "../../services/auth";
+import { enviarAnexoApi } from "../../services/anexos";
 import { criarDemandaApi } from "../../services/demandas";
 import Header from "../../components/Header/Header";
 import "./NovaDemanda.css";
@@ -73,13 +74,19 @@ function NovaDemanda() {
     setSalvando(true);
 
     try {
-      await criarDemandaApi({
+      const demandaCriada = await criarDemandaApi({
         titulo: tituloDemanda,
         descricao: `${descricaoDemanda}\n\nTipo de serviço: ${tipoServico}`,
         oficina: oficinaLaboratorio,
         prioridade,
         dataHoraNecessaria: new Date(dataSolicitada).toISOString(),
       });
+
+      if (anexos.length > 0) {
+        await Promise.all(
+          anexos.map((anexo) => enviarAnexoApi(demandaCriada.id, anexo)),
+        );
+      }
 
       alert("Demanda salva com sucesso!");
       navigate("/demandas");

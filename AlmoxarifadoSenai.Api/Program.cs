@@ -41,6 +41,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 
 builder.Services.AddSingleton<FirestoreService>();
+builder.Services.AddScoped<StorageService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -115,6 +116,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowFrontend");
 
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();

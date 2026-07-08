@@ -106,7 +106,7 @@ namespace AlmoxarifadoSenai.Api.Controllers
 
         // 3. ATUALIZAR STATUS (Para o Almoxarife / Coordenador / Admin aceitar ou recusar)
         [HttpPut("{id}/status")]
-        [Authorize(Roles = $"{Perfis.Almoxarife},{Perfis.Coordenador},{Perfis.Admin}")]
+        [Authorize(Roles = $"{Perfis.OperacaoAlmoxarifado},{Perfis.Coordenador},{Perfis.Admin}")]
         public async Task<IActionResult> AtualizarStatus(string id, [FromBody] string novoStatus)
         {
             var demanda = await _firestoreService.ObterDemandaPorIdAsync(id);

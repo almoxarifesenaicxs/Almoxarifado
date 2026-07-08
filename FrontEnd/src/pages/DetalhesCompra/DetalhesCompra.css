@@ -232,3 +232,15 @@
     padding: 0;
   }
 }
+
+.detalhes-compra-acoes button.aprovar {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+.detalhes-compra-acoes button.rejeitar {
+  border-color: #fecaca;
+  background: #fef2f2;
+  color: #dc2626;
+}
