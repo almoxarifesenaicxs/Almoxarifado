@@ -179,7 +179,7 @@ button {
 
   .sidebar-logo h1 {
     font-size: 28px;
-    letter-spacing: -1px;
+    letter-spacing: 0;
   }
 
   .sidebar-logo span {

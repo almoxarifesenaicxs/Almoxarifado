@@ -47,6 +47,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  letter-spacing: 0 !important;
+}
+
 button,
 input,
 select,
@@ -64,6 +68,117 @@ svg,
 canvas,
 video {
   max-width: 100%;
+}
+
+:is(
+  .dashboard-conteudo,
+  .users-content,
+  .demandas-conteudo,
+  .almoxarifado-conteudo,
+  .checklists-conteudo,
+  .compras-conteudo,
+  .nova-compra-conteudo,
+  .nova-demanda-main,
+  .detalhes-compra-conteudo,
+  .detalhes-demanda-conteudo,
+  .execucao-conteudo,
+  .historico-conteudo,
+  .visualizar-conteudo,
+  .notificacoes-conteudo,
+  .relatorios-conteudo
+) {
+  padding: 40px 44px 32px !important;
+}
+
+:is(
+  .dashboard-header,
+  .users-header,
+  .demandas-cabecalho,
+  .almoxarifado-cabecalho,
+  .checklists-cabecalho,
+  .compras-cabecalho,
+  .nova-compra-cabecalho,
+  .nova-demanda-topo,
+  .detalhes-compra-cabecalho,
+  .detalhes-demanda-cabecalho,
+  .execucao-cabecalho,
+  .historico-cabecalho,
+  .visualizar-cabecalho,
+  .notificacoes-cabecalho,
+  .relatorios-cabecalho
+) {
+  margin-bottom: 22px !important;
+  gap: 18px !important;
+}
+
+:is(
+  .dashboard-header h1,
+  .users-header h1,
+  .demandas-cabecalho h1,
+  .almoxarifado-cabecalho h1,
+  .checklists-cabecalho h1,
+  .compras-cabecalho h1,
+  .nova-compra-cabecalho h1,
+  .nova-demanda-topo h1,
+  .detalhes-compra-titulo h1,
+  .detalhes-demanda-topo h1,
+  .execucao-titulo h1,
+  .historico-cabecalho h1,
+  .visualizar-cabecalho h1,
+  .notificacoes-cabecalho h1,
+  .relatorios-cabecalho h1
+) {
+  margin: 0 !important;
+  font-size: 30px !important;
+  line-height: 1.18 !important;
+  font-weight: 800 !important;
+  color: var(--app-text);
+}
+
+:is(
+  .dashboard-header p,
+  .users-header p,
+  .demandas-cabecalho p,
+  .almoxarifado-cabecalho p,
+  .checklists-cabecalho p,
+  .compras-cabecalho p,
+  .nova-compra-cabecalho p,
+  .detalhes-compra-titulo p,
+  .detalhes-demanda-topo p,
+  .historico-cabecalho p,
+  .visualizar-cabecalho p,
+  .notificacoes-cabecalho p,
+  .relatorios-cabecalho p
+) {
+  margin: 8px 0 0 !important;
+  font-size: 15px !important;
+  line-height: 1.45 !important;
+  color: var(--app-muted);
+}
+
+:is(
+  .dashboard-card h2,
+  .panel h3,
+  .stat-card h3,
+  .users-card h2,
+  .demandas-card h2,
+  .almoxarifado-card h2,
+  .checklists-card h2,
+  .compras-card h2,
+  .nova-compra-card h2,
+  .nova-compra-resumo h2,
+  .nova-demanda-card h2,
+  .detalhes-compra-card h2,
+  .detalhes-demanda-card h2,
+  .execucao-card h2,
+  .historico-card h2,
+  .visualizar-card h2,
+  .notificacoes-card h2,
+  .relatorios-card h2
+) {
+  font-size: 18px !important;
+  line-height: 1.3 !important;
+  font-weight: 700 !important;
 }
 
 html.dark .dashboard-layout,
@@ -96,7 +211,8 @@ html.dark .historico-main,
 html.dark .visualizar-main,
 html.dark .notificacoes-main,
 html.dark .relatorios-main,
-html.dark .login-pagina {
+html.dark .login-pagina,
+html.dark .auth-pagina {
   background: var(--app-bg);
   color: var(--app-text);
 }
@@ -104,10 +220,13 @@ html.dark .login-pagina {
 html.dark :is(
   .panel,
   .stat-card,
+  .auth-card,
   .dashboard-card,
   .demandas-tabela-card,
   .users-card,
   .users-table-wrap,
+  .user-modal,
+  .user-more-menu,
   .demandas-card,
   .notificacao-card,
   .notificacoes-resumo article,
@@ -130,6 +249,10 @@ html.dark :is(
   .relatorios-card,
   .historico-card,
   .visualizar-card,
+  .visualizar-resumo article,
+  .visualizar-item,
+  .visualizar-info,
+  .modal-confirmacao,
   .login-card
 ) {
   background: var(--app-surface);
@@ -144,11 +267,33 @@ html.dark :is(input, select, textarea) {
   color: var(--app-text);
 }
 
+html.dark :is(
+  button:not([class*="primary"]):not([class*="salvar"]):not([class*="novo"]):not([class*="ativo"]),
+  .relatorios-acoes label,
+  .demandas-select,
+  .compras-select,
+  .almoxarifado-select,
+  .nova-demanda-select,
+  .nova-demanda-data,
+  .campo-input,
+  .auth-input
+) {
+  background: var(--app-surface-soft);
+  border-color: #334155;
+  color: var(--app-text);
+}
+
 html.dark :is(input, textarea)::placeholder {
   color: #94a3b8;
 }
 
 html.dark :is(
+  h1,
+  h2,
+  h3,
+  h4,
+  label,
+  strong,
   .header-title h2,
   .compras-codigo,
   .compras-item,
@@ -182,9 +327,33 @@ html.dark :is(
   .almoxarifado-modal-secao h3,
   .almoxarifado-info-card strong,
   .users-header h1,
+  .user-modal-topo h2,
+  .user-form label,
   .compras-cabecalho h1,
   .checklists-cabecalho h1,
+  .checklists-card-topo h2,
+  .checklists-modal h2,
+  .checklists-modal-header h2,
+  .nova-demanda-topo h1,
+  .nova-demanda-card h2,
+  .nova-demanda-info strong,
+  .nova-compra-cabecalho h1,
+  .nova-compra-card h2,
+  .nova-compra-resumo h2,
+  .execucao-titulo h1,
+  .execucao-card strong,
+  .historico-cabecalho h1,
+  .historico-card strong,
+  .visualizar-cabecalho h1,
+  .visualizar-card h2,
+  .visualizar-info strong,
+  .relatorios-cabecalho h1,
+  .relatorios-card h2,
+  .relatorios-indicadores strong,
+  .relatorios-taxa strong,
   .login-card h2,
+  .auth-card h2,
+  .auth-logo h1,
   .campo-grupo label,
   .login-atalhos div,
   .login-rodape p
@@ -193,6 +362,8 @@ html.dark :is(
 }
 
 html.dark :is(
+  p,
+  small,
   .dashboard-main .stat-card p,
   .dashboard-main .donut-center span,
   .dashboard-main .legend-row span,
@@ -224,9 +395,26 @@ html.dark :is(
   .almoxarifado-modal-secao p,
   .almoxarifado-info-card span,
   .users-header p,
+  .user-modal-topo p,
+  .user-form small,
   .compras-cabecalho p,
   .checklists-cabecalho p,
-  .login-card > span
+  .checklists-lista .checklists-card > p,
+  .checklists-modal p,
+  .checklists-modal-header p,
+  .nova-demanda-info span,
+  .nova-demanda-anexos p,
+  .nova-compra-cabecalho p,
+  .nova-compra-resumo p,
+  .execucao-card span,
+  .historico-cabecalho p,
+  .visualizar-cabecalho p,
+  .visualizar-card p,
+  .relatorios-cabecalho p,
+  .relatorios-card p,
+  .relatorios-taxa > span,
+  .login-card > span,
+  .auth-subtitulo
 ) {
   color: var(--app-muted);
 }
@@ -243,6 +431,14 @@ html.dark :is(
   .compras-tabela th,
   .compras-tabela tr:hover td,
   .detalhes-demanda-anexos-vazio,
+  .relatorios-vazio,
+  .historico-vazio,
+  .visualizar-vazio,
+  .checklists-vazio,
+  .nova-demanda-anexo-item,
+  .nova-demanda-prioridades button,
+  .nova-demanda-servicos button,
+  .nova-compra-info,
   .almoxarifado-coluna,
   .almoxarifado-vazio,
   .almoxarifado-modal-status,
@@ -261,6 +457,43 @@ html.dark table th {
 html.dark table td {
   border-color: #1e293b;
   color: #e5e7eb;
+}
+
+html.dark :is(
+  .relatorios-barra,
+  .relatorios-taxa div,
+  .visualizar-progresso,
+  .execucao-progresso,
+  .dashboard-progress
+) {
+  background: #1e293b;
+}
+
+html.dark :is(
+  .relatorios-prioridade.normal,
+  .relatorios-prioridade.baixa,
+  .visualizar-status.conforme,
+  .checklists-status.ativo
+) {
+  background: rgba(22, 163, 74, 0.16);
+  color: #86efac;
+}
+
+html.dark :is(
+  .relatorios-prioridade.alta,
+  .visualizar-status.faltante
+) {
+  background: rgba(217, 119, 6, 0.18);
+  color: #fcd34d;
+}
+
+html.dark :is(
+  .relatorios-prioridade.urgente,
+  .visualizar-status.danificado,
+  .checklists-status.inativo
+) {
+  background: rgba(220, 38, 38, 0.16);
+  color: #fca5a5;
 }
 
 html.dark .badge.status.waiting {
