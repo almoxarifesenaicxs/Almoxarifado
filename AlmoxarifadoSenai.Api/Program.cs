@@ -52,6 +52,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddSingleton<FirestoreService>();
 builder.Services.AddScoped<StorageService>();
+builder.Services.AddScoped<EmailService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {

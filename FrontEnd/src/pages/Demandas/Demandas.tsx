@@ -67,7 +67,9 @@ function mapearDemanda(demanda: DemandaApi): DemandaTabela {
 function Demandas() {
   const navigate = useNavigate();
   const usuario = getUsuarioLogado();
-  const podeCriarDemanda = usuario?.perfil === "Professor";
+  const podeCriarDemanda = Boolean(
+    usuario && usuario.perfil !== "Admin" && usuario.perfil !== "Almoxarife",
+  );
 
   const [buscaDemanda, setBuscaDemanda] = useState("");
   const [abaAtiva, setAbaAtiva] = useState("Todas");

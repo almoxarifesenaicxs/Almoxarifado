@@ -52,5 +52,13 @@ export async function baixarAnexoApi(anexo: AnexoApi) {
   link.href = url;
   link.download = anexo.nomeArquivo;
   link.click();
-  URL.revokeObjectURL(url);
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+export async function criarUrlVisualizacaoAnexoApi(anexo: AnexoApi) {
+  const response = await api.get<Blob>(`/Anexos/${anexo.id}/download`, {
+    responseType: "blob",
+  });
+
+  return URL.createObjectURL(response.data);
 }

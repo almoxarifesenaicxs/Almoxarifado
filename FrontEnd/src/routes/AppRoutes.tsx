@@ -83,7 +83,7 @@ function AppRoutes() {
         <Route
           path="/nova-demanda"
           element={
-            <PrivateRoute allowedProfiles={["Professor"]}>
+            <PrivateRoute allowedProfiles={["Coordenador", "Professor", "Almoxarifado"]}>
               <NovaDemanda />
             </PrivateRoute>
           }

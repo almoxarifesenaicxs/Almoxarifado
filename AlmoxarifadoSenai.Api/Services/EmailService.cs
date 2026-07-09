@@ -1,7 +1,5 @@
-using System;
 using System.Net;
 using System.Net.Mail;
-using System.Threading.Tasks;
 using AlmoxarifadoSenai.Api.Models;
 
 namespace AlmoxarifadoSenai.Api.Services
@@ -19,67 +17,123 @@ namespace AlmoxarifadoSenai.Api.Services
         {
             try
             {
-                // Configurações do SMTP
-                var smtpHost = _configuration["Email:SmtpHost"] ?? "smtp.gmail.com";
-                var smtpPort = int.Parse(_configuration["Email:SmtpPort"] ?? "587");
-                var smtpUser = _configuration["Email:SmtpUser"] ?? "almoxarifado@senai.com";
-                var smtpPass = _configuration["Email:SmtpPass"] ?? "senha_temp";
-
-                using var client = new SmtpClient(smtpHost, smtpPort);
-                client.EnableSsl = true;
-                client.Credentials = new NetworkCredential(smtpUser, smtpPass);
-
-                // Corpo do e-mail
                 var assunto = $"[COMPRAS ALMOXARIFADO AUTOMOTIVO] Prioridade: {solicitacao.Urgencia} - {solicitacao.Categoria} - {solicitacao.NomeItem}";
-
                 var corpo = $@"
-                    <h2>Solicitação de Compra</h2>
-                    <p><strong>Categoria:</strong> {solicitacao.Categoria}</p>
-                    <p><strong>Item:</strong> {solicitacao.NomeItem}</p>
-                    <p><strong>Especificação:</strong> {solicitacao.Especificacao}</p>
+                    <h2>Solicitacao de Compra</h2>
+                    <p><strong>Categoria:</strong> {WebUtility.HtmlEncode(solicitacao.Categoria)}</p>
+                    <p><strong>Item:</strong> {WebUtility.HtmlEncode(solicitacao.NomeItem)}</p>
+                    <p><strong>Especificacao:</strong> {WebUtility.HtmlEncode(solicitacao.Especificacao)}</p>
                     <p><strong>Quantidade:</strong> {solicitacao.Quantidade}</p>
-                    <p><strong>Urgência:</strong> {solicitacao.Urgencia}</p>
-                    <p><strong>Justificativa:</strong> {solicitacao.Justificativa}</p>
-                    <p><strong>Solicitante:</strong> {solicitacao.AlmoxarifeNome} ({solicitacao.AlmoxarifeMatricula})</p>
+                    <p><strong>Urgencia:</strong> {WebUtility.HtmlEncode(solicitacao.Urgencia)}</p>
+                    <p><strong>Justificativa:</strong> {WebUtility.HtmlEncode(solicitacao.Justificativa)}</p>
+                    <p><strong>Solicitante:</strong> {WebUtility.HtmlEncode(solicitacao.AlmoxarifeNome)} ({WebUtility.HtmlEncode(solicitacao.AlmoxarifeMatricula)})</p>
                     <p><strong>Data:</strong> {solicitacao.DataSolicitacao:dd/MM/yyyy HH:mm}</p>
                     <hr>
-                    <p><small>Esta é uma mensagem automática do Sistema de Almoxarifado SENAI Automotivo</small></p>
+                    <p><small>Esta e uma mensagem automatica do Sistema de Almoxarifado SENAI Automotivo.</small></p>
                 ";
 
-                // Destinatários
-                var emailComprador = _configuration["Email:Comprador"] ?? "compras@senai.com";
-                var emailCoordenador = _configuration["Email:Coordenador"] ?? "coordenador@senai.com";
+                var emailComprador = _configuration["Email:Comprador"] ?? string.Empty;
+                var emailCoordenador = _configuration["Email:Coordenador"] ?? string.Empty;
 
-                var mensagem = new MailMessage
-                {
-                    From = new MailAddress(smtpUser, "Sistema Almoxarifado SENAI"),
-                    Subject = assunto,
-                    Body = corpo,
-                    IsBodyHtml = true
-                };
-
-                mensagem.To.Add(emailComprador);
-                mensagem.CC.Add(emailCoordenador);
-
-                // Em ambiente de desenvolvimento, apenas loga
-                Console.WriteLine("========================================");
-                Console.WriteLine($"📧 E-MAIL DE SOLICITAÇÃO DE COMPRA");
-                Console.WriteLine($"   Para: {emailComprador}");
-                Console.WriteLine($"   CC: {emailCoordenador}");
-                Console.WriteLine($"   Assunto: {assunto}");
-                Console.WriteLine($"   Corpo: {corpo}");
-                Console.WriteLine("========================================");
-
-                // Em produção, enviar e-mail
-                // await client.SendMailAsync(mensagem);
+                await EnviarEmailAsync(
+                    new[] { emailComprador },
+                    assunto,
+                    corpo,
+                    new[] { emailCoordenador });
 
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"❌ Erro ao enviar e-mail: {ex.Message}");
+                Console.WriteLine($"Erro ao enviar e-mail de solicitacao de compra: {ex.Message}");
                 return false;
             }
+        }
+
+        public async Task<bool> EnviarEmailRecuperacaoAcessoAsync(Usuario usuario)
+        {
+            if (string.IsNullOrWhiteSpace(usuario.Email))
+            {
+                return false;
+            }
+
+            try
+            {
+                var assunto = "Recuperacao de acesso - Almoxarifado SENAI";
+                var corpo = $@"
+                    <h2>Recuperacao de acesso</h2>
+                    <p>Ola, {WebUtility.HtmlEncode(usuario.Nome)}.</p>
+                    <p>Localizamos seu cadastro ativo no Sistema de Almoxarifado SENAI.</p>
+                    <p><strong>Matricula:</strong> {WebUtility.HtmlEncode(usuario.Matricula)}</p>
+                    <p>Para entrar, use sua matricula e a data de nascimento cadastrada no sistema.</p>
+                    <p>Se este for seu primeiro acesso, complete o cadastro apos o login.</p>
+                    <hr>
+                    <p><small>Esta e uma mensagem automatica. Se voce nao solicitou esta recuperacao, ignore este e-mail.</small></p>
+                ";
+
+                await EnviarEmailAsync(new[] { usuario.Email }, assunto, corpo);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao enviar e-mail de recuperacao: {ex.Message}");
+                return false;
+            }
+        }
+
+        private async Task EnviarEmailAsync(
+            IEnumerable<string> destinatarios,
+            string assunto,
+            string corpoHtml,
+            IEnumerable<string>? copias = null)
+        {
+            var smtpHost = _configuration["Email:SmtpHost"];
+            var smtpUser = _configuration["Email:SmtpUser"];
+            var smtpPass = _configuration["Email:SmtpPass"];
+            var fromEmail = _configuration["Email:FromEmail"] ?? smtpUser;
+            var fromName = _configuration["Email:FromName"] ?? "Sistema Almoxarifado SENAI";
+            var enableSsl = bool.Parse(_configuration["Email:EnableSsl"] ?? "true");
+
+            if (string.IsNullOrWhiteSpace(smtpHost) ||
+                string.IsNullOrWhiteSpace(smtpUser) ||
+                string.IsNullOrWhiteSpace(smtpPass) ||
+                string.IsNullOrWhiteSpace(fromEmail))
+            {
+                throw new InvalidOperationException("Configure Email__SmtpHost, Email__SmtpUser, Email__SmtpPass e Email__FromEmail para enviar e-mails.");
+            }
+
+            var smtpPort = int.Parse(_configuration["Email:SmtpPort"] ?? "587");
+
+            using var client = new SmtpClient(smtpHost, smtpPort)
+            {
+                EnableSsl = enableSsl,
+                Credentials = new NetworkCredential(smtpUser, smtpPass)
+            };
+
+            using var mensagem = new MailMessage
+            {
+                From = new MailAddress(fromEmail, fromName),
+                Subject = assunto,
+                Body = corpoHtml,
+                IsBodyHtml = true
+            };
+
+            foreach (var destinatario in destinatarios.Where(email => !string.IsNullOrWhiteSpace(email)).Distinct(StringComparer.OrdinalIgnoreCase))
+            {
+                mensagem.To.Add(destinatario);
+            }
+
+            foreach (var copia in (copias ?? Array.Empty<string>()).Where(email => !string.IsNullOrWhiteSpace(email)).Distinct(StringComparer.OrdinalIgnoreCase))
+            {
+                mensagem.CC.Add(copia);
+            }
+
+            if (mensagem.To.Count == 0)
+            {
+                throw new InvalidOperationException("Nenhum destinatario valido informado para envio de e-mail.");
+            }
+
+            await client.SendMailAsync(mensagem);
         }
     }
 }

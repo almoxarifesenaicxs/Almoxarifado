@@ -20,9 +20,9 @@ namespace AlmoxarifadoSenai.Api.Controllers
             _firestoreService = firestoreService;
         }
 
-        // 1. CRIAR DEMANDA (Exclusivo para Professores e Admin)
+        // 1. CRIAR DEMANDA
         [HttpPost]
-        [Authorize(Roles = $"{Perfis.Professor},{Perfis.Admin}")]
+        [Authorize(Roles = $"{Perfis.Professor},{Perfis.Almoxarifado},{Perfis.Coordenador}")]
         public async Task<IActionResult> CriarDemanda([FromBody] DemandaCriarDto dto)
         {
             // Extrai as Claims armazenadas no Token JWT do usuário logado
@@ -61,6 +61,7 @@ namespace AlmoxarifadoSenai.Api.Controllers
             };
 
             await _firestoreService.SalvarDemandaAsync(novaDemanda);
+            await NotificarCoordenadoresNovaDemandaAsync(novaDemanda, professorMatricula);
 
             return Ok(new { mensagem = "Demanda cadastrada com sucesso!", demanda = novaDemanda });
         }
@@ -124,6 +125,7 @@ namespace AlmoxarifadoSenai.Api.Controllers
 
             demanda.Status = novoStatus;
             await _firestoreService.SalvarDemandaAsync(demanda);
+            await NotificarRemetenteRespostaCoordenadorAsync(demanda, novoStatus);
 
             return Ok(new { mensagem = $"Status da demanda atualizado para {novoStatus}!", demanda });
         }
@@ -276,6 +278,75 @@ namespace AlmoxarifadoSenai.Api.Controllers
             }
 
             return Ok(demandas);
+        }
+
+        private async Task NotificarCoordenadoresNovaDemandaAsync(Demanda demanda, string remetenteMatricula)
+        {
+            try
+            {
+                var coordenadores = await _firestoreService.ObterUsuariosAtivosPorPerfisAsync(Perfis.Coordenador);
+                var destinatarios = coordenadores
+                    .Where(c => c.Matricula != remetenteMatricula)
+                    .ToList();
+
+                foreach (var coordenador in destinatarios)
+                {
+                    await _firestoreService.SalvarNotificacaoAsync(new Notificacao
+                    {
+                        UsuarioMatricula = coordenador.Matricula,
+                        Titulo = "Nova demanda aberta",
+                        Mensagem = $"{demanda.ProfessorNome} abriu a demanda \"{demanda.Titulo}\".",
+                        Tipo = demanda.Prioridade == "Urgente" ? "Urgente" : "Informacao",
+                        Icone = demanda.Prioridade == "Urgente" ? "alert" : "info",
+                        Cor = demanda.Prioridade == "Urgente" ? "red" : "blue",
+                        Link = $"/demandas/detalhes/{demanda.Id}",
+                        DemandaId = demanda.Id,
+                        DadosAdicionais = new Dictionary<string, string>
+                        {
+                            ["remetenteMatricula"] = demanda.ProfessorMatricula,
+                            ["prioridade"] = demanda.Prioridade,
+                            ["oficina"] = demanda.Oficina
+                        }
+                    });
+                }
+
+                Console.WriteLine($"Notificacoes de nova demanda criadas: {destinatarios.Count} para demanda {demanda.Id}.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao notificar coordenadores sobre demanda {demanda.Id}: {ex.Message}");
+            }
+        }
+
+        private async Task NotificarRemetenteRespostaCoordenadorAsync(Demanda demanda, string novoStatus)
+        {
+            var perfilLogado = User.FindFirst(ClaimTypes.Role)?.Value;
+            var matriculaLogada = User.FindFirst("Matricula")?.Value ?? string.Empty;
+            var nomeLogado = User.FindFirst(ClaimTypes.Name)?.Value ?? "Coordenador";
+
+            if (perfilLogado != Perfis.Coordenador ||
+                string.IsNullOrWhiteSpace(demanda.ProfessorMatricula) ||
+                demanda.ProfessorMatricula == matriculaLogada)
+            {
+                return;
+            }
+
+            await _firestoreService.SalvarNotificacaoAsync(new Notificacao
+            {
+                UsuarioMatricula = demanda.ProfessorMatricula,
+                Titulo = "Sua demanda foi respondida",
+                Mensagem = $"{nomeLogado} atualizou a demanda \"{demanda.Titulo}\" para {novoStatus}.",
+                Tipo = "Informacao",
+                Icone = "info",
+                Cor = "blue",
+                Link = $"/demandas/detalhes/{demanda.Id}",
+                DemandaId = demanda.Id,
+                DadosAdicionais = new Dictionary<string, string>
+                {
+                    ["coordenadorMatricula"] = matriculaLogada,
+                    ["status"] = novoStatus
+                }
+            });
         }
     }
 }

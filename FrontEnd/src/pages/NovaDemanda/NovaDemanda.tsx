@@ -60,8 +60,8 @@ function NovaDemanda() {
       return;
     }
 
-    if (usuario.perfil !== "Professor") {
-      alert("Apenas professores podem abrir novas demandas.");
+    if (usuario.perfil === "Admin" || usuario.perfil === "Almoxarife") {
+      alert("Seu perfil nao pode abrir novas demandas.");
       navigate("/dashboard");
       return;
     }

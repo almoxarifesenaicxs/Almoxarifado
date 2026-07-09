@@ -13,6 +13,7 @@ import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import {
   baixarAnexoApi,
+  criarUrlVisualizacaoAnexoApi,
   listarAnexosDemandaApi,
   type AnexoApi,
 } from "../../services/anexos";
@@ -32,6 +33,9 @@ function DetalhesDemanda() {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
   const [erroAnexos, setErroAnexos] = useState("");
+  const [previewAnexos, setPreviewAnexos] = useState<Record<string, string>>(
+    {},
+  );
 
   useEffect(() => {
     let ativo = true;
@@ -41,13 +45,10 @@ function DetalhesDemanda() {
 
       try {
         const dados = await obterDemandaApi(id);
-        const anexosDemanda = await listarAnexosDemandaApi(id);
 
         if (ativo) {
           setDemanda(dados);
-          setAnexos(anexosDemanda);
           setErro("");
-          setErroAnexos("");
         }
       } catch {
         if (ativo) {
@@ -58,6 +59,19 @@ function DetalhesDemanda() {
           setCarregando(false);
         }
       }
+
+      try {
+        const anexosDemanda = await listarAnexosDemandaApi(id);
+
+        if (ativo) {
+          setAnexos(anexosDemanda);
+          setErroAnexos("");
+        }
+      } catch {
+        if (ativo) {
+          setErroAnexos("Nao foi possivel carregar os anexos.");
+        }
+      }
     }
 
     void carregarDemanda();
@@ -66,6 +80,55 @@ function DetalhesDemanda() {
       ativo = false;
     };
   }, [id]);
+
+  useEffect(() => {
+    let ativo = true;
+    const urlsCriadas: string[] = [];
+
+    async function carregarPreviews() {
+      const anexosImagem = anexos.filter((anexo) =>
+        anexo.mimeType?.startsWith("image/"),
+      );
+
+      if (anexosImagem.length === 0) {
+        setPreviewAnexos({});
+        return;
+      }
+
+      const entradas = await Promise.all(
+        anexosImagem.map(async (anexo) => {
+          try {
+            const url = await criarUrlVisualizacaoAnexoApi(anexo);
+            urlsCriadas.push(url);
+            return [anexo.id, url] as const;
+          } catch {
+            return null;
+          }
+        }),
+      );
+
+      if (ativo) {
+        setPreviewAnexos(
+          Object.fromEntries(entradas.filter((entrada) => entrada !== null)),
+        );
+      }
+    }
+
+    void carregarPreviews();
+
+    return () => {
+      ativo = false;
+      urlsCriadas.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [anexos]);
+
+  function abrirPreview(anexo: AnexoApi) {
+    const url = previewAnexos[anexo.id];
+
+    if (url) {
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+  }
 
   if (carregando || !demanda) {
     return (
@@ -208,26 +271,51 @@ function DetalhesDemanda() {
               {!erroAnexos && anexos.length > 0 && (
                 <div className="detalhes-demanda-anexos-lista">
                   {anexos.map((anexo) => (
-                    <button
-                      type="button"
+                    <div
                       key={anexo.id}
-                      className="detalhes-demanda-anexo"
-                      onClick={async () => {
-                        try {
-                          await baixarAnexoApi(anexo);
-                        } catch {
-                          setErroAnexos("Nao foi possivel baixar o anexo.");
-                        }
-                      }}
+                      className={`detalhes-demanda-anexo ${
+                        previewAnexos[anexo.id] ? "com-preview" : ""
+                      }`}
                     >
-                      <FiDownload />
-                      <span>
+                      {previewAnexos[anexo.id] ? (
+                        <button
+                          type="button"
+                          className="detalhes-demanda-anexo-preview"
+                          onClick={() => abrirPreview(anexo)}
+                        >
+                          <img
+                            src={previewAnexos[anexo.id]}
+                            alt={anexo.nomeArquivo}
+                          />
+                        </button>
+                      ) : (
+                        <div className="detalhes-demanda-anexo-icone">
+                          <FiFileText />
+                        </div>
+                      )}
+
+                      <div className="detalhes-demanda-anexo-info">
                         <strong>{anexo.nomeArquivo}</strong>
                         <small>
                           {anexo.tipo} - {Math.max(1, anexo.tamanho)} KB
                         </small>
-                      </span>
-                    </button>
+                      </div>
+
+                      <button
+                        type="button"
+                        className="detalhes-demanda-anexo-download"
+                        onClick={async () => {
+                          try {
+                            await baixarAnexoApi(anexo);
+                          } catch {
+                            setErroAnexos("Nao foi possivel baixar o anexo.");
+                          }
+                        }}
+                        title="Baixar anexo"
+                      >
+                        <FiDownload />
+                      </button>
+                    </div>
                   ))}
                 </div>
               )}

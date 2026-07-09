@@ -81,6 +81,28 @@ namespace AlmoxarifadoSenai.Api.Services
                     else
                         usuario.Ativo = true;
 
+                    if (data.ContainsKey("email"))
+                        usuario.Email = data["email"]?.ToString() ?? "";
+                    else if (data.ContainsKey("Email"))
+                        usuario.Email = data["Email"]?.ToString() ?? "";
+
+                    if (data.ContainsKey("telefone"))
+                        usuario.Telefone = data["telefone"]?.ToString() ?? "";
+                    else if (data.ContainsKey("Telefone"))
+                        usuario.Telefone = data["Telefone"]?.ToString() ?? "";
+
+                    if (data.ContainsKey("setor"))
+                        usuario.Setor = data["setor"]?.ToString() ?? "";
+                    else if (data.ContainsKey("Setor"))
+                        usuario.Setor = data["Setor"]?.ToString() ?? "";
+
+                    if (data.ContainsKey("primeiroAcesso"))
+                        usuario.PrimeiroAcesso = Convert.ToBoolean(data["primeiroAcesso"]);
+                    else if (data.ContainsKey("PrimeiroAcesso"))
+                        usuario.PrimeiroAcesso = Convert.ToBoolean(data["PrimeiroAcesso"]);
+                    else
+                        usuario.PrimeiroAcesso = string.IsNullOrWhiteSpace(usuario.Email);
+
                     if (data.ContainsKey("dataNascimento") && data["dataNascimento"] != null)
                     {
                         var valor = data["dataNascimento"];
@@ -173,6 +195,28 @@ namespace AlmoxarifadoSenai.Api.Services
                         else
                             usuario.Ativo = true;
 
+                        if (data.ContainsKey("email"))
+                            usuario.Email = data["email"]?.ToString() ?? "";
+                        else if (data.ContainsKey("Email"))
+                            usuario.Email = data["Email"]?.ToString() ?? "";
+
+                        if (data.ContainsKey("telefone"))
+                            usuario.Telefone = data["telefone"]?.ToString() ?? "";
+                        else if (data.ContainsKey("Telefone"))
+                            usuario.Telefone = data["Telefone"]?.ToString() ?? "";
+
+                        if (data.ContainsKey("setor"))
+                            usuario.Setor = data["setor"]?.ToString() ?? "";
+                        else if (data.ContainsKey("Setor"))
+                            usuario.Setor = data["Setor"]?.ToString() ?? "";
+
+                        if (data.ContainsKey("primeiroAcesso"))
+                            usuario.PrimeiroAcesso = Convert.ToBoolean(data["primeiroAcesso"]);
+                        else if (data.ContainsKey("PrimeiroAcesso"))
+                            usuario.PrimeiroAcesso = Convert.ToBoolean(data["PrimeiroAcesso"]);
+                        else
+                            usuario.PrimeiroAcesso = string.IsNullOrWhiteSpace(usuario.Email);
+
                         if (data.ContainsKey("dataNascimento") && data["dataNascimento"] != null)
                         {
                             var valor = data["dataNascimento"];
@@ -218,6 +262,40 @@ namespace AlmoxarifadoSenai.Api.Services
             Console.WriteLine("========================================");
 
             return usuarios;
+        }
+
+        public async Task<Usuario?> ObterUsuarioPorEmailAsync(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return null;
+            }
+
+            var usuarios = await ObterTodosUsuariosAsync();
+            return usuarios.FirstOrDefault(usuario =>
+                !string.IsNullOrWhiteSpace(usuario.Email) &&
+                string.Equals(usuario.Email.Trim(), email.Trim(), StringComparison.OrdinalIgnoreCase));
+        }
+
+        public async Task<List<Usuario>> ObterUsuariosAtivosPorPerfisAsync(params string[] perfis)
+        {
+            var perfisNormalizados = perfis
+                .Where(perfil => !string.IsNullOrWhiteSpace(perfil))
+                .Select(perfil => perfil.Trim())
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            if (perfisNormalizados.Count == 0)
+            {
+                return new List<Usuario>();
+            }
+
+            var usuarios = await ObterTodosUsuariosAsync();
+            return usuarios
+                .Where(usuario =>
+                    usuario.Ativo &&
+                    perfisNormalizados.Contains(usuario.Perfil) &&
+                    !string.Equals(usuario.Perfil, "Admin", StringComparison.OrdinalIgnoreCase))
+                .ToList();
         }
 
         // --- MÉTODOS DA SPRINT 3: DEMANDAS ---
@@ -579,8 +657,7 @@ namespace AlmoxarifadoSenai.Api.Services
         public async Task<List<Anexo>> ObterAnexosPorDemandaAsync(string demandaId)
         {
             var query = _db.Collection("anexos")
-                            .WhereEqualTo("DemandaId", demandaId)
-                            .OrderByDescending("DataUpload");
+                            .WhereEqualTo("DemandaId", demandaId);
 
             var snapshot = await query.GetSnapshotAsync();
             var lista = new List<Anexo>();
@@ -591,14 +668,13 @@ namespace AlmoxarifadoSenai.Api.Services
                     lista.Add(doc.ConvertTo<Anexo>());
                 }
             }
-            return lista;
+            return lista.OrderByDescending(a => a.DataUpload).ToList();
         }
 
         public async Task<List<Anexo>> ObterAnexosPorChecklistAsync(string checklistId)
         {
             var query = _db.Collection("anexos")
-                            .WhereEqualTo("ChecklistId", checklistId)
-                            .OrderByDescending("DataUpload");
+                            .WhereEqualTo("ChecklistId", checklistId);
 
             var snapshot = await query.GetSnapshotAsync();
             var lista = new List<Anexo>();
@@ -609,7 +685,7 @@ namespace AlmoxarifadoSenai.Api.Services
                     lista.Add(doc.ConvertTo<Anexo>());
                 }
             }
-            return lista;
+            return lista.OrderByDescending(a => a.DataUpload).ToList();
         }
 
         public async Task DeletarAnexoAsync(string id)
