@@ -4,34 +4,66 @@
   box-sizing: border-box;
 }
 
+:root {
+  color-scheme: light;
+  --app-bg: #f8fafc;
+  --app-surface: #ffffff;
+  --app-surface-soft: #f8fafc;
+  --app-border: #e5e7eb;
+  --app-text: #0f172a;
+  --app-muted: #64748b;
+  --app-primary: #0057d9;
+  --app-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+html.dark {
+  color-scheme: dark;
+  --app-bg: #0b1120;
+  --app-surface: #111827;
+  --app-surface-soft: #0f172a;
+  --app-border: #253044;
+  --app-text: #f8fafc;
+  --app-muted: #cbd5e1;
+  --app-primary: #60a5fa;
+  --app-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+}
+
 html,
 body,
 #root {
   width: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 body {
   font-family:
     Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background: #f8fafc;
-  color: #0f172a;
+  background: var(--app-bg);
+  color: var(--app-text);
+  overflow-x: hidden;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-html.dark body {
-  background: #0b1120;
-  color: #e5e7eb;
+button,
+input,
+select,
+textarea {
+  min-width: 0;
+  font: inherit;
 }
 
-html.dark input,
-html.dark select,
-html.dark textarea,
-html.dark button {
-  font-family: inherit;
+button {
+  min-width: 0;
+}
+
+img,
+svg,
+canvas,
+video {
+  max-width: 100%;
 }
 
 html.dark .dashboard-layout,
@@ -63,8 +95,10 @@ html.dark .execucao-main,
 html.dark .historico-main,
 html.dark .visualizar-main,
 html.dark .notificacoes-main,
-html.dark .relatorios-main {
-  background: #0b1120;
+html.dark .relatorios-main,
+html.dark .login-pagina {
+  background: var(--app-bg);
+  color: var(--app-text);
 }
 
 html.dark :is(
@@ -86,24 +120,28 @@ html.dark :is(
   .checklists-card,
   .checklists-modal,
   .compras-card,
+  .compras-indicadores div,
   .detalhes-compra-card,
   .detalhes-demanda-card,
+  .execucao-card,
   .nova-demanda-card,
   .nova-compra-card,
   .notificacoes-card,
   .relatorios-card,
   .historico-card,
-  .visualizar-card
+  .visualizar-card,
+  .login-card
 ) {
-  background: #111827;
-  border-color: #253044;
-  color: #e5e7eb;
+  background: var(--app-surface);
+  border-color: var(--app-border);
+  color: var(--app-text);
+  box-shadow: var(--app-shadow);
 }
 
 html.dark :is(input, select, textarea) {
-  background: #0f172a;
+  background: var(--app-surface-soft);
   border-color: #334155;
-  color: #f8fafc;
+  color: var(--app-text);
 }
 
 html.dark :is(input, textarea)::placeholder {
@@ -142,9 +180,16 @@ html.dark :is(
   .almoxarifado-coluna-topo h2,
   .almoxarifado-modal-topo h2,
   .almoxarifado-modal-secao h3,
-  .almoxarifado-info-card strong
+  .almoxarifado-info-card strong,
+  .users-header h1,
+  .compras-cabecalho h1,
+  .checklists-cabecalho h1,
+  .login-card h2,
+  .campo-grupo label,
+  .login-atalhos div,
+  .login-rodape p
 ) {
-  color: #f8fafc;
+  color: var(--app-text);
 }
 
 html.dark :is(
@@ -177,9 +222,13 @@ html.dark :is(
   .almoxarifado-professor,
   .almoxarifado-modal-topo p,
   .almoxarifado-modal-secao p,
-  .almoxarifado-info-card span
+  .almoxarifado-info-card span,
+  .users-header p,
+  .compras-cabecalho p,
+  .checklists-cabecalho p,
+  .login-card > span
 ) {
-  color: #cbd5e1;
+  color: var(--app-muted);
 }
 
 html.dark :is(
@@ -197,9 +246,26 @@ html.dark :is(
   .almoxarifado-coluna,
   .almoxarifado-vazio,
   .almoxarifado-modal-status,
-  .almoxarifado-info-card
+  .almoxarifado-info-card,
+  .campo-input
 ) {
-  background: #0f172a;
+  background: var(--app-surface-soft);
+  border-color: #334155;
+}
+
+html.dark table th {
+  background: var(--app-surface-soft);
+  color: #cbd5e1;
+}
+
+html.dark table td {
+  border-color: #1e293b;
+  color: #e5e7eb;
+}
+
+html.dark .badge.status.waiting {
+  background: #1e293b;
+  color: #cbd5e1;
   border-color: #334155;
 }
 
@@ -212,41 +278,76 @@ html.dark .dashboard-main .recharts-text {
 }
 
 html.dark :is(.panel, .stat-card, .demandas-tabela-card) {
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+  box-shadow: var(--app-shadow);
 }
 
 html.dark :is(th, td) {
   border-color: #253044;
 }
 
-html.dark .login-pagina {
-  background: #0b1120;
-}
-
 html.dark .login-logo h1 {
   color: #60a5fa;
 }
 
-html.dark .login-card {
-  background: #111827;
-  border-color: #253044;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
-}
-
-html.dark .login-card h2,
-html.dark .campo-grupo label {
-  color: #f8fafc;
-}
-
-html.dark .login-card > span {
-  color: #cbd5e1;
-}
-
-html.dark .campo-input {
-  background: #0f172a;
-  border-color: #334155;
-}
-
 html.dark .campo-input input {
-  color: #f8fafc;
+  color: var(--app-text);
+}
+
+html.dark .campo-input input::placeholder {
+  color: #94a3b8;
+}
+
+@media (max-width: 900px) {
+  .dashboard-layout,
+  .users-layout,
+  .demandas-layout,
+  .almoxarifado-layout,
+  .checklists-layout,
+  .compras-layout,
+  .nova-compra-layout,
+  .nova-demanda-layout,
+  .detalhes-compra-layout,
+  .detalhes-demanda-layout,
+  .execucao-layout,
+  .historico-layout,
+  .visualizar-layout,
+  .notificacoes-layout,
+  .relatorios-layout {
+    height: auto !important;
+    min-height: 100dvh !important;
+    overflow: visible !important;
+  }
+
+  .dashboard-main,
+  .users-main,
+  .demandas-main,
+  .almoxarifado-main,
+  .checklists-main,
+  .compras-main,
+  .nova-compra-main,
+  .nova-demanda-main,
+  .detalhes-compra-main,
+  .detalhes-demanda-main,
+  .execucao-main,
+  .historico-main,
+  .visualizar-main,
+  .notificacoes-main,
+  .relatorios-main {
+    height: auto !important;
+    min-height: 100dvh !important;
+    overflow: visible !important;
+    min-width: 0;
+  }
+
+  table {
+    min-width: 680px;
+  }
+
+  .table-panel,
+  .demandas-tabela-wrapper,
+  .compras-tabela-wrapper,
+  .users-table-wrapper,
+  .relatorios-tabela-wrapper {
+    overflow-x: auto !important;
+  }
 }

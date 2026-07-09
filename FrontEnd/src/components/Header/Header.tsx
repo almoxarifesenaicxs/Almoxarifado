@@ -9,18 +9,22 @@ type HeaderProps = {
   titulo?: string;
 };
 
+function gerarIniciais(nome: string) {
+  return nome
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((parte) => parte[0])
+    .join("")
+    .toUpperCase();
+}
+
 export default function Header({ titulo = "Dashboard" }: HeaderProps) {
   const [perfilAberto, setPerfilAberto] = useState(false);
   const navigate = useNavigate();
   const usuario = getUsuarioLogado();
-  const iniciais =
-    usuario?.nome
-      .split(" ")
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((parte) => parte[0])
-      .join("")
-      .toUpperCase() || "SN";
+  const nomeUsuario = usuario?.nome ?? "Usuario";
+  const iniciais = gerarIniciais(nomeUsuario) || "SN";
 
   function abrirMenuMobile() {
     window.dispatchEvent(new CustomEvent("abrir-menu-mobile"));
@@ -55,6 +59,7 @@ export default function Header({ titulo = "Dashboard" }: HeaderProps) {
           type="button"
           className="header-avatar"
           onClick={() => setPerfilAberto(!perfilAberto)}
+          aria-expanded={perfilAberto}
         >
           {iniciais}
         </button>
@@ -62,7 +67,7 @@ export default function Header({ titulo = "Dashboard" }: HeaderProps) {
         {perfilAberto && (
           <div className="header-profile-card">
             <div className="header-profile-user">
-              <strong>{usuario?.nome ?? "Usuário"}</strong>
+              <strong>{nomeUsuario}</strong>
               <span>{usuario?.perfil ?? "Perfil"}</span>
             </div>
 

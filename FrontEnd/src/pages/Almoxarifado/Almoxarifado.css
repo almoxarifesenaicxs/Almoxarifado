@@ -1,24 +1,22 @@
 .almoxarifado-layout {
   display: flex;
-  height: 100vh;
-  overflow: hidden;
-  background: #ffffff;
+  min-height: 100dvh;
+  background: #f8fafc;
 }
 
 .almoxarifado-main {
   flex: 1;
   min-width: 0;
-  height: 100vh;
-  overflow: hidden;
-  background: #ffffff;
+  min-height: 100dvh;
+  background: #f8fafc;
 }
 
 .almoxarifado-conteudo {
-  height: 100vh;
+  min-height: calc(100dvh - 72px);
   padding: 24px 30px 22px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .almoxarifado-cabecalho {
@@ -244,8 +242,7 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
   align-items: start;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: visible;
   padding-bottom: 14px;
 }
 
@@ -673,11 +670,11 @@
 
 @media (max-width: 760px) {
   .almoxarifado-layout {
-    flex-direction: column;
+    display: block;
   }
 
   .almoxarifado-conteudo {
-    padding: 82px 18px 24px;
+    padding: 14px 16px 24px;
   }
 
   .almoxarifado-cabecalho h1 {
@@ -780,6 +777,11 @@ html.dark .almoxarifado-atalhos button {
   color: #93c5fd;
 }
 
+html.dark .almoxarifado-layout,
+html.dark .almoxarifado-main {
+  background: #020617;
+}
+
 html.dark .almoxarifado-alerta {
   background: rgba(154, 52, 18, 0.18);
   border-color: rgba(251, 146, 60, 0.35);
@@ -787,7 +789,8 @@ html.dark .almoxarifado-alerta {
 }
 
 html.dark .almoxarifado-coluna:nth-child(n) {
-  background: #0f172a;
+  background: #111827;
+  border-color: #1e293b;
 }
 
 html.dark .almoxarifado-resumo-card {
@@ -797,19 +800,128 @@ html.dark .almoxarifado-resumo-card {
 html.dark .almoxarifado-resumo-card span,
 html.dark .almoxarifado-coluna-topo h2,
 html.dark .almoxarifado-card-topo strong,
-html.dark .almoxarifado-card-topo h3 {
+html.dark .almoxarifado-card-topo h3,
+html.dark .almoxarifado-modal-topo h2,
+html.dark .almoxarifado-modal-secao h3,
+html.dark .almoxarifado-info-card strong {
   color: #f8fafc;
 }
 
 html.dark .almoxarifado-resumo-card small,
 html.dark .almoxarifado-prazo,
-html.dark .almoxarifado-professor {
-  color: #cbd5e1;
+html.dark .almoxarifado-professor,
+html.dark .almoxarifado-modal-topo p,
+html.dark .almoxarifado-modal-secao p,
+html.dark .almoxarifado-info-card span {
+  color: #94a3b8;
+}
+
+html.dark .almoxarifado-filtros-topo,
+html.dark .almoxarifado-card,
+html.dark .almoxarifado-modal,
+html.dark .almoxarifado-info-card,
+html.dark .almoxarifado-modal-status,
+html.dark .almoxarifado-vazio {
+  background: #0f172a;
+  border-color: #1e293b;
+  color: #e5e7eb;
+}
+
+html.dark .almoxarifado-coluna,
+html.dark .almoxarifado-coluna:nth-child(1),
+html.dark .almoxarifado-coluna:nth-child(2),
+html.dark .almoxarifado-coluna:nth-child(3),
+html.dark .almoxarifado-coluna:nth-child(4) {
+  background: #111827;
+  border-color: #1e293b;
+}
+
+html.dark .almoxarifado-select,
+html.dark .almoxarifado-filtrar,
+html.dark .almoxarifado-fechar {
+  background: #111827;
+  border-color: #334155;
+  color: #e5e7eb;
+}
+
+html.dark .almoxarifado-select select {
+  color: #e5e7eb;
+}
+
+html.dark .almoxarifado-ver-mais {
+  background: rgba(15, 23, 42, 0.82);
+  border-color: #1e293b;
+  color: #93c5fd;
+}
+
+html.dark .almoxarifado-modal-fundo {
+  background: rgba(2, 6, 23, 0.72);
+}
+
+html.dark .almoxarifado-resumo-card.abertas {
+  background: rgba(127, 29, 29, 0.24);
+}
+
+html.dark .almoxarifado-resumo-card.andamento {
+  background: rgba(30, 58, 138, 0.24);
+}
+
+html.dark .almoxarifado-resumo-card.material {
+  background: rgba(120, 53, 15, 0.24);
+}
+
+html.dark .almoxarifado-resumo-card.concluidas {
+  background: rgba(20, 83, 45, 0.24);
 }
 
 @media (max-width: 760px) {
   .almoxarifado-menu-operacional {
     align-items: stretch;
     flex-direction: column;
+  }
+}
+
+@media (max-width: 1100px) {
+  .almoxarifado-filtros-topo {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .almoxarifado-filtrar {
+    width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .almoxarifado-main {
+    min-height: 100dvh;
+  }
+
+  .almoxarifado-conteudo {
+    min-height: auto;
+    padding: 16px 18px 28px;
+  }
+}
+
+@media (max-width: 560px) {
+  .almoxarifado-resumo-card {
+    height: auto;
+    min-height: 76px;
+  }
+
+  .almoxarifado-filtros-topo {
+    padding: 12px;
+  }
+
+  .almoxarifado-card-topo {
+    align-items: flex-start;
+  }
+
+  .almoxarifado-card-topo div {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .almoxarifado-acoes .acao {
+    justify-content: flex-start;
   }
 }

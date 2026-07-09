@@ -6,6 +6,10 @@ import { aplicarTema, getTemaSalvo } from './services/theme.ts'
 
 aplicarTema(getTemaSalvo())
 
+if (localStorage.getItem("@senai:theme") === "dark") {
+  document.documentElement.classList.add("dark");
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />

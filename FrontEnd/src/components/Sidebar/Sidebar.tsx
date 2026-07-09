@@ -42,7 +42,7 @@ const itensMenu: ItemMenu[] = [
   },
   {
     icone: <FiArchive />,
-    titulo: "Fila Operacional",
+    titulo: "Almoxarifado",
     caminho: "/almoxarifado",
     perfis: ["Admin", "Coordenador", "Almoxarife", "Almoxarifado"],
   },
@@ -169,7 +169,10 @@ export default function Sidebar() {
               <NavLink
                 key={item.titulo}
                 to={item.caminho}
-                onClick={() => setMenuAberto(false)}
+                onClick={() => {
+                  setMenuAberto(false);
+                  setMenuUsuarioAberto(false);
+                }}
                 className={({ isActive }) =>
                   `sidebar-item ${isActive ? "active" : ""}`
                 }
@@ -186,6 +189,7 @@ export default function Sidebar() {
             type="button"
             className="sidebar-user"
             onClick={() => setMenuUsuarioAberto((estadoAtual) => !estadoAtual)}
+            aria-expanded={menuUsuarioAberto}
           >
             <div className="avatar">{gerarIniciais(usuario.nome)}</div>
 

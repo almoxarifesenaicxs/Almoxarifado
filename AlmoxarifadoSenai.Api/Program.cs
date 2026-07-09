@@ -16,17 +16,27 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        var allowedOrigins = builder.Configuration
+        var configuredOrigins = builder.Configuration
             .GetSection("Cors:AllowedOrigins")
             .Get<string[]>()
             ?? Array.Empty<string>();
 
-        if (allowedOrigins.Length == 0 && builder.Environment.IsDevelopment())
+        var envOrigins = (builder.Configuration["Cors:AllowedOrigins"] ?? string.Empty)
+            .Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+        var allowedOrigins = configuredOrigins
+            .Concat(envOrigins)
+            .Where(origin => !string.IsNullOrWhiteSpace(origin))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+
+        if (allowedOrigins.Length == 0)
         {
             allowedOrigins = new[]
             {
                 "http://localhost:5173",
-                "http://127.0.0.1:5173"
+                "http://127.0.0.1:5173",
+                "https://almoxarifadosenai.vercel.app"
             };
         }
 
@@ -83,7 +93,7 @@ var chave = builder.Configuration["Jwt:Key"];
 
 if (string.IsNullOrWhiteSpace(chave))
 {
-    throw new InvalidOperationException("Configure a variavel Jwt__Key antes de iniciar a API.");
+    throw new InvalidOperationException("Configure Jwt__Key antes de iniciar a API.");
 }
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

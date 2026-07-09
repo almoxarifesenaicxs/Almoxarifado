@@ -17,7 +17,7 @@ namespace AlmoxarifadoSenai.Api.Services
 
             if (string.IsNullOrWhiteSpace(projectId))
             {
-                throw new InvalidOperationException("Configure a variavel Firebase__ProjectId antes de iniciar a API.");
+                throw new InvalidOperationException("Configure Firebase__ProjectId antes de iniciar a API.");
             }
 
             _db = FirestoreDb.Create(projectId);
