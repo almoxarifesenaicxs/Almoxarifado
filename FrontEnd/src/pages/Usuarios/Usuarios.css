@@ -66,6 +66,18 @@
   background: #0049b8;
 }
 
+html.dark .new-user-button {
+  background: #2563eb !important;
+  border-color: #2563eb !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.28);
+}
+
+html.dark .new-user-button:hover {
+  background: #1d4ed8 !important;
+  border-color: #1d4ed8 !important;
+}
+
 .new-user-button:disabled,
 .user-actions button:disabled,
 .pagination button:disabled,
@@ -234,17 +246,25 @@
   top: 36px;
   right: 0;
   width: 150px;
+  box-sizing: border-box;
   background: #ffffff;
   border: 1px solid #e1e7ef;
   border-radius: 10px;
   box-shadow: 0 18px 45px rgba(15, 23, 42, 0.16);
   padding: 6px;
   z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
 }
 
 .user-more-menu button {
   width: 100%;
+  min-width: 0;
   height: 34px;
+  box-sizing: border-box;
+  flex: 0 0 34px;
   border: none;
   border-radius: 8px;
   background: transparent;

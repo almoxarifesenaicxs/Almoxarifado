@@ -39,7 +39,8 @@
 .notificacoes-cabecalho p {
   margin: 8px 0 0;
   color: #667085;
-  font-size: 15px;
+  font-size: 17px;
+  line-height: 1.5;
 }
 
 .notificacoes-alerta {
@@ -54,13 +55,14 @@
 }
 
 .notificacoes-botao-marcar {
-  height: 40px;
+  min-height: 44px;
   border: 1px solid #b9c7e6;
   border-radius: 10px;
   background: #ffffff;
   color: #0046c7;
   font-weight: 800;
   padding: 0 14px;
+  font-size: 15px;
   cursor: pointer;
   white-space: nowrap;
 }
@@ -108,7 +110,7 @@
   display: block;
   margin-top: 4px;
   color: #667085;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
 }
 
@@ -136,7 +138,7 @@
 }
 
 .notificacoes-busca {
-  height: 40px;
+  height: 44px;
   border: 1px solid #dbe3ef;
   border-radius: 10px;
   padding: 0 12px;
@@ -149,12 +151,12 @@
 .notificacoes-busca input,
 .notificacoes-filtros select {
   width: 100%;
-  height: 40px;
+  height: 44px;
   border: none;
   outline: none;
   background: transparent;
   color: #111827;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .notificacoes-filtros select {
@@ -165,7 +167,7 @@
 }
 
 .notificacoes-filtros button {
-  height: 40px;
+  height: 44px;
   border: 1px solid #b9c7e6;
   border-radius: 10px;
   background: #ffffff;
@@ -176,6 +178,7 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
+  font-size: 15px;
 }
 
 .notificacoes-lista {
@@ -200,7 +203,7 @@
 .notificacao-card {
   display: flex;
   gap: 10px;
-  padding: 9px 11px;
+  padding: 14px 16px;
   border-radius: 10px;
   background: #ffffff;
   border: 1px solid #e2e8f0;
@@ -213,9 +216,9 @@
 }
 
 .notificacao-icone {
-  width: 34px;
-  height: 34px;
-  min-width: 34px;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
   border-radius: 999px;
   background: #eef4ff;
   color: #0046c7;
@@ -225,7 +228,7 @@
 }
 
 .notificacao-icone svg {
-  font-size: 15px;
+  font-size: 18px;
 }
 
 .notificacao-icone.alta {
@@ -254,7 +257,7 @@
 .notificacao-topo span {
   display: block;
   color: #0046c7;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 900;
   margin-bottom: 2px;
 }
@@ -262,21 +265,21 @@
 .notificacao-topo h2 {
   margin: 0;
   color: #111827;
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 900;
 }
 
 .notificacao-topo strong {
   color: #667085;
-  font-size: 11px;
+  font-size: 13px;
   white-space: nowrap;
 }
 
 .notificacao-corpo p {
   margin: 3px 0 7px;
   color: #475467;
-  font-size: 12px;
-  line-height: 1.32;
+  font-size: 15px;
+  line-height: 1.5;
 }
 
 .notificacao-corpo footer {
@@ -286,21 +289,15 @@
   gap: 6px;
 }
 
-.notificacao-tipo,
 .notificacao-prioridade,
 .notificacao-status {
   display: inline-flex;
   align-items: center;
-  height: 22px;
+  min-height: 26px;
   border-radius: 999px;
   padding: 0 8px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 900;
-}
-
-.notificacao-tipo {
-  background: #eef4ff;
-  color: #0046c7;
 }
 
 .notificacao-prioridade.normal {
@@ -324,15 +321,44 @@
 }
 
 .notificacao-corpo footer button {
-  height: 24px;
+  min-height: 30px;
   border: 1px solid #b9c7e6;
   border-radius: 999px;
   background: #ffffff;
   color: #0046c7;
-  padding: 0 9px;
-  font-size: 10px;
+  padding: 0 12px;
+  font-size: 12px;
   font-weight: 900;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.notificacao-corpo footer .notificacao-botao-excluir {
+  border-color: #fecaca;
+  color: #dc2626;
+}
+
+.notificacao-corpo footer .notificacao-botao-excluir:hover:not(:disabled) {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+
+.notificacoes-botao-marcar:hover:not(:disabled),
+.notificacoes-filtros button:hover:not(:disabled),
+.notificacao-corpo footer button:hover:not(:disabled) {
+  background: #eef4ff;
+  border-color: #0046c7;
+}
+
+.notificacoes-botao-marcar:focus-visible,
+.notificacoes-filtros button:focus-visible,
+.notificacao-corpo footer button:focus-visible,
+.notificacoes-busca:focus-within,
+.notificacoes-filtros select:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.22);
+  outline-offset: 2px;
 }
 
 .notificacao-corpo footer button:disabled {

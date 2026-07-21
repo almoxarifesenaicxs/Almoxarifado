@@ -563,6 +563,36 @@ namespace AlmoxarifadoSenai.Api.Services
             await docRef.SetAsync(notificacao);
         }
 
+        public async Task<int> NotificarTodosUsuariosAtivosAsync(Notificacao evento)
+        {
+            var usuarios = await ObterTodosUsuariosAsync();
+            var destinatarios = usuarios
+                .Where(usuario => usuario.Ativo && !string.IsNullOrWhiteSpace(usuario.Matricula))
+                .GroupBy(usuario => usuario.Matricula, StringComparer.OrdinalIgnoreCase)
+                .Select(grupo => grupo.First())
+                .ToList();
+
+            foreach (var usuario in destinatarios)
+            {
+                await SalvarNotificacaoAsync(new Notificacao
+                {
+                    UsuarioMatricula = usuario.Matricula,
+                    Titulo = evento.Titulo,
+                    Mensagem = evento.Mensagem,
+                    Tipo = evento.Tipo,
+                    Icone = evento.Icone,
+                    Cor = evento.Cor,
+                    Link = evento.Link,
+                    DemandaId = evento.DemandaId,
+                    Lida = false,
+                    DataCriacao = DateTime.UtcNow,
+                    DadosAdicionais = new Dictionary<string, string>(evento.DadosAdicionais)
+                });
+            }
+
+            return destinatarios.Count;
+        }
+
         public async Task<List<Notificacao>> ObterNotificacoesPorUsuarioAsync(string matricula, bool? lida = null, int limite = 50)
         {
             var query = _db.Collection("notificacoes")
@@ -632,6 +662,12 @@ namespace AlmoxarifadoSenai.Api.Services
 
             var snapshot = await query.GetSnapshotAsync();
             return snapshot.Documents.Count;
+        }
+
+        public async Task ExcluirNotificacaoAsync(string id)
+        {
+            var docRef = _db.Collection("notificacoes").Document(id);
+            await docRef.DeleteAsync();
         }
 
         // --- MÉTODOS DO SPRINT 6: ANEXOS ---

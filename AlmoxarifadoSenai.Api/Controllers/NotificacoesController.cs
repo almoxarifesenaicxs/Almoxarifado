@@ -23,6 +23,7 @@ namespace AlmoxarifadoSenai.Api.Controllers
         public async Task<IActionResult> ObterMinhasNotificacoes([FromQuery] bool? lida = null, [FromQuery] int limite = 50)
         {
             var matricula = User.FindFirst("Matricula")?.Value ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(matricula)) return Unauthorized();
             var notificacoes = await _firestoreService.ObterNotificacoesPorUsuarioAsync(matricula, lida, limite);
 
             return Ok(notificacoes.Select(n => new NotificacaoDto
@@ -45,6 +46,7 @@ namespace AlmoxarifadoSenai.Api.Controllers
         public async Task<IActionResult> ContarNaoLidas()
         {
             var matricula = User.FindFirst("Matricula")?.Value ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(matricula)) return Unauthorized();
             var total = await _firestoreService.ContarNotificacoesNaoLidasAsync(matricula);
             return Ok(new { total });
         }
@@ -59,6 +61,7 @@ namespace AlmoxarifadoSenai.Api.Controllers
             }
 
             var matricula = User.FindFirst("Matricula")?.Value ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(matricula)) return Unauthorized();
             if (notificacao.UsuarioMatricula != matricula)
             {
                 return Forbid("Você só pode marcar suas próprias notificações.");
@@ -72,6 +75,7 @@ namespace AlmoxarifadoSenai.Api.Controllers
         public async Task<IActionResult> MarcarTodasLidas()
         {
             var matricula = User.FindFirst("Matricula")?.Value ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(matricula)) return Unauthorized();
             var notificacoes = await _firestoreService.ObterNotificacoesPorUsuarioAsync(matricula, false, 1000);
 
             foreach (var notif in notificacoes)
@@ -80,6 +84,19 @@ namespace AlmoxarifadoSenai.Api.Controllers
             }
 
             return Ok(new { mensagem = $"Todas as {notificacoes.Count} notificações marcadas como lidas!" });
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Excluir(string id)
+        {
+            var matricula = User.FindFirst("Matricula")?.Value ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(matricula)) return Unauthorized();
+
+            var notificacao = await _firestoreService.ObterNotificacaoPorIdAsync(id);
+            if (notificacao == null) return NotFound("Notificação não encontrada.");
+            if (notificacao.UsuarioMatricula != matricula) return Forbid();
+
+            await _firestoreService.ExcluirNotificacaoAsync(id);
+            return NoContent();
         }
     }
 }

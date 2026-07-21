@@ -19,10 +19,24 @@ export async function listarNotificacoesApi() {
   return response.data;
 }
 
+export async function contarNotificacoesNaoLidasApi() {
+  const response = await api.get<{ total: number }>(
+    "/Notificacoes/nao-lidas/contador",
+  );
+  return response.data.total;
+}
+
 export async function marcarNotificacaoLidaApi(id: string, lida = true) {
   await api.put(`/Notificacoes/${id}/marcar-lida`, { lida });
+  window.dispatchEvent(new CustomEvent("notificacoes-atualizadas"));
 }
 
 export async function marcarTodasNotificacoesLidasApi() {
   await api.put("/Notificacoes/marcar-todas-lidas");
+  window.dispatchEvent(new CustomEvent("notificacoes-atualizadas"));
+}
+
+export async function excluirNotificacaoApi(id: string) {
+  await api.delete(`/Notificacoes/${id}`);
+  window.dispatchEvent(new CustomEvent("notificacoes-atualizadas"));
 }
