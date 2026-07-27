@@ -305,7 +305,11 @@ function Demandas() {
                           className={`demanda-status ${
                             demanda.status === "Em Andamento"
                               ? "andamento"
-                              : "aguardando"
+                              : demanda.status === "Concluida"
+                                ? "concluida"
+                                : demanda.status === "Cancelada"
+                                  ? "cancelada"
+                                  : "aguardando"
                           }`}
                         >
                           <span />

@@ -593,7 +593,11 @@ namespace AlmoxarifadoSenai.Api.Services
             return destinatarios.Count;
         }
 
-        public async Task<List<Notificacao>> ObterNotificacoesPorUsuarioAsync(string matricula, bool? lida = null, int limite = 50)
+        public async Task<List<Notificacao>> ObterNotificacoesPorUsuarioAsync(
+            string matricula,
+            bool? lida = null,
+            int limite = 50,
+            bool excluidas = false)
         {
             var query = _db.Collection("notificacoes")
                             .WhereEqualTo("UsuarioMatricula", matricula);
@@ -602,8 +606,6 @@ namespace AlmoxarifadoSenai.Api.Services
             {
                 query = query.WhereEqualTo("Lida", lida.Value);
             }
-
-            query = query.Limit(limite);
 
             var snapshot = await query.GetSnapshotAsync();
             var lista = new List<Notificacao>();
@@ -615,6 +617,7 @@ namespace AlmoxarifadoSenai.Api.Services
                 }
             }
             return lista
+                .Where(n => n.Excluida == excluidas)
                 .OrderByDescending(n => n.DataCriacao)
                 .Take(limite)
                 .ToList();
@@ -661,10 +664,32 @@ namespace AlmoxarifadoSenai.Api.Services
                             .WhereEqualTo("Lida", false);
 
             var snapshot = await query.GetSnapshotAsync();
-            return snapshot.Documents.Count;
+            return snapshot.Documents
+                .Select(doc => doc.ConvertTo<Notificacao>())
+                .Count(notificacao => !notificacao.Excluida);
         }
 
-        public async Task ExcluirNotificacaoAsync(string id)
+        public async Task MoverNotificacaoParaLixeiraAsync(string id)
+        {
+            var docRef = _db.Collection("notificacoes").Document(id);
+            await docRef.UpdateAsync(new Dictionary<string, object>
+            {
+                { "Excluida", true },
+                { "DataExclusao", DateTime.UtcNow }
+            });
+        }
+
+        public async Task RestaurarNotificacaoAsync(string id)
+        {
+            var docRef = _db.Collection("notificacoes").Document(id);
+            await docRef.UpdateAsync(new Dictionary<string, object>
+            {
+                { "Excluida", false },
+                { "DataExclusao", FieldValue.Delete }
+            });
+        }
+
+        public async Task ExcluirNotificacaoPermanentementeAsync(string id)
         {
             var docRef = _db.Collection("notificacoes").Document(id);
             await docRef.DeleteAsync();

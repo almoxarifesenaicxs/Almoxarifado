@@ -256,7 +256,7 @@
   background: #ef233c;
 }
 .demanda-prioridade.alta {
-  color: #f59e0b;
+  color: #f5690b;
 }
 .demanda-prioridade.alta > span {
   background: #f59e0b;
@@ -276,22 +276,40 @@
 }
 
 .demanda-status.andamento {
-  color: #0057d9;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
+  color: var(--status-progress-text);
+  background: var(--status-progress-bg);
+  border: 1px solid var(--status-progress-border);
 }
 
 .demanda-status.aguardando {
-  color: #d89400;
-  background: #fffaf0;
-  border: 1px solid #f6d68a;
+  color: var(--status-waiting-text);
+  background: var(--status-waiting-bg);
+  border: 1px solid var(--status-waiting-border);
+}
+
+.demanda-status.concluida {
+  color: var(--status-done-text);
+  background: var(--status-done-bg);
+  border: 1px solid var(--status-done-border);
+}
+
+.demanda-status.cancelada {
+  color: var(--status-cancelled-text);
+  background: var(--status-cancelled-bg);
+  border: 1px solid var(--status-cancelled-border);
 }
 
 .demanda-status.andamento > span {
-  background: #0057d9;
+  background: var(--status-progress-text);
 }
 .demanda-status.aguardando > span {
-  background: #f59e0b;
+  background: var(--status-waiting-text);
+}
+.demanda-status.concluida > span {
+  background: var(--status-done-text);
+}
+.demanda-status.cancelada > span {
+  background: var(--status-cancelled-text);
 }
 
 .demanda-acao {

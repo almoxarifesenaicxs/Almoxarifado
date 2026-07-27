@@ -47,6 +47,12 @@ namespace AlmoxarifadoSenai.Api.Models
         public DateTime? DataLeitura { get; set; }
 
         [FirestoreProperty]
+        public bool Excluida { get; set; } = false;
+
+        [FirestoreProperty]
+        public DateTime? DataExclusao { get; set; }
+
+        [FirestoreProperty]
         public Dictionary<string, string> DadosAdicionais { get; set; } = new();
     }
 }

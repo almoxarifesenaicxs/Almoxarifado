@@ -15,6 +15,8 @@ namespace AlmoxarifadoSenai.Api.DTOs
         public bool Lida { get; set; }
         public DateTime DataCriacao { get; set; }
         public DateTime? DataLeitura { get; set; }
+        public bool Excluida { get; set; }
+        public DateTime? DataExclusao { get; set; }
     }
 
     public class NotificacaoMarcarLidaDto

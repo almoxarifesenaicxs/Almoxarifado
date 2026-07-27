@@ -7,17 +7,23 @@ import {
   FiClock,
   FiFilter,
   FiInfo,
+  FiRefreshCw,
   FiSearch,
   FiTrash2,
+  FiX,
 } from "react-icons/fi";
 
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import {
+  esvaziarLixeiraNotificacoesApi,
   excluirNotificacaoApi,
+  excluirNotificacaoPermanentementeApi,
+  listarLixeiraNotificacoesApi,
   listarNotificacoesApi,
   marcarNotificacaoLidaApi,
   marcarTodasNotificacoesLidasApi,
+  restaurarNotificacaoApi,
   type NotificacaoApi,
 } from "../../services/notificacoes";
 
@@ -37,6 +43,9 @@ function prioridadeVisual(notificacao: NotificacaoApi) {
 function Notificacoes() {
   const navigate = useNavigate();
   const [notificacoes, setNotificacoes] = useState<NotificacaoApi[]>([]);
+  const [lixeira, setLixeira] = useState<NotificacaoApi[]>([]);
+  const [lixeiraAberta, setLixeiraAberta] = useState(false);
+  const [carregandoLixeira, setCarregandoLixeira] = useState(false);
   const [busca, setBusca] = useState("");
   const [filtroTipo, setFiltroTipo] = useState("");
   const [filtroStatus, setFiltroStatus] = useState("");
@@ -49,10 +58,14 @@ function Notificacoes() {
 
     async function carregarInicial() {
       try {
-        const dados = await listarNotificacoesApi();
+        const [dados, excluidas] = await Promise.all([
+          listarNotificacoesApi(),
+          listarLixeiraNotificacoesApi(),
+        ]);
 
         if (ativo) {
           setNotificacoes(dados);
+          setLixeira(excluidas);
           setErro("");
         }
       } catch {
@@ -131,7 +144,7 @@ function Notificacoes() {
 
   async function excluirNotificacao(notificacao: NotificacaoApi) {
     const confirmou = window.confirm(
-      `Deseja realmente excluir a notificação "${notificacao.titulo}"?`,
+      `Deseja mover a notificação "${notificacao.titulo}" para a lixeira?`,
     );
 
     if (!confirmou) return;
@@ -142,9 +155,93 @@ function Notificacoes() {
       setNotificacoes((atuais) =>
         atuais.filter((item) => item.id !== notificacao.id),
       );
+      setLixeira((atuais) => [
+        {
+          ...notificacao,
+          excluida: true,
+          dataExclusao: new Date().toISOString(),
+        },
+        ...atuais,
+      ]);
       setErro("");
     } catch {
       setErro("Não foi possível excluir a notificação.");
+    } finally {
+      setAcaoEmAndamento(null);
+    }
+  }
+
+  async function abrirLixeira() {
+    setLixeiraAberta(true);
+    setCarregandoLixeira(true);
+
+    try {
+      const excluidas = await listarLixeiraNotificacoesApi();
+      setLixeira(excluidas);
+      setErro("");
+    } catch {
+      setErro("Não foi possível carregar a lixeira.");
+    } finally {
+      setCarregandoLixeira(false);
+    }
+  }
+
+  async function restaurarNotificacao(notificacao: NotificacaoApi) {
+    try {
+      setAcaoEmAndamento(`restaurar-${notificacao.id}`);
+      await restaurarNotificacaoApi(notificacao.id);
+      setLixeira((atuais) =>
+        atuais.filter((item) => item.id !== notificacao.id),
+      );
+      setNotificacoes((atuais) => [
+        { ...notificacao, excluida: false, dataExclusao: null },
+        ...atuais,
+      ]);
+      setErro("");
+    } catch {
+      setErro("Não foi possível restaurar a notificação.");
+    } finally {
+      setAcaoEmAndamento(null);
+    }
+  }
+
+  async function excluirPermanentemente(notificacao: NotificacaoApi) {
+    const confirmou = window.confirm(
+      `Excluir permanentemente a notificação "${notificacao.titulo}"? Esta ação não pode ser desfeita.`,
+    );
+
+    if (!confirmou) return;
+
+    try {
+      setAcaoEmAndamento(`permanente-${notificacao.id}`);
+      await excluirNotificacaoPermanentementeApi(notificacao.id);
+      setLixeira((atuais) =>
+        atuais.filter((item) => item.id !== notificacao.id),
+      );
+      setErro("");
+    } catch {
+      setErro("Não foi possível excluir a notificação permanentemente.");
+    } finally {
+      setAcaoEmAndamento(null);
+    }
+  }
+
+  async function esvaziarLixeira() {
+    if (lixeira.length === 0) return;
+
+    const confirmou = window.confirm(
+      `Excluir permanentemente as ${lixeira.length} notificações da lixeira? Esta ação não pode ser desfeita.`,
+    );
+
+    if (!confirmou) return;
+
+    try {
+      setAcaoEmAndamento("esvaziar-lixeira");
+      await esvaziarLixeiraNotificacoesApi();
+      setLixeira([]);
+      setErro("");
+    } catch {
+      setErro("Não foi possível esvaziar a lixeira.");
     } finally {
       setAcaoEmAndamento(null);
     }
@@ -340,6 +437,7 @@ function Notificacoes() {
                       {(notificacao.link || notificacao.demandaId) && (
                         <button
                           type="button"
+                          className="notificacao-botao-origem"
                           onClick={() => void abrirOrigem(notificacao)}
                           disabled={acaoEmAndamento !== null}
                         >
@@ -380,6 +478,128 @@ function Notificacoes() {
             )}
           </section>
         </section>
+
+        <button
+          type="button"
+          className="notificacoes-lixeira-atalho"
+          onClick={() => void abrirLixeira()}
+          aria-label={`Abrir lixeira com ${lixeira.length} notificações`}
+          title="Lixeira de notificações"
+        >
+          <FiTrash2 />
+          {lixeira.length > 0 && <span>{lixeira.length}</span>}
+        </button>
+
+        {lixeiraAberta && (
+          <div
+            className="notificacoes-lixeira-fundo"
+            role="presentation"
+            onMouseDown={(evento) => {
+              if (evento.target === evento.currentTarget) {
+                setLixeiraAberta(false);
+              }
+            }}
+          >
+            <aside
+              className="notificacoes-lixeira-painel"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="notificacoes-lixeira-titulo"
+            >
+              <header>
+                <div>
+                  <FiTrash2 />
+                  <div>
+                    <h2 id="notificacoes-lixeira-titulo">Lixeira</h2>
+                    <p>{lixeira.length} notificação(ões) excluída(s)</p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  className="notificacoes-lixeira-fechar"
+                  onClick={() => setLixeiraAberta(false)}
+                  aria-label="Fechar lixeira"
+                >
+                  <FiX />
+                </button>
+              </header>
+
+              <div className="notificacoes-lixeira-lista">
+                {carregandoLixeira && (
+                  <div className="notificacoes-lixeira-vazia">
+                    Carregando lixeira...
+                  </div>
+                )}
+
+                {!carregandoLixeira && lixeira.length === 0 && (
+                  <div className="notificacoes-lixeira-vazia">
+                    <FiTrash2 />
+                    <strong>A lixeira está vazia</strong>
+                    <span>As notificações excluídas aparecerão aqui.</span>
+                  </div>
+                )}
+
+                {!carregandoLixeira &&
+                  lixeira.map((notificacao) => (
+                    <article key={notificacao.id}>
+                      <div>
+                        <strong>{notificacao.titulo}</strong>
+                        <p>{notificacao.mensagem}</p>
+                        <small>
+                          Excluída em{" "}
+                          {formatarData(
+                            notificacao.dataExclusao ?? notificacao.dataCriacao,
+                          )}
+                        </small>
+                      </div>
+
+                      <footer>
+                        <button
+                          type="button"
+                          className="notificacoes-lixeira-restaurar"
+                          onClick={() => void restaurarNotificacao(notificacao)}
+                          disabled={acaoEmAndamento !== null}
+                        >
+                          <FiRefreshCw />
+                          {acaoEmAndamento === `restaurar-${notificacao.id}`
+                            ? "Restaurando..."
+                            : "Restaurar"}
+                        </button>
+
+                        <button
+                          type="button"
+                          className="notificacoes-lixeira-excluir"
+                          onClick={() =>
+                            void excluirPermanentemente(notificacao)
+                          }
+                          disabled={acaoEmAndamento !== null}
+                        >
+                          <FiTrash2 />
+                          {acaoEmAndamento === `permanente-${notificacao.id}`
+                            ? "Excluindo..."
+                            : "Excluir permanentemente"}
+                        </button>
+                      </footer>
+                    </article>
+                  ))}
+              </div>
+
+              <footer className="notificacoes-lixeira-rodape">
+                <button
+                  type="button"
+                  onClick={() => void esvaziarLixeira()}
+                  disabled={lixeira.length === 0 || acaoEmAndamento !== null}
+                >
+                  <FiTrash2 />
+                  {acaoEmAndamento === "esvaziar-lixeira"
+                    ? "Esvaziando..."
+                    : "Esvaziar lixeira"}
+                </button>
+              </footer>
+            </aside>
+          </div>
+        )}
       </main>
     </div>
   );

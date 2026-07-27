@@ -94,8 +94,9 @@
   height: 36px;
   padding: 9px;
   border-radius: 999px;
-  background: #eef4ff;
-  color: #0046c7;
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #93c5fd;
 }
 
 .notificacoes-resumo strong {
@@ -115,18 +116,21 @@
 }
 
 .notificacoes-resumo .nao-lidas svg {
-  background: #fff7ed;
-  color: #d97706;
+  background: #fffbeb;
+  color: #b45309;
+  border-color: #fcd34d;
 }
 
 .notificacoes-resumo .urgentes svg {
-  background: #fee2e2;
+  background: #fef2f2;
   color: #dc2626;
+  border-color: #fca5a5;
 }
 
 .notificacoes-resumo .sistema svg {
-  background: #f1f5f9;
-  color: #475569;
+  background: #f0fdfa;
+  color: #0f766e;
+  border-color: #5eead4;
 }
 
 .notificacoes-filtros {
@@ -220,8 +224,9 @@
   height: 40px;
   min-width: 40px;
   border-radius: 999px;
-  background: #eef4ff;
-  color: #0046c7;
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #93c5fd;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -232,13 +237,15 @@
 }
 
 .notificacao-icone.alta {
-  background: #fff7ed;
-  color: #d97706;
+  background: #fffbeb;
+  color: #b45309;
+  border-color: #fcd34d;
 }
 
 .notificacao-icone.urgente {
-  background: #fee2e2;
+  background: #fef2f2;
   color: #dc2626;
+  border-color: #fca5a5;
 }
 
 .notificacao-corpo {
@@ -301,18 +308,21 @@
 }
 
 .notificacao-prioridade.normal {
-  background: #dcfce7;
+  background: #f0fdf4;
   color: #15803d;
+  border: 1px solid #86efac;
 }
 
 .notificacao-prioridade.alta {
-  background: #fff7ed;
-  color: #d97706;
+  background: #fffbeb;
+  color: #b45309;
+  border: 1px solid #fcd34d;
 }
 
 .notificacao-prioridade.urgente {
-  background: #fee2e2;
+  background: #fef2f2;
   color: #dc2626;
+  border: 1px solid #fca5a5;
 }
 
 .notificacao-status {
@@ -395,6 +405,51 @@ html.dark .notificacao-card.nao-lida {
   border-color: #2563eb;
 }
 
+html.dark .notificacoes-resumo article > svg,
+html.dark .notificacao-icone {
+  background: var(--status-progress-bg);
+  border-color: var(--status-progress-border);
+  color: var(--status-progress-text);
+}
+
+html.dark .notificacoes-resumo .nao-lidas svg,
+html.dark .notificacao-icone.alta {
+  background: var(--status-waiting-bg);
+  border-color: var(--status-waiting-border);
+  color: var(--status-waiting-text);
+}
+
+html.dark .notificacoes-resumo .urgentes svg,
+html.dark .notificacao-icone.urgente {
+  background: var(--status-cancelled-bg);
+  border-color: var(--status-cancelled-border);
+  color: var(--status-cancelled-text);
+}
+
+html.dark .notificacoes-resumo .sistema svg {
+  background: rgba(13, 148, 136, 0.16);
+  border-color: rgba(45, 212, 191, 0.45);
+  color: #5eead4;
+}
+
+html.dark .notificacao-prioridade.normal {
+  background: var(--status-done-bg);
+  border-color: var(--status-done-border);
+  color: var(--status-done-text);
+}
+
+html.dark .notificacao-prioridade.alta {
+  background: var(--status-waiting-bg);
+  border-color: var(--status-waiting-border);
+  color: var(--status-waiting-text);
+}
+
+html.dark .notificacao-prioridade.urgente {
+  background: var(--status-cancelled-bg);
+  border-color: var(--status-cancelled-border);
+  color: var(--status-cancelled-text);
+}
+
 html.dark .notificacoes-filtros select {
   background: #0f172a;
   border-color: #334155;
@@ -409,6 +464,34 @@ html.dark .notificacao-corpo footer button {
   color: #93c5fd;
 }
 
+html.dark .notificacao-corpo footer .notificacao-botao-origem {
+  background: #0f172a !important;
+  border-color: #2563eb !important;
+  color: #60a5fa !important;
+}
+
+html.dark
+  .notificacao-corpo
+  footer
+  .notificacao-botao-origem:hover:not(:disabled) {
+  background: rgba(37, 99, 235, 0.16) !important;
+  border-color: #60a5fa !important;
+}
+
+html.dark .notificacao-corpo footer .notificacao-botao-excluir {
+  background: #0f172a !important;
+  border-color: #dc2626 !important;
+  color: #f87171 !important;
+}
+
+html.dark
+  .notificacao-corpo
+  footer
+  .notificacao-botao-excluir:hover:not(:disabled) {
+  background: rgba(220, 38, 38, 0.16) !important;
+  border-color: #f87171 !important;
+}
+
 html.dark .notificacao-topo h2,
 html.dark .notificacoes-resumo strong {
   color: #f8fafc;
@@ -418,6 +501,285 @@ html.dark .notificacao-corpo p,
 html.dark .notificacao-topo strong,
 html.dark .notificacoes-resumo span {
   color: #cbd5e1;
+}
+
+.notificacoes-lixeira-atalho {
+  position: fixed;
+  right: 28px;
+  bottom: 28px;
+  z-index: 40;
+  width: 58px;
+  height: 58px;
+  border: 1px solid #fecaca;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #dc2626;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.notificacoes-lixeira-atalho > svg {
+  width: 23px;
+  height: 23px;
+}
+
+.notificacoes-lixeira-atalho > span {
+  position: absolute;
+  top: -5px;
+  right: -3px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+  background: #dc2626;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+  display: grid;
+  place-items: center;
+}
+
+.notificacoes-lixeira-atalho:hover {
+  background: #fef2f2;
+  border-color: #dc2626;
+  transform: translateY(-2px);
+}
+
+.notificacoes-lixeira-fundo {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(15, 23, 42, 0.48);
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.notificacoes-lixeira-painel {
+  width: min(460px, 100%);
+  height: 100dvh;
+  background: #ffffff;
+  border-left: 1px solid #e2e8f0;
+  box-shadow: -18px 0 45px rgba(15, 23, 42, 0.18);
+  display: flex;
+  flex-direction: column;
+}
+
+.notificacoes-lixeira-painel > header {
+  min-height: 88px;
+  padding: 18px 20px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.notificacoes-lixeira-painel > header > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.notificacoes-lixeira-painel > header > div > svg {
+  width: 42px;
+  height: 42px;
+  padding: 11px;
+  border-radius: 12px;
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #dc2626;
+}
+
+.notificacoes-lixeira-painel h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 22px;
+}
+
+.notificacoes-lixeira-painel header p {
+  margin: 3px 0 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.notificacoes-lixeira-fechar {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #dbe3ef;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #475569;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.notificacoes-lixeira-lista {
+  flex: 1;
+  min-height: 0;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.notificacoes-lixeira-lista article {
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.notificacoes-lixeira-lista article strong {
+  color: #111827;
+  font-size: 15px;
+}
+
+.notificacoes-lixeira-lista article p {
+  margin: 6px 0;
+  color: #475569;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.notificacoes-lixeira-lista article small {
+  color: #64748b;
+}
+
+.notificacoes-lixeira-lista article footer {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.notificacoes-lixeira-lista article footer button,
+.notificacoes-lixeira-rodape button {
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  cursor: pointer;
+}
+
+.notificacoes-lixeira-restaurar {
+  border: 1px solid #2563eb;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.notificacoes-lixeira-excluir,
+.notificacoes-lixeira-rodape button {
+  border: 1px solid #dc2626;
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.notificacoes-lixeira-lista button:disabled,
+.notificacoes-lixeira-rodape button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.notificacoes-lixeira-vazia {
+  flex: 1;
+  min-height: 240px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 14px;
+  color: #64748b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.notificacoes-lixeira-vazia svg {
+  width: 34px;
+  height: 34px;
+}
+
+.notificacoes-lixeira-rodape {
+  padding: 16px 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.notificacoes-lixeira-rodape button {
+  width: 100%;
+}
+
+html.dark .notificacoes-lixeira-atalho {
+  background: #111827 !important;
+  border-color: #dc2626 !important;
+  color: #f87171 !important;
+}
+
+html.dark .notificacoes-lixeira-atalho > span {
+  border-color: #111827;
+}
+
+html.dark .notificacoes-lixeira-painel,
+html.dark .notificacoes-lixeira-lista article {
+  background: #111827;
+  border-color: #253044;
+}
+
+html.dark .notificacoes-lixeira-painel > header,
+html.dark .notificacoes-lixeira-rodape {
+  border-color: #253044;
+}
+
+html.dark .notificacoes-lixeira-painel > header > div > svg {
+  background: rgba(220, 38, 38, 0.16);
+  border-color: rgba(248, 113, 113, 0.45);
+  color: #fca5a5;
+}
+
+html.dark .notificacoes-lixeira-painel h2,
+html.dark .notificacoes-lixeira-lista article strong {
+  color: #f8fafc;
+}
+
+html.dark .notificacoes-lixeira-painel header p,
+html.dark .notificacoes-lixeira-lista article p,
+html.dark .notificacoes-lixeira-lista article small,
+html.dark .notificacoes-lixeira-vazia {
+  color: #cbd5e1;
+}
+
+html.dark .notificacoes-lixeira-vazia {
+  border-color: #334155;
+}
+
+html.dark .notificacoes-lixeira-fechar {
+  background: #0f172a !important;
+  border-color: #334155 !important;
+  color: #cbd5e1 !important;
+}
+
+html.dark .notificacoes-lixeira-restaurar {
+  background: rgba(37, 99, 235, 0.16) !important;
+  border-color: #2563eb !important;
+  color: #93c5fd !important;
+}
+
+html.dark .notificacoes-lixeira-excluir,
+html.dark .notificacoes-lixeira-rodape button {
+  background: rgba(220, 38, 38, 0.16) !important;
+  border-color: #dc2626 !important;
+  color: #fca5a5 !important;
 }
 
 @media (max-width: 1100px) {
@@ -452,5 +814,14 @@ html.dark .notificacoes-resumo span {
 
   .notificacao-topo strong {
     white-space: normal;
+  }
+
+  .notificacoes-lixeira-atalho {
+    right: 18px;
+    bottom: 18px;
+  }
+
+  .notificacoes-lixeira-painel {
+    width: 100%;
   }
 }

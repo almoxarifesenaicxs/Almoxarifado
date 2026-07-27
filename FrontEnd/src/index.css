@@ -14,6 +14,18 @@
   --app-muted: #64748b;
   --app-primary: #0057d9;
   --app-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  --status-waiting-text: #b45309;
+  --status-waiting-bg: #fffbeb;
+  --status-waiting-border: #fcd34d;
+  --status-progress-text: #1d4ed8;
+  --status-progress-bg: #eff6ff;
+  --status-progress-border: #93c5fd;
+  --status-done-text: #15803d;
+  --status-done-bg: #f0fdf4;
+  --status-done-border: #86efac;
+  --status-cancelled-text: #dc2626;
+  --status-cancelled-bg: #fef2f2;
+  --status-cancelled-border: #fca5a5;
 }
 
 html.dark {
@@ -26,6 +38,18 @@ html.dark {
   --app-muted: #cbd5e1;
   --app-primary: #60a5fa;
   --app-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+  --status-waiting-text: #fcd34d;
+  --status-waiting-bg: rgba(217, 119, 6, 0.16);
+  --status-waiting-border: rgba(245, 158, 11, 0.45);
+  --status-progress-text: #93c5fd;
+  --status-progress-bg: rgba(37, 99, 235, 0.16);
+  --status-progress-border: rgba(96, 165, 250, 0.45);
+  --status-done-text: #86efac;
+  --status-done-bg: rgba(22, 163, 74, 0.16);
+  --status-done-border: rgba(74, 222, 128, 0.45);
+  --status-cancelled-text: #fca5a5;
+  --status-cancelled-bg: rgba(220, 38, 38, 0.16);
+  --status-cancelled-border: rgba(248, 113, 113, 0.45);
 }
 
 html,
@@ -299,6 +323,7 @@ html.dark :is(
   .compras-indicadores div,
   .detalhes-compra-card,
   .detalhes-demanda-card,
+  .detalhes-demanda-resumo div,
   .execucao-card,
   .nova-demanda-card,
   .nova-compra-card,
@@ -554,9 +579,9 @@ html.dark :is(
 }
 
 html.dark .badge.status.waiting {
-  background: #1e293b;
-  color: #cbd5e1;
-  border-color: #334155;
+  background: var(--status-waiting-bg);
+  color: var(--status-waiting-text);
+  border-color: var(--status-waiting-border);
 }
 
 html.dark .dashboard-main .recharts-cartesian-grid line {

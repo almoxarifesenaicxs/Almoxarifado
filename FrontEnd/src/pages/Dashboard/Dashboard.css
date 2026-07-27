@@ -173,28 +173,46 @@ tr:last-child td {
   border: 1px solid #fecaca;
 }
 
+html.dark .priority.normal {
+  color: #86efac;
+  background: rgba(22, 163, 74, 0.16);
+  border-color: rgba(74, 222, 128, 0.45);
+}
+
+html.dark .priority.high {
+  color: #fcd34d;
+  background: rgba(217, 119, 6, 0.16);
+  border-color: rgba(251, 191, 36, 0.45);
+}
+
+html.dark .priority.urgent {
+  color: #fca5a5;
+  background: rgba(220, 38, 38, 0.16);
+  border-color: rgba(248, 113, 113, 0.45);
+}
+
 .status.progress {
-  color: #2563eb;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
+  color: var(--status-progress-text);
+  background: var(--status-progress-bg);
+  border: 1px solid var(--status-progress-border);
 }
 
 .status.waiting {
-  color: #334155;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
+  color: var(--status-waiting-text);
+  background: var(--status-waiting-bg);
+  border: 1px solid var(--status-waiting-border);
 }
 
 .status.done {
-  color: #16a34a;
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
+  color: var(--status-done-text);
+  background: var(--status-done-bg);
+  border: 1px solid var(--status-done-border);
 }
 
 .status.cancelled {
-  color: #dc2626;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+  color: var(--status-cancelled-text);
+  background: var(--status-cancelled-bg);
+  border: 1px solid var(--status-cancelled-border);
 }
 
 @media (max-width: 1200px) {
