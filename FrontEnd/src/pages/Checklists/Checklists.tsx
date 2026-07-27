@@ -343,17 +343,25 @@ function Checklists() {
             className="checklists-modal"
             onClick={(evento) => evento.stopPropagation()}
           >
-            <header>
+            <header className="checklists-modal-header">
               <div>
                 <h2>{modeloEditando ? "Editar checklist" : "Novo checklist"}</h2>
-              <p>Salve o modelo para uso nas execuções.</p>
+                <p>Salve o modelo para uso nas execuções.</p>
               </div>
-              <button type="button" onClick={() => setModalAberto(false)}>
+              <button
+                type="button"
+                className="checklists-modal-fechar"
+                aria-label="Fechar"
+                onClick={() => setModalAberto(false)}
+              >
                 <FiX />
               </button>
             </header>
 
-            <form onSubmit={salvarChecklist}>
+            <form
+              className="checklists-modal-formulario"
+              onSubmit={salvarChecklist}
+            >
               <label>
                 Nome
                 <input
@@ -385,7 +393,11 @@ function Checklists() {
                     value={itemAtual}
                     onChange={(evento) => setItemAtual(evento.target.value)}
                   />
-                  <button type="button" onClick={adicionarItem}>
+                  <button
+                    type="button"
+                    className="checklists-adicionar"
+                    onClick={adicionarItem}
+                  >
                     Adicionar
                   </button>
                 </div>
@@ -403,10 +415,16 @@ function Checklists() {
               </ul>
 
               <div className="checklists-modal-acoes">
-                <button type="button" onClick={() => setModalAberto(false)}>
+                <button
+                  type="button"
+                  className="checklists-cancelar"
+                  onClick={() => setModalAberto(false)}
+                >
                   Cancelar
                 </button>
-                <button type="submit">Salvar</button>
+                <button type="submit" className="checklists-salvar">
+                  Salvar
+                </button>
               </div>
             </form>
           </aside>

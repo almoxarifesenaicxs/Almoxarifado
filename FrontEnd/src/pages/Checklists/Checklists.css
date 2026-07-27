@@ -620,6 +620,10 @@
   gap: 18px;
 }
 
+.checklists-modal-header > div {
+  min-width: 0;
+}
+
 .checklists-modal-header h2 {
   margin: 0;
   font-size: 27px;
@@ -635,6 +639,9 @@
 }
 
 .checklists-modal-fechar {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
   width: 36px;
   height: 36px;
   border: 1px solid #dbe3ef;
@@ -646,8 +653,19 @@
   line-height: 1;
 }
 
+.checklists-modal-fechar svg {
+  width: 20px;
+  height: 20px;
+}
+
 .checklists-modal-fechar:hover {
   background: #f8fafc;
+}
+
+.checklists-modal-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .checklists-modal-grid {
@@ -1040,6 +1058,11 @@
   padding: 0 16px;
 }
 
+.checklists-item-input button:hover,
+.checklists-salvar:hover {
+  background: #0039a6;
+}
+
 .checklists-itens {
   margin: 0;
   padding: 0;
@@ -1238,6 +1261,18 @@ html.dark .checklists-categorias-grid button.ativo {
   background: rgba(37, 99, 235, 0.2);
   border-color: #60a5fa;
   color: #bfdbfe;
+}
+
+html.dark .checklists-item-input .checklists-adicionar,
+html.dark .checklists-modal-acoes .checklists-salvar {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+html.dark .checklists-item-input .checklists-adicionar:hover,
+html.dark .checklists-modal-acoes .checklists-salvar:hover {
+  background: #1d4ed8;
 }
 
 .checklists-executar {

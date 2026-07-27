@@ -216,7 +216,7 @@ function NovaDemanda() {
 
             <div className="nova-demanda-grupo">
               <label>
-                Data Solicitada <span>*</span>
+                Prazo <span>*</span>
               </label>
               <div className="nova-demanda-data">
                 <input
@@ -342,24 +342,24 @@ function NovaDemanda() {
                 ))}
               </div>
             </section>
-          </aside>
 
-          <div className="nova-demanda-acoes">
-            <button
-              type="button"
-              className="nova-demanda-cancelar"
-              onClick={() => navigate("/demandas")}
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              className="nova-demanda-salvar"
-              disabled={salvando}
-            >
-              {salvando ? "Salvando..." : "Salvar Demanda"}
-            </button>
-          </div>
+            <div className="nova-demanda-acoes">
+              <button
+                type="button"
+                className="nova-demanda-cancelar"
+                onClick={() => navigate("/demandas")}
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                className="nova-demanda-salvar"
+                disabled={salvando}
+              >
+                {salvando ? "Salvando..." : "Salvar Demanda"}
+              </button>
+            </div>
+          </aside>
         </form>
         </section>
       </main>
