@@ -58,14 +58,10 @@ function Notificacoes() {
 
     async function carregarInicial() {
       try {
-        const [dados, excluidas] = await Promise.all([
-          listarNotificacoesApi(),
-          listarLixeiraNotificacoesApi(),
-        ]);
+        const dados = await listarNotificacoesApi();
 
         if (ativo) {
           setNotificacoes(dados);
-          setLixeira(excluidas);
           setErro("");
         }
       } catch {
