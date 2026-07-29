@@ -5,7 +5,7 @@ import {
   FaEye,
   FaEyeSlash,
 } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { FiMoon, FiSun } from "react-icons/fi";
 
 import { login } from "../../services/auth";
@@ -18,9 +18,14 @@ import "./Login.css";
 
 function Login() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [matricula, setMatricula] = useState("");
   const [dataNascimento, setDataNascimento] = useState("");
-  const [erro, setErro] = useState("");
+  const [erro, setErro] = useState(
+    searchParams.get("motivo") === "sessao-expirada"
+      ? "Sua sessão expirou. Entre novamente para continuar."
+      : "",
+  );
   const [carregando, setCarregando] = useState(false);
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [tema, setTema] = useState<ThemeMode>(getTemaSalvo);

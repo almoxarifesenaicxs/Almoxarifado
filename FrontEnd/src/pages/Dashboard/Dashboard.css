@@ -12,7 +12,7 @@
 
 .dashboard-conteudo {
   min-height: calc(100dvh - 72px);
-  padding: 40px 44px 32px;
+  padding: 22px 40px 28px;
 }
 
 .dashboard-alert {
@@ -29,28 +29,58 @@
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-  margin-bottom: 22px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .charts-grid {
   display: grid;
   grid-template-columns: 1fr 1.08fr;
-  gap: 18px;
-  margin-bottom: 22px;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .panel {
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 16px;
+  border-radius: 14px;
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
-  padding: 28px;
+  padding: 20px;
 }
 
 .panel h3 {
-  font-size: 20px;
-  margin-bottom: 22px;
+  font-size: 18px;
+  margin-bottom: 18px;
+}
+
+.dashboard-main .stat-card {
+  min-height: 105px;
+  padding: 18px 20px;
+  border-radius: 13px;
+}
+
+.dashboard-main .stat-card h3 {
+  font-size: 14px;
+  margin-bottom: 9px;
+}
+
+.dashboard-main .stat-card strong {
+  font-size: 30px;
+  margin-bottom: 7px;
+}
+
+.dashboard-main .stat-card p {
+  font-size: 14px;
+}
+
+.dashboard-main .stat-icon {
+  width: 48px;
+  height: 48px;
+  font-size: 26px;
+}
+
+.dashboard-main .stat-icon.red {
+  font-size: 40px;
 }
 
 html.dark .dashboard-alert {
@@ -61,14 +91,14 @@ html.dark .dashboard-alert {
 
 .priority-content {
   display: grid;
-  grid-template-columns: 250px 1fr;
+  grid-template-columns: 240px 1fr;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
 }
 
 .donut-wrapper {
   position: relative;
-  height: 250px;
+  height: 240px;
 }
 
 .donut-center {
@@ -81,39 +111,39 @@ html.dark .dashboard-alert {
 }
 
 .donut-center strong {
-  font-size: 40px;
+  font-size: 34px;
   line-height: 1;
 }
 
 .donut-center span {
-  font-size: 15px;
-  margin-top: 6px;
+  font-size: 14px;
+  margin-top: 4px;
   color: #64748b;
 }
 
 .priority-legend {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 17px;
 }
 
 .legend-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
-  font-size: 16px;
+  gap: 12px;
+  font-size: 14px;
 }
 
 .legend-row div {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .legend-dot {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
 }
 
@@ -129,10 +159,10 @@ table {
 
 th,
 td {
-  padding: 18px 10px;
+  padding: 13px 10px;
   border-bottom: 1px solid #e5e7eb;
   text-align: left;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 th {
@@ -148,8 +178,8 @@ tr:last-child td {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 30px;
-  padding: 0 12px;
+  height: 28px;
+  padding: 0 11px;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 700;

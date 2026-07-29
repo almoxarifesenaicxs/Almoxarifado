@@ -6,10 +6,10 @@
 
 :root {
   color-scheme: light;
-  --app-bg: #f8fafc;
-  --app-surface: #ffffff;
-  --app-surface-soft: #f8fafc;
-  --app-border: #e5e7eb;
+  --app-bg: #f1f3f6;
+  --app-surface: #fafbfc;
+  --app-surface-soft: #eef2f6;
+  --app-border: #d4dce7;
   --app-text: #0f172a;
   --app-muted: #64748b;
   --app-primary: #0057d9;
@@ -30,10 +30,10 @@
 
 html.dark {
   color-scheme: dark;
-  --app-bg: #0b1120;
-  --app-surface: #111827;
-  --app-surface-soft: #0f172a;
-  --app-border: #253044;
+  --app-bg: #0a1020;
+  --app-surface: #172033;
+  --app-surface-soft: #131c2d;
+  --app-border: #2d3a50;
   --app-text: #f8fafc;
   --app-muted: #cbd5e1;
   --app-primary: #60a5fa;
@@ -69,6 +69,77 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+html:not(.dark) :is(
+  .dashboard-layout,
+  .users-layout,
+  .demandas-layout,
+  .almoxarifado-layout,
+  .checklists-layout,
+  .compras-layout,
+  .nova-compra-layout,
+  .nova-demanda-layout,
+  .detalhes-compra-layout,
+  .detalhes-demanda-layout,
+  .execucao-layout,
+  .historico-layout,
+  .visualizar-layout,
+  .notificacoes-layout,
+  .relatorios-layout,
+  .dashboard-main,
+  .users-main,
+  .demandas-main,
+  .almoxarifado-main,
+  .checklists-main,
+  .compras-main,
+  .nova-compra-main,
+  .nova-demanda-main,
+  .detalhes-compra-main,
+  .detalhes-demanda-main,
+  .execucao-main,
+  .historico-main,
+  .visualizar-main,
+  .notificacoes-main,
+  .relatorios-main
+) {
+  background: var(--app-bg) !important;
+}
+
+html:not(.dark) :is(
+  .panel,
+  .stat-card,
+  .dashboard-card,
+  .demandas-tabela-card,
+  .users-card,
+  .users-table-wrap,
+  .user-modal,
+  .user-more-menu,
+  .notificacao-card,
+  .notificacoes-resumo article,
+  .almoxarifado-coluna,
+  .almoxarifado-resumo-card,
+  .almoxarifado-modal,
+  .checklists-card,
+  .checklists-indicadores article,
+  .checklists-modal,
+  .compras-card,
+  .compras-indicadores div,
+  .nova-compra-card,
+  .nova-compra-resumo,
+  .nova-demanda-card,
+  .detalhes-compra-card,
+  .detalhes-demanda-card,
+  .execucao-card,
+  .historico-card,
+  .visualizar-card,
+  .notificacoes-card,
+  .relatorios-card,
+  .relatorios-indicadores article
+) {
+  background: var(--app-surface);
+  border-color: var(--app-border);
+  box-shadow: 0 8px 24px rgba(51, 65, 85, 0.05);
 }
 
 :is(

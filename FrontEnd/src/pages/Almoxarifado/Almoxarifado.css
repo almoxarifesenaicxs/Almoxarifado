@@ -712,7 +712,11 @@
 
 html.dark .almoxarifado-layout,
 html.dark .almoxarifado-main {
-  background: #020617;
+  background: var(--app-bg) !important;
+}
+
+html.dark .almoxarifado-conteudo {
+  background: var(--app-bg) !important;
 }
 
 html.dark .almoxarifado-alerta {
@@ -722,12 +726,12 @@ html.dark .almoxarifado-alerta {
 }
 
 html.dark .almoxarifado-coluna:nth-child(n) {
-  background: #111827;
-  border-color: #1e293b;
+  background: var(--app-surface);
+  border-color: var(--app-border);
 }
 
 html.dark .almoxarifado-resumo-card {
-  background: #111827;
+  background: var(--app-surface);
 }
 
 html.dark .almoxarifado-resumo-card span,
@@ -737,7 +741,7 @@ html.dark .almoxarifado-card-topo h3,
 html.dark .almoxarifado-modal-topo h2,
 html.dark .almoxarifado-modal-secao h3,
 html.dark .almoxarifado-info-card strong {
-  color: #f8fafc;
+  color: var(--app-text);
 }
 
 html.dark .almoxarifado-resumo-card small,
@@ -746,7 +750,7 @@ html.dark .almoxarifado-professor,
 html.dark .almoxarifado-modal-topo p,
 html.dark .almoxarifado-modal-secao p,
 html.dark .almoxarifado-info-card span {
-  color: #94a3b8;
+  color: var(--app-muted);
 }
 
 html.dark .almoxarifado-filtros-topo,
@@ -755,9 +759,9 @@ html.dark .almoxarifado-modal,
 html.dark .almoxarifado-info-card,
 html.dark .almoxarifado-modal-status,
 html.dark .almoxarifado-vazio {
-  background: #0f172a;
-  border-color: #1e293b;
-  color: #e5e7eb;
+  background: var(--app-surface-soft);
+  border-color: var(--app-border);
+  color: var(--app-text);
 }
 
 html.dark .almoxarifado-coluna,
@@ -765,20 +769,20 @@ html.dark .almoxarifado-coluna:nth-child(1),
 html.dark .almoxarifado-coluna:nth-child(2),
 html.dark .almoxarifado-coluna:nth-child(3),
 html.dark .almoxarifado-coluna:nth-child(4) {
-  background: #111827;
-  border-color: #1e293b;
+  background: var(--app-surface);
+  border-color: var(--app-border);
 }
 
 html.dark .almoxarifado-select,
 html.dark .almoxarifado-filtrar,
 html.dark .almoxarifado-fechar {
-  background: #111827;
+  background: var(--app-surface-soft);
   border-color: #334155;
-  color: #e5e7eb;
+  color: var(--app-text);
 }
 
 html.dark .almoxarifado-select select {
-  color: #e5e7eb;
+  color: var(--app-text);
 }
 
 html.dark .almoxarifado-ver-mais {

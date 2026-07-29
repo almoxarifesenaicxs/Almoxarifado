@@ -1,0 +1,552 @@
+:root {
+  --semantic-danger-bg: #fef2f2;
+  --semantic-danger-border: #fecaca;
+  --semantic-danger-text: #dc2626;
+  --semantic-warning-bg: #fff7ed;
+  --semantic-warning-border: #fed7aa;
+  --semantic-warning-text: #d97706;
+  --semantic-success-bg: #dcfce7;
+  --semantic-success-border: #bbf7d0;
+  --semantic-success-text: #15803d;
+  --semantic-info-bg: #eff6ff;
+  --semantic-info-border: #bfdbfe;
+  --semantic-info-text: #2563eb;
+}
+
+html.dark {
+  --semantic-danger-bg: #351925;
+  --semantic-danger-border: #6b2938;
+  --semantic-danger-text: #ff7b8b;
+  --semantic-warning-bg: #39291f;
+  --semantic-warning-border: #6b4b26;
+  --semantic-warning-text: #fbbf24;
+  --semantic-success-bg: #0f3532;
+  --semantic-success-border: #176055;
+  --semantic-success-text: #4ade80;
+  --semantic-info-bg: #102d4a;
+  --semantic-info-border: #1e4e78;
+  --semantic-info-text: #60a5fa;
+}
+
+/* Base visual compartilhada por todas as telas autenticadas. */
+html.dark :is(
+  .dashboard-layout,
+  .users-layout,
+  .demandas-layout,
+  .almoxarifado-layout,
+  .checklists-layout,
+  .compras-layout,
+  .nova-compra-layout,
+  .nova-demanda-layout,
+  .detalhes-compra-layout,
+  .detalhes-demanda-layout,
+  .execucao-layout,
+  .historico-layout,
+  .visualizar-layout,
+  .notificacoes-layout,
+  .relatorios-layout,
+  .dashboard-main,
+  .users-main,
+  .demandas-main,
+  .almoxarifado-main,
+  .checklists-main,
+  .compras-main,
+  .nova-compra-main,
+  .nova-demanda-main,
+  .detalhes-compra-main,
+  .detalhes-demanda-main,
+  .execucao-main,
+  .historico-main,
+  .visualizar-main,
+  .notificacoes-main,
+  .relatorios-main
+) {
+  background: var(--app-bg);
+  color: var(--app-text);
+}
+
+html.dark :is(
+  .panel,
+  .stat-card,
+  .dashboard-card,
+  .demandas-tabela-card,
+  .users-card,
+  .users-table-wrap,
+  .user-modal,
+  .user-more-menu,
+  .notificacao-card,
+  .notificacoes-resumo article,
+  .almoxarifado-coluna,
+  .almoxarifado-resumo-card,
+  .almoxarifado-modal,
+  .checklists-card,
+  .checklists-indicadores article,
+  .checklists-modal,
+  .compras-card,
+  .compras-indicadores div,
+  .nova-compra-card,
+  .nova-compra-resumo,
+  .nova-demanda-card,
+  .detalhes-compra-card,
+  .detalhes-demanda-card,
+  .execucao-card,
+  .historico-card,
+  .visualizar-card,
+  .notificacoes-card,
+  .relatorios-card,
+  .relatorios-indicadores article
+) {
+  background: var(--app-surface);
+  border-color: var(--app-border);
+  color: var(--app-text);
+}
+
+html.dark :is(
+  .demandas-busca,
+  .demandas-select,
+  .demandas-abas button,
+  .demandas-paginacao button,
+  .notificacoes-busca,
+  .notificacoes-filtros select,
+  .notificacoes-filtros button,
+  .notificacoes-botao-marcar,
+  .notificacao-corpo footer button,
+  .almoxarifado-filtros-topo,
+  .almoxarifado-card,
+  .almoxarifado-info-card,
+  .almoxarifado-modal-status,
+  .almoxarifado-vazio,
+  .almoxarifado-select,
+  .almoxarifado-filtrar,
+  .almoxarifado-fechar,
+  .checklists-busca,
+  .checklists-filtro,
+  .checklists-vazio,
+  .compras-busca,
+  .compras-filtros select,
+  .compras-acao,
+  .nova-demanda-prioridades button:not(.ativo),
+  .relatorios-acoes label,
+  .relatorios-acoes .relatorios-imprimir,
+  .relatorios-vazio,
+  .notificacoes-vazio
+) {
+  background: var(--app-surface-soft);
+  border-color: #334155;
+  color: var(--app-text);
+}
+
+/* Urgente, erro, cancelado, inativo e danificado. */
+html.dark :is(
+  .relatorios-prioridade.urgente,
+  .notificacao-prioridade.urgente,
+  .almoxarifado-prioridade.urgente,
+  .badge.priority.urgent,
+  .badge.status.cancelled,
+  .compras-urgencia.alta,
+  .compras-status.cancelado,
+  .checklists-status.inativo,
+  .checklists-acao-status.inativar,
+  .visualizar-status.danificado,
+  .execucao-status-opcoes .ativo.danificado,
+  .user-status.inactive
+) {
+  background: var(--semantic-danger-bg);
+  border-color: var(--semantic-danger-border);
+  color: var(--semantic-danger-text);
+}
+
+html.dark :is(
+  .demanda-prioridade.urgente,
+  .notificacao-icone.urgente,
+  .notificacoes-resumo .urgentes svg
+) {
+  color: var(--semantic-danger-text);
+}
+
+html.dark :is(
+  .demanda-prioridade.urgente > span
+) {
+  background: var(--semantic-danger-text);
+}
+
+/* Alta, aguardando, faltante e estados de atenção. */
+html.dark :is(
+  .relatorios-prioridade.alta,
+  .notificacao-prioridade.alta,
+  .almoxarifado-prioridade.alta,
+  .badge.priority.high,
+  .demanda-status.aguardando,
+  .compras-urgencia.média,
+  .compras-status.aguardando-processamento,
+  .visualizar-status.faltante,
+  .execucao-status-opcoes .ativo.faltante
+) {
+  background: var(--semantic-warning-bg);
+  border-color: var(--semantic-warning-border);
+  color: var(--semantic-warning-text);
+}
+
+html.dark :is(
+  .demanda-prioridade.alta,
+  .notificacao-icone.alta,
+  .notificacoes-resumo .nao-lidas svg
+) {
+  color: var(--semantic-warning-text);
+}
+
+html.dark :is(
+  .demanda-prioridade.alta > span,
+  .demanda-status.aguardando > span
+) {
+  background: var(--semantic-warning-text);
+}
+
+/* Normal, concluído, ativo, recebido e conforme. */
+html.dark :is(
+  .relatorios-prioridade.normal,
+  .notificacao-prioridade.normal,
+  .almoxarifado-prioridade.normal,
+  .badge.priority.normal,
+  .badge.status.done,
+  .demanda-status.concluida,
+  .compras-urgencia.baixa,
+  .compras-status.recebido,
+  .checklists-status.ativo,
+  .checklists-acao-status.ativar,
+  .visualizar-status.conforme,
+  .execucao-status-opcoes .ativo.conforme,
+  .user-status.active
+) {
+  background: var(--semantic-success-bg);
+  border-color: var(--semantic-success-border);
+  color: var(--semantic-success-text);
+}
+
+html.dark .demanda-prioridade.normal {
+  color: var(--semantic-success-text);
+}
+
+html.dark .demanda-prioridade.normal > span {
+  background: var(--semantic-success-text);
+}
+
+html.dark .demanda-status.concluida > span {
+  background: var(--semantic-success-text);
+}
+
+/* Baixa, andamento, cotação e estados informativos. */
+html.dark :is(
+  .relatorios-prioridade.baixa,
+  .almoxarifado-prioridade.baixa,
+  .badge.status.progress,
+  .demanda-status.andamento,
+  .compras-status.em-cotacao
+) {
+  background: var(--semantic-info-bg);
+  border-color: var(--semantic-info-border);
+  color: var(--semantic-info-text);
+}
+
+html.dark .demanda-status.andamento > span {
+  background: var(--semantic-info-text);
+}
+
+html.dark .demanda-status.cancelada {
+  background: var(--semantic-danger-bg);
+  border-color: var(--semantic-danger-border);
+  color: var(--semantic-danger-text);
+}
+
+html.dark .demanda-status.cancelada > span {
+  background: var(--semantic-danger-text);
+}
+
+/* Cartões-resumo preservam a mesma linguagem semântica da referência. */
+html.dark :is(
+  .almoxarifado-resumo-card.abertas
+) {
+  background: var(--semantic-danger-bg);
+  border-color: var(--semantic-danger-border);
+}
+
+html.dark :is(
+  .almoxarifado-resumo-card.material
+) {
+  background: var(--semantic-warning-bg);
+  border-color: var(--semantic-warning-border);
+}
+
+html.dark :is(
+  .almoxarifado-resumo-card.concluidas
+) {
+  background: var(--semantic-success-bg);
+  border-color: var(--semantic-success-border);
+}
+
+html.dark :is(
+  .almoxarifado-resumo-card.andamento
+) {
+  background: var(--semantic-info-bg);
+  border-color: var(--semantic-info-border);
+}
+
+/* Prioridades selecionáveis da criação de demanda. */
+html.dark .nova-demanda-prioridades .urgente.ativo {
+  background: var(--semantic-danger-bg);
+  border-color: var(--semantic-danger-border);
+  color: var(--semantic-danger-text);
+}
+
+html.dark .nova-demanda-prioridades .alta.ativo {
+  background: var(--semantic-warning-bg);
+  border-color: var(--semantic-warning-border);
+  color: var(--semantic-warning-text);
+}
+
+html.dark .nova-demanda-prioridades .normal.ativo {
+  background: var(--semantic-success-bg);
+  border-color: var(--semantic-success-border);
+  color: var(--semantic-success-text);
+}
+
+html.dark .nova-demanda-prioridades button:not(.ativo) {
+  background: var(--app-surface-soft);
+  border-color: #334155;
+  color: #94a3b8;
+}
+
+html.dark .nova-demanda-prioridades button :is(strong, span, svg) {
+  color: currentColor !important;
+}
+
+html.dark .nova-demanda-botao-anexo {
+  background: var(--semantic-info-bg);
+  border-color: var(--semantic-info-border);
+  color: var(--semantic-info-text) !important;
+}
+
+html.dark .nova-demanda-botao-anexo :is(strong, svg) {
+  color: var(--semantic-info-text);
+}
+
+html.dark .nova-demanda-botao-anexo small {
+  color: var(--app-muted);
+}
+
+html.dark .nova-demanda-botao-anexo:hover {
+  background: #163b5d;
+  border-color: var(--semantic-info-text);
+}
+
+html.dark :is(
+  .nova-demanda-anexos-vazio,
+  .nova-demanda-anexo-item
+) {
+  background: var(--app-surface-soft);
+  border-color: var(--app-border);
+}
+
+html.dark .nova-demanda-anexos-vazio {
+  background: transparent;
+}
+
+html.dark .nova-demanda-anexo-item :is(strong, small) {
+  color: var(--app-text);
+}
+
+html.dark .nova-demanda-anexo-item small {
+  opacity: 0.72;
+}
+
+html.dark .nova-demanda-anexo-item button {
+  background: var(--semantic-danger-bg);
+  border-color: var(--semantic-danger-border);
+  color: var(--semantic-danger-text);
+}
+
+html.dark .nova-demanda-cancelar {
+  background: var(--app-surface-soft);
+  border-color: #475569;
+  color: var(--app-text);
+}
+
+html.dark .nova-demanda-acoes {
+  border-color: var(--app-border);
+}
+
+html.dark .nova-demanda-salvar {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+/* A lixeira mantém contraste próprio mesmo entre os botões neutros. */
+html.dark .notificacao-botao-excluir {
+  background: var(--semantic-danger-bg);
+  border-color: var(--semantic-danger-border);
+  color: var(--semantic-danger-text);
+}
+
+/*
+ * Painéis de quantidade
+ * Mantém as dimensões definidas por cada página e unifica somente o acabamento.
+ */
+:is(
+  .dashboard-main .stat-card,
+  .almoxarifado-resumo-card,
+  .compras-indicadores > div,
+  .checklists-indicadores > article,
+  .checklists-indicadores > div,
+  .notificacoes-resumo > article,
+  .relatorios-indicadores > article
+) {
+  border-width: 1px;
+  border-style: solid;
+  box-shadow:
+    inset 4px 0 0 var(--panel-accent, var(--semantic-info-text)),
+    0 8px 22px rgba(15, 23, 42, 0.06);
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+:is(
+  .dashboard-main .stat-card,
+  .almoxarifado-resumo-card,
+  .compras-indicadores > div,
+  .checklists-indicadores > article,
+  .checklists-indicadores > div,
+  .notificacoes-resumo > article,
+  .relatorios-indicadores > article
+):hover {
+  box-shadow:
+    inset 4px 0 0 var(--panel-accent, var(--semantic-info-text)),
+    0 10px 26px rgba(15, 23, 42, 0.1);
+}
+
+/* Total e estados informativos. */
+:is(
+  .dashboard-main .stat-card:has(.stat-icon.blue),
+  .compras-indicadores > div:nth-child(1),
+  .checklists-indicadores > :nth-child(1),
+  .notificacoes-resumo > article:nth-child(1),
+  .notificacoes-resumo > article.sistema,
+  .relatorios-indicadores > article:nth-child(1),
+  .relatorios-indicadores > article.andamento,
+  .almoxarifado-resumo-card.andamento
+) {
+  --panel-accent: var(--semantic-info-text);
+  background: var(--semantic-info-bg);
+  border-color: var(--semantic-info-border);
+}
+
+/* Aguardando, material pendente e rascunhos. */
+:is(
+  .dashboard-main .stat-card:has(.stat-icon.orange),
+  .almoxarifado-resumo-card.material,
+  .compras-indicadores > .aguardando,
+  .compras-indicadores > div:nth-child(2),
+  .checklists-indicadores > :nth-child(3),
+  .notificacoes-resumo > article.nao-lidas
+) {
+  --panel-accent: var(--semantic-warning-text);
+  background: var(--semantic-warning-bg);
+  border-color: var(--semantic-warning-border);
+}
+
+/* Concluídos, aprovados e executados. */
+:is(
+  .dashboard-main .stat-card:has(.stat-icon.green),
+  .almoxarifado-resumo-card.concluidas,
+  .compras-indicadores > .recebido,
+  .compras-indicadores > div:nth-child(3),
+  .compras-indicadores > div:nth-child(4),
+  .checklists-indicadores > :nth-child(2),
+  .relatorios-indicadores > article.concluidas
+) {
+  --panel-accent: var(--semantic-success-text);
+  background: var(--semantic-success-bg);
+  border-color: var(--semantic-success-border);
+}
+
+/* Abertos críticos, urgentes, atrasados e inativos. */
+:is(
+  .dashboard-main .stat-card:has(.stat-icon.red),
+  .almoxarifado-resumo-card.abertas,
+  .checklists-indicadores > :nth-child(4),
+  .notificacoes-resumo > article.urgentes,
+  .relatorios-indicadores > article.atrasadas
+) {
+  --panel-accent: var(--semantic-danger-text);
+  background: var(--semantic-danger-bg);
+  border-color: var(--semantic-danger-border);
+}
+
+/* Números recebem a cor do status; títulos e descrições continuam legíveis. */
+:is(
+  .dashboard-main .stat-card,
+  .almoxarifado-resumo-card,
+  .compras-indicadores > div,
+  .checklists-indicadores > article,
+  .checklists-indicadores > div,
+  .notificacoes-resumo > article,
+  .relatorios-indicadores > article
+) strong {
+  color: var(--panel-accent, var(--app-text));
+}
+
+:is(
+  .dashboard-main .stat-card,
+  .almoxarifado-resumo-card,
+  .compras-indicadores > div,
+  .checklists-indicadores > article,
+  .checklists-indicadores > div,
+  .notificacoes-resumo > article,
+  .relatorios-indicadores > article
+) :is(h3, span, p, small) {
+  color: var(--app-text);
+}
+
+:is(
+  .dashboard-main .stat-card,
+  .almoxarifado-resumo-card,
+  .compras-indicadores > div,
+  .checklists-indicadores > article,
+  .checklists-indicadores > div,
+  .notificacoes-resumo > article,
+  .relatorios-indicadores > article
+) :is(p, small) {
+  opacity: 0.78;
+}
+
+/* Os ícones mantêm a identidade do painel sem alterar seu tamanho. */
+.dashboard-main .stat-card:has(.stat-icon.blue) .stat-icon {
+  background: var(--semantic-info-text);
+}
+
+.dashboard-main .stat-card:has(.stat-icon.orange) .stat-icon {
+  background: var(--semantic-warning-text);
+}
+
+.dashboard-main .stat-card:has(.stat-icon.green) .stat-icon {
+  background: var(--semantic-success-text);
+}
+
+.dashboard-main .stat-card:has(.stat-icon.red) .stat-icon {
+  color: var(--semantic-danger-text);
+}
+
+html.dark :is(
+  .dashboard-main .stat-card,
+  .almoxarifado-resumo-card,
+  .compras-indicadores > div,
+  .checklists-indicadores > article,
+  .checklists-indicadores > div,
+  .notificacoes-resumo > article,
+  .relatorios-indicadores > article
+) {
+  box-shadow:
+    inset 4px 0 0 var(--panel-accent, var(--semantic-info-text)),
+    0 8px 22px rgba(0, 0, 0, 0.2);
+}

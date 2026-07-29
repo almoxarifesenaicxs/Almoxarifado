@@ -299,6 +299,18 @@
   border: 1px solid var(--status-cancelled-border);
 }
 
+.demanda-status.concluida {
+  color: #15803d;
+  background: #dcfce7;
+  border: 1px solid #bbf7d0;
+}
+
+.demanda-status.cancelada {
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
 .demanda-status.andamento > span {
   background: var(--status-progress-text);
 }
@@ -310,6 +322,14 @@
 }
 .demanda-status.cancelada > span {
   background: var(--status-cancelled-text);
+}
+
+.demanda-status.concluida > span {
+  background: #16a34a;
+}
+
+.demanda-status.cancelada > span {
+  background: #dc2626;
 }
 
 .demanda-acao {

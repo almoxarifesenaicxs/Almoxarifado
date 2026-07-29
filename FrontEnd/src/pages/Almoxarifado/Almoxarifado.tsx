@@ -199,7 +199,6 @@ function Almoxarifado() {
                   }
                 </strong>
                 <span>Abertas</span>
-                <small>Demandas</small>
               </div>
             </article>
 
@@ -216,7 +215,6 @@ function Almoxarifado() {
                   }
                 </strong>
                 <span>Em Andamento</span>
-                <small>Demanda</small>
               </div>
             </article>
 
@@ -233,7 +231,6 @@ function Almoxarifado() {
                   }
                 </strong>
                 <span>Aguardando Material</span>
-                <small>Demanda</small>
               </div>
             </article>
 
@@ -249,7 +246,6 @@ function Almoxarifado() {
                   }
                 </strong>
                 <span>Concluídas</span>
-                <small>Demanda</small>
               </div>
             </article>
           </section>

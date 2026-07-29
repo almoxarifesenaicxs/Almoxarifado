@@ -218,8 +218,8 @@ export default function Dashboard() {
                     <Pie
                       data={priorityData}
                       dataKey="value"
-                      innerRadius={62}
-                      outerRadius={102}
+                      innerRadius={60}
+                      outerRadius={98}
                       paddingAngle={1}
                     >
                       {priorityData.map((item) => (
@@ -258,12 +258,12 @@ export default function Dashboard() {
           <div className="panel status-panel">
             <h3>Demandas por Status</h3>
 
-            <ResponsiveContainer width="100%" height={275}>
+            <ResponsiveContainer width="100%" height={240}>
               <BarChart data={statusData}>
                 <CartesianGrid stroke="#e5e7eb" vertical={false} />
                 <XAxis dataKey="name" tickLine={false} axisLine={false} />
                 <YAxis tickLine={false} axisLine={false} allowDecimals={false} />
-                <Bar dataKey="value" radius={[6, 6, 0, 0]} barSize={54}>
+                <Bar dataKey="value" radius={[6, 6, 0, 0]} barSize={50}>
                   {statusData.map((item) => (
                     <Cell key={item.name} fill={item.color} />
                   ))}
