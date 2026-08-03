@@ -310,6 +310,23 @@ function NovaDemanda() {
                 <strong>Solicitante</strong>
                 <span>{usuario?.nome || "—"}</span>
               </div>
+
+              <div className="nova-demanda-acoes">
+                <button
+                  type="button"
+                  className="nova-demanda-cancelar"
+                  onClick={() => navigate("/demandas")}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="nova-demanda-salvar"
+                  disabled={salvando}
+                >
+                  {salvando ? "Salvando..." : "Salvar Demanda"}
+                </button>
+              </div>
             </section>
 
             <section className="nova-demanda-card nova-demanda-anexos">
@@ -343,22 +360,6 @@ function NovaDemanda() {
               </div>
             </section>
 
-            <div className="nova-demanda-acoes">
-              <button
-                type="button"
-                className="nova-demanda-cancelar"
-                onClick={() => navigate("/demandas")}
-              >
-                Cancelar
-              </button>
-              <button
-                type="submit"
-                className="nova-demanda-salvar"
-                disabled={salvando}
-              >
-                {salvando ? "Salvando..." : "Salvar Demanda"}
-              </button>
-            </div>
           </aside>
         </form>
         </section>

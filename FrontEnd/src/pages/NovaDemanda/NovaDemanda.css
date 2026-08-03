@@ -14,16 +14,16 @@
   flex: 1;
   height: 100vh;
   min-width: 0;
-  overflow: hidden;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
 }
 
 .nova-demanda-conteudo {
-  height: calc(100dvh - 100px) !important;
-  min-height: 0 !important;
+  height: auto !important;
+  min-height: calc(100dvh - 100px) !important;
   padding-top: 28px !important;
-  padding-bottom: 32px !important;
-  overflow-x: hidden !important;
-  overflow-y: hidden !important;
+  padding-bottom: 56px !important;
+  overflow: visible !important;
 }
 
 /* =========================================================
@@ -315,16 +315,17 @@
 
 .nova-demanda-acoes {
   display: flex;
-  justify-content: flex-end;
+  justify-content: stretch;
   gap: 12px;
-  margin-top: -8px;
-  padding: 0 0 8px;
+  margin-top: 24px;
+  padding-top: 22px;
+  border-top: 1px solid #e2e8f0;
 }
 
 .nova-demanda-acoes button {
   flex: 1;
-  width: auto;
-  max-width: 168px;
+  width: 100%;
+  max-width: none;
   height: 52px;
   border-radius: 7px;
   font-size: 16px;

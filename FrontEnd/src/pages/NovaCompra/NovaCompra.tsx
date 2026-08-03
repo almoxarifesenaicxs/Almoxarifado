@@ -168,43 +168,46 @@ function NovaCompra() {
             </section>
 
             <aside className="nova-compra-resumo">
-              <h2>Resumo</h2>
+              <div className="nova-compra-resumo-titulo">
+                <h2>Resumo</h2>
+                <p>Confira os dados principais antes de enviar.</p>
+              </div>
 
-              <div>
+              <div className="nova-compra-resumo-item">
                 <span>Categoria</span>
                 <strong>{categoria || "—"}</strong>
               </div>
 
-              <div>
+              <div className="nova-compra-resumo-item">
                 <span>Item</span>
                 <strong>{nomeItem || "—"}</strong>
               </div>
 
-              <div>
+              <div className="nova-compra-resumo-item">
                 <span>Quantidade</span>
                 <strong>{quantidade || "—"}</strong>
               </div>
 
-              <div>
+              <div className="nova-compra-resumo-item">
                 <span>Urgência</span>
                 <strong>{urgencia || "—"}</strong>
               </div>
+
+              <div className="nova-compra-acoes">
+                <button type="submit" className="nova-compra-salvar">
+                  <span className="nova-compra-salvar-icone"><FiSave /></span>
+                  <span>Salvar Solicitação</span>
+                </button>
+
+                <button
+                  type="button"
+                  className="nova-compra-cancelar"
+                  onClick={() => navigate("/compras")}
+                >
+                  Cancelar e voltar
+                </button>
+              </div>
             </aside>
-
-            <div className="nova-compra-acoes">
-              <button
-                type="button"
-                className="nova-compra-cancelar"
-                onClick={() => navigate("/compras")}
-              >
-                Cancelar
-              </button>
-
-              <button type="submit" className="nova-compra-salvar">
-                <FiSave />
-                Salvar Solicitação
-              </button>
-            </div>
           </form>
         </section>
 
