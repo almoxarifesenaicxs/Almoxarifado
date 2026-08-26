@@ -120,7 +120,7 @@ Antes de iniciar, instale:
 ### 1. Clone o repositório
 
 ```bash
-git clone <URL_DO_REPOSITORIO>
+git clone https://github.com/almoxarifesenaicxs/Almoxarifado.git
 cd Almoxarifado
 ```
 
