@@ -57,13 +57,6 @@ namespace AlmoxarifadoSenai.Api.Controllers
         {
             var usuarios = await _firestoreService.ObterTodosUsuariosAsync();
 
-            if (EhCoordenadorLogado())
-            {
-                usuarios = usuarios
-                    .Where(usuario => !EhPerfilDesenvolvedor(usuario.Perfil))
-                    .ToList();
-            }
-
             return Ok(usuarios);
         }
 
@@ -73,10 +66,6 @@ namespace AlmoxarifadoSenai.Api.Controllers
         {
             var usuario = await _firestoreService.ObterUsuarioPorMatriculaAsync(matricula);
             if (usuario == null)
-            {
-                return NotFound($"Usuário com matrícula {matricula} não foi encontrado.");
-            }
-            if (EhPerfilDesenvolvedor(usuario.Perfil) && EhCoordenadorLogado())
             {
                 return NotFound($"Usuário com matrícula {matricula} não foi encontrado.");
             }
@@ -101,6 +90,7 @@ namespace AlmoxarifadoSenai.Api.Controllers
             usuarioExistente.Nome = dto.Nome;
             usuarioExistente.Perfil = dto.Perfil;
             usuarioExistente.DataNascimento = dto.DataNascimento;
+            usuarioExistente.Telefone = dto.Telefone.Trim();
             usuarioExistente.Ativo = dto.Ativo;
 
             await _firestoreService.SalvarUsuarioAsync(usuarioExistente);
@@ -147,11 +137,6 @@ namespace AlmoxarifadoSenai.Api.Controllers
         private static bool EhPerfilDesenvolvedor(string? perfil) =>
             string.Equals(perfil?.Trim(), Perfis.Desenvolvedor, StringComparison.OrdinalIgnoreCase);
 
-        private bool EhCoordenadorLogado() =>
-            string.Equals(
-                User.FindFirst(ClaimTypes.Role)?.Value,
-                Perfis.Coordenador,
-                StringComparison.OrdinalIgnoreCase);
     }
 
     

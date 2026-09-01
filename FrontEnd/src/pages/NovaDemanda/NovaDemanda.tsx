@@ -113,15 +113,15 @@ function NovaDemanda() {
       <Sidebar />
 
       <main className="nova-demanda-main">
-        <Header titulo="Nova Demanda" />
+        <Header titulo="Nova demanda ao almoxarife" />
         <section className="nova-demanda-conteudo">
         <header className="nova-demanda-topo">
           <div className="nova-demanda-breadcrumb">
             <button type="button" onClick={() => navigate("/demandas")}>
-              Demandas
+              Demandas ao almoxarife
             </button>
             <span>›</span>
-            <strong>Nova Demanda</strong>
+            <strong>Nova demanda ao almoxarife</strong>
           </div>
         </header>
 

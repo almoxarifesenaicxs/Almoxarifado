@@ -29,6 +29,7 @@ type Usuario = {
   matricula: string;
   nome: string;
   perfil: PerfilUsuario;
+  telefone: string;
   dataNascimento: string;
   ativo: boolean;
 };
@@ -40,6 +41,8 @@ type UsuarioApiResponse = {
   Nome?: string;
   perfil?: PerfilUsuario;
   Perfil?: PerfilUsuario;
+  telefone?: string;
+  Telefone?: string;
   dataNascimento?: string;
   DataNascimento?: string;
   ativo?: boolean;
@@ -50,6 +53,7 @@ type UsuarioForm = {
   matricula: string;
   nome: string;
   perfil: PerfilUsuario;
+  telefone: string;
   dataNascimento: string;
   ativo: boolean;
 };
@@ -58,6 +62,7 @@ const formularioVazio: UsuarioForm = {
   matricula: "",
   nome: "",
   perfil: "Professor",
+  telefone: "",
   dataNascimento: "",
   ativo: true,
 };
@@ -67,6 +72,7 @@ function mapearUsuario(usuario: UsuarioApiResponse): Usuario {
     matricula: usuario.matricula ?? usuario.Matricula ?? "",
     nome: usuario.nome ?? usuario.Nome ?? "",
     perfil: usuario.perfil ?? usuario.Perfil ?? "Professor",
+    telefone: usuario.telefone ?? usuario.Telefone ?? "",
     dataNascimento: usuario.dataNascimento ?? usuario.DataNascimento ?? "",
     ativo: usuario.ativo ?? usuario.Ativo ?? true,
   };
@@ -80,12 +86,6 @@ function gerarIniciais(nome: string) {
     .map((parte) => parte[0])
     .join("")
     .toUpperCase();
-}
-
-function formatarDataNascimento(data: string) {
-  if (!/^\d{8}$/.test(data)) return data || "-";
-
-  return `${data.slice(0, 2)}/${data.slice(2, 4)}/${data.slice(4)}`;
 }
 
 export default function Usuarios() {
@@ -106,13 +106,7 @@ export default function Usuarios() {
 
     try {
       const response = await api.get<UsuarioApiResponse[]>("/usuarios");
-      const usuariosReais = response.data
-        .map(mapearUsuario)
-        .filter(
-          (usuario) =>
-            usuarioLogado?.perfil !== "Coordenador" ||
-            usuario.perfil !== "Desenvolvedor",
-        );
+      const usuariosReais = response.data.map(mapearUsuario);
       setUsuarios(usuariosReais);
     } catch {
       setErro("Não foi possível carregar os usuários no momento.");
@@ -127,13 +121,7 @@ export default function Usuarios() {
     async function carregarInicial() {
       try {
         const response = await api.get<UsuarioApiResponse[]>("/usuarios");
-        const usuariosReais = response.data
-          .map(mapearUsuario)
-          .filter(
-            (usuario) =>
-              usuarioLogado?.perfil !== "Coordenador" ||
-              usuario.perfil !== "Desenvolvedor",
-          );
+        const usuariosReais = response.data.map(mapearUsuario);
 
         if (ativo) {
           setUsuarios(usuariosReais);
@@ -176,6 +164,7 @@ export default function Usuarios() {
       matricula: usuario.matricula,
       nome: usuario.nome,
       perfil: usuario.perfil,
+      telefone: usuario.telefone,
       dataNascimento: usuario.dataNascimento,
       ativo: usuario.ativo,
     });
@@ -220,6 +209,7 @@ export default function Usuarios() {
         await api.put(`/usuarios/${encodeURIComponent(matriculaOriginal)}`, {
           nome: dados.nome,
           perfil: dados.perfil,
+          telefone: formulario.telefone.trim(),
           dataNascimento: dados.dataNascimento,
           ativo: formulario.ativo,
         });
@@ -303,7 +293,7 @@ export default function Usuarios() {
                     <th>Nome</th>
                 <th>Matrícula</th>
                     <th>Perfil</th>
-                    <th>Nascimento</th>
+                    <th>Telefone</th>
                     <th>Status</th>
                 <th>Ações</th>
                   </tr>
@@ -335,7 +325,7 @@ export default function Usuarios() {
                           <span className="user-id">{usuario.matricula}</span>
                         </td>
                         <td>{usuario.perfil}</td>
-                        <td>{formatarDataNascimento(usuario.dataNascimento)}</td>
+                        <td>{usuario.telefone}</td>
 
                         <td>
                           <span
@@ -348,6 +338,10 @@ export default function Usuarios() {
                         </td>
 
                         <td>
+                          {usuarioLogado?.perfil === "Coordenador" &&
+                          usuario.perfil === "Desenvolvedor" ? (
+                            null
+                          ) : (
                           <div className="user-actions">
                             <button
                               type="button"
@@ -401,6 +395,7 @@ export default function Usuarios() {
                               )}
                             </div>
                           </div>
+                          )}
                         </td>
                       </tr>
                     ))}
@@ -500,6 +495,22 @@ export default function Usuarios() {
                 />
                 <small>Use 8 digitos, por exemplo 01012000.</small>
               </label>
+
+              {modoModal === "editar" && (
+                <label>
+                  Telefone
+                  <input
+                    type="tel"
+                    inputMode="tel"
+                    maxLength={20}
+                    placeholder="Ex.: 54999999999"
+                    value={formulario.telefone}
+                    onChange={(evento) =>
+                      alterarCampo("telefone", evento.target.value)
+                    }
+                  />
+                </label>
+              )}
 
               <label>
                 Perfil

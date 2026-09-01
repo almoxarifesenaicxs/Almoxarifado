@@ -124,7 +124,7 @@ function AppRoutes() {
         <Route
           path="/checklists"
           element={
-            <PrivateRoute allowedProfiles={perfisPermitidos("novaCompra")}>
+            <PrivateRoute allowedProfiles={perfisPermitidos("checklists")}>
               <Checklists />
             </PrivateRoute>
           }
@@ -169,7 +169,7 @@ function AppRoutes() {
         <Route
           path="/compras/nova"
           element={
-            <PrivateRoute allowedProfiles={["Desenvolvedor", "Admin", "Almoxarife", "Almoxarifado"]}>
+            <PrivateRoute allowedProfiles={perfisPermitidos("novaCompra")}>
               <NovaCompra />
             </PrivateRoute>
           }

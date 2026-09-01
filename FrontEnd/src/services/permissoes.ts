@@ -42,8 +42,10 @@ const permissoes: Record<Perfil, Recurso[]> = {
   Coordenador: [
     "dashboard",
     "demandas",
+    "novaDemanda",
     "almoxarifado",
     "compras",
+    "novaCompra",
     "relatorios",
     "usuarios",
     "notificacoes",

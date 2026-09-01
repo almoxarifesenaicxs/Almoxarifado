@@ -15,6 +15,8 @@ namespace AlmoxarifadoSenai.Api.DTOs
         [RegularExpression(@"^\d{8}$", ErrorMessage = "Data deve ter 8 dígitos (DDMMYYYY)")]
         public string DataNascimento { get; set; } = string.Empty;
 
+        public string Telefone { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "O status ativo/inativo é obrigatório.")]
         public bool Ativo { get; set; }
     }

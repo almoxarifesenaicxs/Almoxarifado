@@ -176,7 +176,7 @@ function Demandas() {
       <Sidebar />
 
       <main className="demandas-main">
-        <Header titulo="Demandas" />
+        <Header titulo="Demandas ao almoxarife" />
 
         <section className="demandas-conteudo">
           <div className="demandas-cabecalho">
@@ -249,7 +249,7 @@ function Demandas() {
                 onClick={() => navigate("/nova-demanda")}
               >
                 <FiPlus />
-                Nova Demanda
+                Nova demanda ao almoxarife
               </button>
             )}
           </div>

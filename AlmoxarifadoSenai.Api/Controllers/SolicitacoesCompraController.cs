@@ -23,7 +23,7 @@ namespace AlmoxarifadoSenai.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = $"{Perfis.OperacaoAlmoxarifado},{Perfis.Admin}")]
+        [Authorize(Roles = $"{Perfis.OperacaoAlmoxarifado},{Perfis.Admin},{Perfis.Coordenador}")]
         public async Task<IActionResult> CriarSolicitacao([FromBody] SolicitacaoCompraCriarDto dto)
         {
             var almoxarifeMatricula = User.FindFirst("Matricula")?.Value ?? string.Empty;

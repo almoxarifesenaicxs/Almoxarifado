@@ -9,3 +9,5 @@ obj/
 .env.*
 !*.env.example
 AlmoxarifadoSenai.Api/firebase-credentials.json
+
+AlmoxarifadoSenai.Api/.codex-build/
