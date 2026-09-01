@@ -130,6 +130,53 @@ namespace AlmoxarifadoSenai.Api.Controllers
             return Ok(new { mensagem = $"Status da demanda atualizado para {novoStatus}!", demanda });
         }
 
+        [HttpPut("{id}/cancelar")]
+        public async Task<IActionResult> CancelarMinhaDemanda(string id)
+        {
+            var demanda = await _firestoreService.ObterDemandaPorIdAsync(id);
+            if (demanda == null)
+            {
+                return NotFound($"Demanda com ID {id} não encontrada.");
+            }
+
+            var matriculaLogada = User.FindFirst("Matricula")?.Value ?? string.Empty;
+            if (!string.Equals(demanda.ProfessorMatricula, matriculaLogada, StringComparison.OrdinalIgnoreCase))
+            {
+                return Forbid("Somente o usuário que criou a demanda pode cancelá-la.");
+            }
+
+            if (demanda.Status == "Cancelada")
+            {
+                return BadRequest("Esta demanda já foi cancelada.");
+            }
+
+            if (string.Equals(demanda.Status, "Concluída", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(demanda.Status, "Concluida", StringComparison.OrdinalIgnoreCase))
+            {
+                return BadRequest("Uma demanda concluída não pode ser cancelada.");
+            }
+
+            demanda.Status = "Cancelada";
+            await _firestoreService.SalvarDemandaAsync(demanda);
+            await _firestoreService.NotificarTodosUsuariosAtivosAsync(new Notificacao
+            {
+                Titulo = "Demanda cancelada",
+                Mensagem = $"{demanda.ProfessorNome} cancelou a demanda \"{demanda.Titulo}\".",
+                Tipo = "Informacao",
+                Icone = "info",
+                Cor = "blue",
+                Link = $"/demandas/detalhes/{demanda.Id}",
+                DemandaId = demanda.Id,
+                DadosAdicionais = new Dictionary<string, string>
+                {
+                    ["evento"] = "demanda_cancelada",
+                    ["remetenteMatricula"] = matriculaLogada
+                }
+            }, matriculaLogada);
+
+            return Ok(new { mensagem = "Demanda cancelada com sucesso!", demanda });
+        }
+
         // 4. EDITAR DEMANDA (Apenas para Professor e Admin, e apenas se estiver "Aberta")
         [HttpPut("{id}")]
         [Authorize(Roles = $"{Perfis.Professor},{Perfis.Admin}")]

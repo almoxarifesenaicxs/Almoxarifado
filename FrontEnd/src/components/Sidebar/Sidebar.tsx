@@ -11,6 +11,9 @@ import {
   FiLogOut,
   FiMoon,
   FiShoppingCart,
+  FiSave,
+  FiSend,
+  FiUser,
   FiUsers,
   FiX,
 } from "react-icons/fi";
@@ -18,6 +21,7 @@ import {
 import "./Sidebar.css";
 import { alternarTema } from "../../services/theme";
 import { temPermissao, type Recurso } from "../../services/permissoes";
+import { api, obterMensagemErroApi } from "../../services/api";
 
 type Perfil = "Desenvolvedor" | "Admin" | "Coordenador" | "Professor" | "Almoxarife" | "Almoxarifado";
 
@@ -77,6 +81,12 @@ const itensMenu: ItemMenu[] = [
     caminho: "/notificacoes",
     recurso: "notificacoes",
   },
+  {
+    icone: <FiSend />,
+    titulo: "Comunicados",
+    caminho: "/comunicados-sistema",
+    recurso: "comunicadosSistema",
+  },
 ];
 
 function obterUsuarioLogado() {
@@ -109,10 +119,20 @@ function gerarIniciais(nome: string) {
 
 export default function Sidebar() {
   const navigate = useNavigate();
-  const usuario = obterUsuarioLogado();
+  const [usuario, setUsuario] = useState(obterUsuarioLogado);
 
   const [menuAberto, setMenuAberto] = useState(false);
   const [menuUsuarioAberto, setMenuUsuarioAberto] = useState(false);
+  const [editandoPerfil, setEditandoPerfil] = useState(false);
+  const [carregandoPerfil, setCarregandoPerfil] = useState(false);
+  const [salvandoPerfil, setSalvandoPerfil] = useState(false);
+  const [erroPerfil, setErroPerfil] = useState("");
+  const [perfilForm, setPerfilForm] = useState({
+    nome: "",
+    email: "",
+    telefone: "",
+    setor: "",
+  });
 
   const itensPermitidos = itensMenu.filter((item) =>
     temPermissao(usuario.perfil, item.recurso),
@@ -139,6 +159,54 @@ export default function Sidebar() {
   function alternarModoEscuro() {
     alternarTema();
     setMenuUsuarioAberto(false);
+  }
+
+  async function abrirEdicaoPerfil() {
+    setMenuUsuarioAberto(false);
+    setEditandoPerfil(true);
+    setCarregandoPerfil(true);
+    setErroPerfil("");
+
+    try {
+      const response = await api.get("/MeuPerfil");
+      const dados = response.data as {
+        nome?: string;
+        email?: string;
+        telefone?: string;
+        setor?: string;
+      };
+      setPerfilForm({
+        nome: dados.nome ?? usuario.nome,
+        email: dados.email ?? "",
+        telefone: dados.telefone ?? "",
+        setor: dados.setor ?? "",
+      });
+    } catch (error) {
+      setErroPerfil(obterMensagemErroApi(error, "Não foi possível carregar seus dados."));
+    } finally {
+      setCarregandoPerfil(false);
+    }
+  }
+
+  async function salvarMeuPerfil(evento: React.FormEvent<HTMLFormElement>) {
+    evento.preventDefault();
+    setSalvandoPerfil(true);
+    setErroPerfil("");
+
+    try {
+      const response = await api.put("/MeuPerfil", perfilForm);
+      const dados = response.data.usuario as { nome: string };
+      const token = response.data.token as string;
+      const usuarioAtualizado = { ...usuario, nome: dados.nome };
+      localStorage.setItem("@senai:user", JSON.stringify(usuarioAtualizado));
+      localStorage.setItem("@senai:token", token);
+      setUsuario(usuarioAtualizado);
+      setEditandoPerfil(false);
+    } catch (error) {
+      setErroPerfil(obterMensagemErroApi(error, "Não foi possível atualizar seus dados."));
+    } finally {
+      setSalvandoPerfil(false);
+    }
   }
 
   return (
@@ -208,6 +276,13 @@ export default function Sidebar() {
 
           {menuUsuarioAberto && (
             <div className="sidebar-user-menu">
+              {usuario.perfil !== "Coordenador" && (
+                <button type="button" onClick={() => void abrirEdicaoPerfil()}>
+                  <FiUser />
+                  Editar meus dados
+                </button>
+              )}
+
               <button type="button" onClick={alternarModoEscuro}>
                 <FiMoon />
                 Modo escuro
@@ -221,6 +296,70 @@ export default function Sidebar() {
           )}
         </div>
       </aside>
+
+      {editandoPerfil && (
+        <div className="perfil-modal-fundo" onClick={() => setEditandoPerfil(false)}>
+          <section className="perfil-modal" onClick={(evento) => evento.stopPropagation()}>
+            <header>
+              <div>
+                <h2>Editar meus dados</h2>
+                <p>Matrícula: {usuario.matricula}</p>
+              </div>
+              <button type="button" className="perfil-modal-fechar" onClick={() => setEditandoPerfil(false)}>
+                <FiX />
+              </button>
+            </header>
+
+            {erroPerfil && <div className="perfil-modal-erro">{erroPerfil}</div>}
+
+            <form onSubmit={salvarMeuPerfil}>
+              <label>
+                Nome
+                <input
+                  required
+                  disabled={carregandoPerfil}
+                  value={perfilForm.nome}
+                  onChange={(evento) => setPerfilForm((atual) => ({ ...atual, nome: evento.target.value }))}
+                />
+              </label>
+              <label>
+                E-mail
+                <input
+                  type="email"
+                  disabled={carregandoPerfil}
+                  value={perfilForm.email}
+                  onChange={(evento) => setPerfilForm((atual) => ({ ...atual, email: evento.target.value }))}
+                />
+              </label>
+              <label>
+                Telefone
+                <input
+                  type="tel"
+                  disabled={carregandoPerfil}
+                  value={perfilForm.telefone}
+                  onChange={(evento) => setPerfilForm((atual) => ({ ...atual, telefone: evento.target.value }))}
+                />
+              </label>
+              <label>
+                Setor
+                <input
+                  disabled={carregandoPerfil}
+                  value={perfilForm.setor}
+                  onChange={(evento) => setPerfilForm((atual) => ({ ...atual, setor: evento.target.value }))}
+                />
+              </label>
+
+              <div className="perfil-modal-acoes">
+                <button type="button" className="cancelar" onClick={() => setEditandoPerfil(false)}>Cancelar</button>
+                <button type="submit" className="salvar" disabled={carregandoPerfil || salvandoPerfil}>
+                  <FiSave />
+                  {salvandoPerfil ? "Salvando..." : "Salvar"}
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+      )}
     </>
   );
 }

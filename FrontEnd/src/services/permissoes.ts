@@ -11,7 +11,8 @@ export type Recurso =
   | "novoChecklist"
   | "relatorios"
   | "usuarios"
-  | "notificacoes";
+  | "notificacoes"
+  | "comunicadosSistema";
 
 const permissoes: Record<Perfil, Recurso[]> = {
   Desenvolvedor: [
@@ -26,6 +27,7 @@ const permissoes: Record<Perfil, Recurso[]> = {
     "relatorios",
     "usuarios",
     "notificacoes",
+    "comunicadosSistema",
   ],
   Admin: [
     "dashboard",
@@ -50,7 +52,7 @@ const permissoes: Record<Perfil, Recurso[]> = {
     "usuarios",
     "notificacoes",
   ],
-  Professor: ["dashboard", "demandas", "novaDemanda", "notificacoes"],
+  Professor: ["dashboard", "demandas", "novaDemanda", "usuarios", "notificacoes"],
   Almoxarife: [
     "dashboard",
     "demandas",
@@ -59,6 +61,7 @@ const permissoes: Record<Perfil, Recurso[]> = {
     "novaCompra",
     "checklists",
     "novoChecklist",
+    "usuarios",
     "notificacoes",
   ],
   Almoxarifado: [
@@ -69,6 +72,7 @@ const permissoes: Record<Perfil, Recurso[]> = {
     "novaCompra",
     "checklists",
     "novoChecklist",
+    "usuarios",
     "notificacoes",
   ],
 };

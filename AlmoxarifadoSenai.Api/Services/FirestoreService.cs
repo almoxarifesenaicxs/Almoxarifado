@@ -563,11 +563,14 @@ namespace AlmoxarifadoSenai.Api.Services
             await docRef.SetAsync(notificacao);
         }
 
-        public async Task<int> NotificarTodosUsuariosAtivosAsync(Notificacao evento)
+        public async Task<int> NotificarTodosUsuariosAtivosAsync(Notificacao evento, string? excetoMatricula = null)
         {
             var usuarios = await ObterTodosUsuariosAsync();
             var destinatarios = usuarios
-                .Where(usuario => usuario.Ativo && !string.IsNullOrWhiteSpace(usuario.Matricula))
+                .Where(usuario =>
+                    usuario.Ativo &&
+                    !string.IsNullOrWhiteSpace(usuario.Matricula) &&
+                    !string.Equals(usuario.Matricula, excetoMatricula, StringComparison.OrdinalIgnoreCase))
                 .GroupBy(usuario => usuario.Matricula, StringComparer.OrdinalIgnoreCase)
                 .Select(grupo => grupo.First())
                 .ToList();

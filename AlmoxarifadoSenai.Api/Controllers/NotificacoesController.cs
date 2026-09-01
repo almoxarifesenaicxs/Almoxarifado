@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using AlmoxarifadoSenai.Api.Constants;
 using AlmoxarifadoSenai.Api.DTOs;
 using AlmoxarifadoSenai.Api.Models;
 using AlmoxarifadoSenai.Api.Services;
@@ -44,6 +45,34 @@ namespace AlmoxarifadoSenai.Api.Controllers
             var notificacoes = await _firestoreService.ObterNotificacoesPorUsuarioAsync(matricula, lida, limite);
 
             return Ok(notificacoes.Select(ParaDto));
+        }
+
+        [HttpPost("sistema")]
+        [Authorize(Roles = Perfis.Desenvolvedor)]
+        public async Task<IActionResult> PublicarNotificacaoSistema([FromBody] NotificacaoSistemaCriarDto dto)
+        {
+            var matricula = User.FindFirst("Matricula")?.Value ?? string.Empty;
+            var autor = User.FindFirst(ClaimTypes.Name)?.Value ?? "Desenvolvimento";
+
+            var total = await _firestoreService.NotificarTodosUsuariosAtivosAsync(
+                new Notificacao
+                {
+                    Titulo = dto.Titulo.Trim(),
+                    Mensagem = dto.Mensagem.Trim(),
+                    Tipo = "Sistema",
+                    Icone = "info",
+                    Cor = "blue",
+                    Link = "/notificacoes",
+                    DadosAdicionais = new Dictionary<string, string>
+                    {
+                        ["evento"] = "atualizacao_sistema",
+                        ["categoria"] = dto.Categoria.Trim(),
+                        ["autor"] = autor
+                    }
+                },
+                matricula);
+
+            return Ok(new { mensagem = "Notificação publicada com sucesso!", destinatarios = total });
         }
 
         [HttpGet("lixeira")]

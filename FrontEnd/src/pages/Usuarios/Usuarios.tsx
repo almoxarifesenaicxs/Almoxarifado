@@ -29,6 +29,7 @@ type Usuario = {
   matricula: string;
   nome: string;
   perfil: PerfilUsuario;
+  email: string;
   telefone: string;
   dataNascimento: string;
   ativo: boolean;
@@ -41,6 +42,8 @@ type UsuarioApiResponse = {
   Nome?: string;
   perfil?: PerfilUsuario;
   Perfil?: PerfilUsuario;
+  email?: string;
+  Email?: string;
   telefone?: string;
   Telefone?: string;
   dataNascimento?: string;
@@ -72,6 +75,7 @@ function mapearUsuario(usuario: UsuarioApiResponse): Usuario {
     matricula: usuario.matricula ?? usuario.Matricula ?? "",
     nome: usuario.nome ?? usuario.Nome ?? "",
     perfil: usuario.perfil ?? usuario.Perfil ?? "Professor",
+    email: usuario.email ?? usuario.Email ?? "",
     telefone: usuario.telefone ?? usuario.Telefone ?? "",
     dataNascimento: usuario.dataNascimento ?? usuario.DataNascimento ?? "",
     ativo: usuario.ativo ?? usuario.Ativo ?? true,
@@ -90,6 +94,9 @@ function gerarIniciais(nome: string) {
 
 export default function Usuarios() {
   const usuarioLogado = getUsuarioLogado();
+  const podeAdministrar =
+    usuarioLogado?.perfil === "Coordenador" ||
+    usuarioLogado?.perfil === "Desenvolvedor";
 
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [carregando, setCarregando] = useState(true);
@@ -277,10 +284,12 @@ export default function Usuarios() {
               <p>Gerencie os usuários cadastrados no sistema.</p>
             </div>
 
-            <button type="button" className="new-user-button" onClick={abrirCadastro}>
-              <FiPlus />
-              Novo usuário
-            </button>
+            {podeAdministrar && (
+              <button type="button" className="new-user-button" onClick={abrirCadastro}>
+                <FiPlus />
+                Novo usuário
+              </button>
+            )}
           </header>
 
           {erro && <div className="users-alert">{erro}</div>}
@@ -293,6 +302,7 @@ export default function Usuarios() {
                     <th>Nome</th>
                 <th>Matrícula</th>
                     <th>Perfil</th>
+                    <th>E-mail</th>
                     <th>Telefone</th>
                     <th>Status</th>
                 <th>Ações</th>
@@ -302,7 +312,7 @@ export default function Usuarios() {
                 <tbody>
                   {carregando && (
                     <tr>
-                      <td colSpan={6} className="users-empty">
+                      <td colSpan={7} className="users-empty">
                     Carregando usuários...
                       </td>
                     </tr>
@@ -325,6 +335,7 @@ export default function Usuarios() {
                           <span className="user-id">{usuario.matricula}</span>
                         </td>
                         <td>{usuario.perfil}</td>
+                        <td>{usuario.email}</td>
                         <td>{usuario.telefone}</td>
 
                         <td>
@@ -338,10 +349,9 @@ export default function Usuarios() {
                         </td>
 
                         <td>
-                          {usuarioLogado?.perfil === "Coordenador" &&
-                          usuario.perfil === "Desenvolvedor" ? (
-                            null
-                          ) : (
+                          {podeAdministrar &&
+                          (usuarioLogado?.perfil === "Desenvolvedor" ||
+                            usuario.perfil !== "Desenvolvedor") && (
                           <div className="user-actions">
                             <button
                               type="button"
@@ -402,7 +412,7 @@ export default function Usuarios() {
 
                   {!carregando && usuariosOrdenados.length === 0 && (
                     <tr>
-                      <td colSpan={6} className="users-empty">
+                      <td colSpan={7} className="users-empty">
                     Nenhum usuário cadastrado.
                       </td>
                     </tr>
@@ -520,6 +530,12 @@ export default function Usuarios() {
                     alterarCampo("perfil", evento.target.value as PerfilUsuario)
                   }
                 >
+                  {usuarioLogado?.perfil === "Desenvolvedor" && (
+                    <>
+                      <option value="Desenvolvedor">Desenvolvedor</option>
+                      <option value="Admin">Admin</option>
+                    </>
+                  )}
                   <option value="Coordenador">Coordenador</option>
                   <option value="Almoxarife">Almoxarife</option>
                   <option value="Professor">Professor</option>

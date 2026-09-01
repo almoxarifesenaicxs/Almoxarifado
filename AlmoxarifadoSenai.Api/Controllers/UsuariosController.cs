@@ -13,7 +13,7 @@ namespace AlmoxarifadoSenai.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = Perfis.Admin + "," + Perfis.Coordenador)]
+    [Authorize]
     public class UsuariosController : ControllerBase
     {
         private readonly FirestoreService _firestoreService;
@@ -27,7 +27,9 @@ namespace AlmoxarifadoSenai.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CriarUsuario([FromBody] UsuarioCreateDto dto)
         {
-            if (EhPerfilDesenvolvedor(dto.Perfil))
+            if (!PodeAdministrarUsuarios()) return Forbid();
+
+            if (EhPerfilDesenvolvedor(dto.Perfil) && !EhDesenvolvedorLogado())
             {
                 return Forbid();
             }
@@ -76,13 +78,16 @@ namespace AlmoxarifadoSenai.Api.Controllers
         [HttpPut("{matricula}")]
         public async Task<IActionResult> AtualizarUsuario(string matricula, [FromBody] UsuarioUpdateDto dto)
         {
+            if (!PodeAdministrarUsuarios()) return Forbid();
+
             var usuarioExistente = await _firestoreService.ObterUsuarioPorMatriculaAsync(matricula);
             if (usuarioExistente == null)
             {
                 return NotFound($"Usuário com matrícula {matricula} não encontrado para edição.");
             }
 
-            if (EhPerfilDesenvolvedor(usuarioExistente.Perfil) || EhPerfilDesenvolvedor(dto.Perfil))
+            if ((EhPerfilDesenvolvedor(usuarioExistente.Perfil) || EhPerfilDesenvolvedor(dto.Perfil)) &&
+                !EhDesenvolvedorLogado())
             {
                 return Forbid();
             }
@@ -99,13 +104,15 @@ namespace AlmoxarifadoSenai.Api.Controllers
         [HttpPatch("{matricula}/inativar")]
         public async Task<IActionResult> InativarUsuario(string matricula)
         {
+            if (!PodeAdministrarUsuarios()) return Forbid();
+
             var usuarioExistente = await _firestoreService.ObterUsuarioPorMatriculaAsync(matricula);
             if (usuarioExistente == null)
             {
                 return NotFound($"Usuario com matricula {matricula} nao encontrado para inativacao.");
             }
 
-            if (EhPerfilDesenvolvedor(usuarioExistente.Perfil))
+            if (EhPerfilDesenvolvedor(usuarioExistente.Perfil) && !EhDesenvolvedorLogado())
             {
                 return Forbid();
             }
@@ -119,13 +126,15 @@ namespace AlmoxarifadoSenai.Api.Controllers
         [HttpDelete("{matricula}")]
         public async Task<IActionResult> ExcluirUsuario(string matricula)
         {
+            if (!PodeAdministrarUsuarios()) return Forbid();
+
             var usuarioExistente = await _firestoreService.ObterUsuarioPorMatriculaAsync(matricula);
             if (usuarioExistente == null)
             {
                 return NotFound($"Usuario com matricula {matricula} nao encontrado para exclusao.");
             }
 
-            if (EhPerfilDesenvolvedor(usuarioExistente.Perfil))
+            if (EhPerfilDesenvolvedor(usuarioExistente.Perfil) && !EhDesenvolvedorLogado())
             {
                 return Forbid();
             }
@@ -136,6 +145,21 @@ namespace AlmoxarifadoSenai.Api.Controllers
 
         private static bool EhPerfilDesenvolvedor(string? perfil) =>
             string.Equals(perfil?.Trim(), Perfis.Desenvolvedor, StringComparison.OrdinalIgnoreCase);
+
+        private bool EhCoordenadorLogado() =>
+            string.Equals(
+                User.FindFirst(ClaimTypes.Role)?.Value,
+                Perfis.Coordenador,
+                StringComparison.OrdinalIgnoreCase);
+
+        private bool EhDesenvolvedorLogado() =>
+            string.Equals(
+                User.FindFirst(ClaimTypes.Role)?.Value,
+                Perfis.Desenvolvedor,
+                StringComparison.OrdinalIgnoreCase);
+
+        private bool PodeAdministrarUsuarios() =>
+            EhCoordenadorLogado() || EhDesenvolvedorLogado();
 
     }
 

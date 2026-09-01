@@ -23,6 +23,7 @@ import NovaCompra from "../pages/NovaCompra/NovaCompra";
 import DetalhesCompra from "../pages/DetalhesCompra/DetalhesCompra";
 import Notificacoes from "../pages/Notificacoes/Notificacoes";
 import Relatorios from "../pages/Relatorios/Relatorios";
+import ComunicadosSistema from "../pages/ComunicadosSistema/ComunicadosSistema";
 
 import PrivateRoute from "./PrivateRoute";
 import { perfisPermitidos } from "../services/permissoes";
@@ -75,7 +76,7 @@ function AppRoutes() {
         <Route
           path="/usuarios"
           element={
-            <PrivateRoute allowedProfiles={["Desenvolvedor", "Admin", "Coordenador"]}>
+            <PrivateRoute allowedProfiles={perfisPermitidos("usuarios")}>
               <Usuarios />
             </PrivateRoute>
           }
@@ -180,6 +181,15 @@ function AppRoutes() {
           element={
             <PrivateRoute allowedProfiles={["Desenvolvedor", "Admin", "Coordenador", "Almoxarife", "Almoxarifado"]}>
               <DetalhesCompra />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/comunicados-sistema"
+          element={
+            <PrivateRoute allowedProfiles={["Desenvolvedor"]}>
+              <ComunicadosSistema />
             </PrivateRoute>
           }
         />

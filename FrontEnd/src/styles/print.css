@@ -1,0 +1,163 @@
+@media print {
+  html,
+  body,
+  #root {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+  }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .sidebar,
+  .sidebar-overlay,
+  .sidebar-mobile-toggle,
+  .header,
+  [role="dialog"] {
+    display: none !important;
+  }
+
+  :is(
+    .detalhes-demanda-layout,
+    .detalhes-compra-layout,
+    .visualizar-layout,
+    .relatorios-layout,
+    .detalhes-demanda-main,
+    .detalhes-compra-main,
+    .visualizar-main,
+    .relatorios-main,
+    .detalhes-demanda-conteudo,
+    .detalhes-compra-conteudo,
+    .visualizar-conteudo,
+    .relatorios-conteudo
+  ) {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+  }
+
+  :is(
+    .detalhes-demanda-card,
+    .detalhes-demanda-anexos-vazio,
+    .detalhes-demanda-resumo > div,
+    .detalhes-compra-card,
+    .detalhes-compra-resumo > div,
+    .visualizar-resumo > div,
+    .visualizar-info,
+    .visualizar-item,
+    .relatorios-card,
+    .relatorios-indicadores > article
+  ) {
+    break-inside: avoid-page;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid-page;
+    color: #111827 !important;
+  }
+
+  table {
+    width: 100% !important;
+    min-width: 0 !important;
+    border-collapse: collapse !important;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr,
+  img {
+    break-inside: avoid-page;
+  }
+
+  a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+
+  /* Paleta única de impressão, independente do tema ativo na interface. */
+  html body #root :is(
+    .detalhes-demanda-layout,
+    .detalhes-compra-layout,
+    .visualizar-layout,
+    .relatorios-layout
+  ),
+  html body #root :is(
+    .detalhes-demanda-main,
+    .detalhes-compra-main,
+    .visualizar-main,
+    .relatorios-main,
+    .detalhes-demanda-conteudo,
+    .detalhes-compra-conteudo,
+    .visualizar-conteudo,
+    .relatorios-conteudo
+  ) {
+    background: #ffffff !important;
+    color: #111827 !important;
+  }
+
+  html body #root :is(
+    .detalhes-demanda-conteudo,
+    .detalhes-compra-conteudo,
+    .visualizar-conteudo,
+    .relatorios-conteudo
+  ) * {
+    color: #111827 !important;
+    text-shadow: none !important;
+  }
+
+  html body #root :is(
+    .detalhes-demanda-resumo > div,
+    .detalhes-demanda-card,
+    .detalhes-compra-resumo > div,
+    .detalhes-compra-card,
+    .visualizar-resumo > div,
+    .visualizar-info,
+    .visualizar-card,
+    .visualizar-item,
+    .relatorios-indicadores > article,
+    .relatorios-card,
+    .relatorios-vazio
+  ) {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+  }
+
+  html body #root :is(
+    .detalhes-demanda-conteudo,
+    .detalhes-compra-conteudo,
+    .visualizar-conteudo,
+    .relatorios-conteudo
+  ) :is(p, small, span) {
+    color: #475569 !important;
+  }
+
+  html body #root :is(
+    .detalhes-demanda-conteudo,
+    .detalhes-compra-conteudo,
+    .visualizar-conteudo,
+    .relatorios-conteudo
+  ) :is(h1, h2, h3, strong, th, td) {
+    color: #111827 !important;
+  }
+}

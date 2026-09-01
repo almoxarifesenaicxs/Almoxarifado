@@ -7,6 +7,7 @@ import {
   FiFileText,
   FiImage,
   FiPrinter,
+  FiXCircle,
 } from "react-icons/fi";
 
 import Header from "../../components/Header/Header";
@@ -17,7 +18,12 @@ import {
   listarAnexosDemandaApi,
   type AnexoApi,
 } from "../../services/anexos";
-import { obterDemandaApi, type DemandaApi } from "../../services/demandas";
+import {
+  cancelarMinhaDemandaApi,
+  obterDemandaApi,
+  type DemandaApi,
+} from "../../services/demandas";
+import { getUsuarioLogado } from "../../services/auth";
 
 import "./DetalhesDemanda.css";
 
@@ -33,6 +39,7 @@ function DetalhesDemanda() {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
   const [erroAnexos, setErroAnexos] = useState("");
+  const [cancelando, setCancelando] = useState(false);
   const [previewAnexos, setPreviewAnexos] = useState<Record<string, string>>(
     {},
   );
@@ -130,6 +137,21 @@ function DetalhesDemanda() {
     }
   }
 
+  async function cancelarDemanda() {
+    if (!demanda || !window.confirm("Deseja realmente cancelar esta demanda?")) return;
+
+    setCancelando(true);
+    setErro("");
+    try {
+      const demandaAtualizada = await cancelarMinhaDemandaApi(demanda.id);
+      setDemanda(demandaAtualizada);
+    } catch {
+      setErro("Não foi possível cancelar a demanda.");
+    } finally {
+      setCancelando(false);
+    }
+  }
+
   if (carregando || !demanda) {
     return (
       <div className="detalhes-demanda-layout">
@@ -154,6 +176,13 @@ function DetalhesDemanda() {
       </div>
     );
   }
+
+  const usuarioLogado = getUsuarioLogado();
+  const podeCancelar =
+    usuarioLogado?.matricula === demanda.professorMatricula &&
+    demanda.status !== "Cancelada" &&
+    demanda.status !== "Concluída" &&
+    demanda.status !== "Concluida";
 
   return (
     <div className="detalhes-demanda-layout">
@@ -180,14 +209,28 @@ function DetalhesDemanda() {
                 <p>{demanda.oficina}</p>
               </div>
 
-              <button
-                type="button"
-                className="detalhes-demanda-imprimir"
-                onClick={() => window.print()}
-              >
-                <FiPrinter />
-                Imprimir
-              </button>
+              <div className="detalhes-demanda-acoes-topo">
+                {podeCancelar && (
+                  <button
+                    type="button"
+                    className="detalhes-demanda-cancelar"
+                    onClick={() => void cancelarDemanda()}
+                    disabled={cancelando}
+                  >
+                    <FiXCircle />
+                    {cancelando ? "Cancelando..." : "Cancelar demanda"}
+                  </button>
+                )}
+
+                <button
+                  type="button"
+                  className="detalhes-demanda-imprimir"
+                  onClick={() => window.print()}
+                >
+                  <FiPrinter />
+                  Imprimir
+                </button>
+              </div>
             </div>
           </header>
 
@@ -252,7 +295,11 @@ function DetalhesDemanda() {
               </p>
             </article>
 
-            <article className="detalhes-demanda-card">
+            <article
+              className={`detalhes-demanda-card detalhes-demanda-anexos-card ${
+                anexos.length === 0 ? "sem-anexos" : ""
+              }`}
+            >
               <h2>
                 <FiImage />
                 Anexos

@@ -61,3 +61,10 @@ export async function alterarStatusDemandaApi(id: string, status: StatusDemanda)
 
   return response.data.demanda;
 }
+
+export async function cancelarMinhaDemandaApi(id: string) {
+  const response = await api.put<{ demanda: DemandaApi }>(
+    `/Demandas/${id}/cancelar`,
+  );
+  return response.data.demanda;
+}

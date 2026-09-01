@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace AlmoxarifadoSenai.Api.DTOs
 {
@@ -22,6 +23,19 @@ namespace AlmoxarifadoSenai.Api.DTOs
     public class NotificacaoMarcarLidaDto
     {
         public bool Lida { get; set; } = true;
+    }
+
+    public class NotificacaoSistemaCriarDto
+    {
+        [Required]
+        [StringLength(100)]
+        public string Titulo { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(1000)]
+        public string Mensagem { get; set; } = string.Empty;
+
+        public string Categoria { get; set; } = "Atualização";
     }
 
     public class NotificacaoFiltroDto

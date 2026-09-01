@@ -659,6 +659,43 @@ html.dark .relatorios-tabela-wrapper::-webkit-scrollbar-thumb {
 
   .relatorios-prioridade {
     min-height: 32px;
+    border: 1px solid transparent !important;
+  }
+
+  html body #root .relatorios-prioridade.urgente {
+    background: #fef2f2 !important;
+    border-color: #fecaca !important;
+    color: #991b1b !important;
+  }
+
+  html body #root .relatorios-prioridade.alta {
+    background: #fffbeb !important;
+    border-color: #fde68a !important;
+    color: #92400e !important;
+  }
+
+  html body #root .relatorios-prioridade.normal {
+    background: #f0fdf4 !important;
+    border-color: #bbf7d0 !important;
+    color: #166534 !important;
+  }
+
+  html body #root .relatorios-prioridade.baixa {
+    background: #eff6ff !important;
+    border-color: #bfdbfe !important;
+    color: #1e40af !important;
+  }
+
+  html body #root .relatorios-prioridade :is(span, strong) {
+    color: inherit !important;
+  }
+
+  html body #root .relatorios-taxa div {
+    background: #e2e8f0 !important;
+  }
+
+  html body #root .relatorios-taxa div span {
+    background: #15803d !important;
   }
 
   .relatorios-card-topo {
