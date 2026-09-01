@@ -132,10 +132,18 @@
 .mensagem-erro {
   background: #fee2e2;
   color: #991b1b;
+  border: 1px solid #fecaca;
   padding: 9px;
   border-radius: 8px;
   margin-bottom: 12px;
   font-size: 15px;
+}
+
+/* Mantém o alerta legível quando as cores globais do tema escuro são aplicadas. */
+html.dark .mensagem-erro {
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #fecaca;
 }
 
 
