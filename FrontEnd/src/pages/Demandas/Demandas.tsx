@@ -11,9 +11,16 @@ import {
 
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import StatusGuide from "../../components/StatusGuide/StatusGuide";
+import { STATUS_GUIDE_DEMANDAS } from "../../components/StatusGuide/statusGuideData";
 import { getUsuarioLogado } from "../../services/auth";
 import { temPermissao } from "../../services/permissoes";
-import { listarDemandasApi, type DemandaApi } from "../../services/demandas";
+import {
+  STATUS_DEMANDA,
+  listarDemandasApi,
+  type DemandaApi,
+  type StatusDemanda,
+} from "../../services/demandas";
 
 import "./Demandas.css";
 
@@ -24,33 +31,8 @@ type DemandaTabela = {
   oficina: string;
   solicitante: string;
   prazo: string;
-  status: "Aguardando" | "Em Andamento" | "Concluida" | "Cancelada";
+  status: StatusDemanda;
 };
-
-function normalizar(valor: string) {
-  return valor
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
-}
-
-function mapearStatus(status: string): DemandaTabela["status"] {
-  const statusNormalizado = normalizar(status);
-
-  if (status === "Aberta" || statusNormalizado === "em analise") {
-    return "Aguardando";
-  }
-
-  if (statusNormalizado === "concluida") {
-    return "Concluida";
-  }
-
-  if (status === "Cancelada") {
-    return "Cancelada";
-  }
-
-  return "Em Andamento";
-}
 
 function mapearDemanda(demanda: DemandaApi): DemandaTabela {
   return {
@@ -61,7 +43,7 @@ function mapearDemanda(demanda: DemandaApi): DemandaTabela {
     oficina: demanda.oficina,
     solicitante: demanda.professorNome,
     prazo: new Date(demanda.dataHoraNecessaria).toLocaleString("pt-BR"),
-    status: mapearStatus(demanda.status),
+    status: demanda.status,
   };
 }
 
@@ -105,22 +87,10 @@ function Demandas() {
 
   const abasStatus = [
     { titulo: "Todas", quantidade: demandas.length },
-    {
-      titulo: "Aguardando",
-      quantidade: demandas.filter((d) => d.status === "Aguardando").length,
-    },
-    {
-      titulo: "Em Andamento",
-      quantidade: demandas.filter((d) => d.status === "Em Andamento").length,
-    },
-    {
-        titulo: "Concluídas",
-      quantidade: demandas.filter((d) => d.status === "Concluida").length,
-    },
-    {
-      titulo: "Canceladas",
-      quantidade: demandas.filter((d) => d.status === "Cancelada").length,
-    },
+    ...STATUS_DEMANDA.map((status) => ({
+      titulo: status,
+      quantidade: demandas.filter((demanda) => demanda.status === status).length,
+    })),
   ];
 
   const oficinasDisponiveis = [...new Set(demandas.map((d) => d.oficina))];
@@ -139,9 +109,7 @@ function Demandas() {
 
       const correspondeStatus =
         abaAtiva === "Todas" ||
-        demanda.status === abaAtiva ||
-        (abaAtiva === "Concluídas" && demanda.status === "Concluida") ||
-        (abaAtiva === "Canceladas" && demanda.status === "Cancelada");
+        demanda.status === abaAtiva;
 
       const correspondePerfil =
         usuario?.perfil !== "Professor" || demanda.solicitante === usuario.nome;
@@ -187,6 +155,11 @@ function Demandas() {
 
           {erro && <div className="demandas-alerta">{erro}</div>}
 
+          <StatusGuide
+            titulo="Entenda os status das demandas"
+            itens={STATUS_GUIDE_DEMANDAS}
+          />
+
           <div className="demandas-filtros">
             <div className="demandas-busca">
               <FiSearch />
@@ -219,10 +192,9 @@ function Demandas() {
                 onChange={(evento) => setFiltroStatus(evento.target.value)}
               >
                 <option value="">Todos os status</option>
-                <option value="Aguardando">Aguardando</option>
-                <option value="Em Andamento">Em Andamento</option>
-                <option value="Concluida">Concluída</option>
-                <option value="Cancelada">Cancelada</option>
+                {STATUS_DEMANDA.map((status) => (
+                  <option key={status} value={status}>{status}</option>
+                ))}
               </select>
               <FiChevronDown />
             </div>
@@ -305,7 +277,11 @@ function Demandas() {
                           className={`demanda-status ${
                             demanda.status === "Em Andamento"
                               ? "andamento"
-                              : demanda.status === "Concluida"
+                              : demanda.status === "Em Análise"
+                                ? "analise"
+                              : demanda.status === "Aguardando Material"
+                                ? "material"
+                              : demanda.status === "Concluída"
                                 ? "concluida"
                                 : demanda.status === "Cancelada"
                                   ? "cancelada"

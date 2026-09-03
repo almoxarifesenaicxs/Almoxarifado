@@ -9,6 +9,7 @@ import {
   atualizarStatusCompraApi,
   obterCompraApi,
   type SolicitacaoCompra,
+  type StatusCompra,
 } from "../../services/compras";
 
 import "./DetalhesCompra.css";
@@ -58,7 +59,7 @@ function DetalhesCompra() {
     };
   }, [id]);
 
-  async function atualizarStatus(status: string) {
+  async function atualizarStatus(status: StatusCompra) {
     if (!compra) return;
 
     try {

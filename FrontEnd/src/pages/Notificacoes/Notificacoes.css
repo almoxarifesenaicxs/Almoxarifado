@@ -11,11 +11,12 @@
   height: 100vh;
   overflow: hidden;
   background: #ffffff;
+  font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
 .notificacoes-conteudo {
   height: 100vh;
-  padding: 10px 42px 32px;
+  padding: 0 42px 32px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -24,9 +25,9 @@
 .notificacoes-cabecalho {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 18px;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
 }
 
 .notificacoes-cabecalho h1 {
@@ -37,9 +38,10 @@
 }
 
 .notificacoes-cabecalho p {
-  margin: 8px 0 0;
+  margin: 0 !important;
   color: #667085;
-  font-size: 17px;
+  font-size: 15px;
+  font-weight: 400;
   line-height: 1.5;
 }
 
@@ -60,7 +62,7 @@
   border-radius: 10px;
   background: #ffffff;
   color: #0046c7;
-  font-weight: 800;
+  font-weight: 700;
   padding: 0 14px;
   font-size: 15px;
   cursor: pointer;
@@ -101,8 +103,8 @@
 
 .notificacoes-resumo strong {
   display: block;
-  font-size: 25px;
-  font-weight: 900;
+  font-size: 24px;
+  font-weight: 800;
   color: #111827;
   line-height: 1;
 }
@@ -111,8 +113,8 @@
   display: block;
   margin-top: 4px;
   color: #667085;
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .notificacoes-resumo .nao-lidas svg {
@@ -176,7 +178,7 @@
   border-radius: 10px;
   background: #ffffff;
   color: #0046c7;
-  font-weight: 800;
+  font-weight: 700;
   padding: 0 14px;
   cursor: pointer;
   display: inline-flex;
@@ -264,8 +266,9 @@
 .notificacao-topo span {
   display: block;
   color: #0046c7;
-  font-size: 12px;
-  font-weight: 900;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 600;
   margin-bottom: 2px;
 }
 
@@ -273,20 +276,22 @@
   margin: 0;
   color: #111827;
   font-size: 17px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .notificacao-topo strong {
   color: #667085;
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 600;
   white-space: nowrap;
 }
 
 .notificacao-corpo p {
   margin: 3px 0 7px;
   color: #475467;
-  font-size: 15px;
-  line-height: 1.5;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.55;
 }
 
 .notificacao-corpo footer {
@@ -304,7 +309,7 @@
   border-radius: 999px;
   padding: 0 8px;
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .notificacao-prioridade.normal {
@@ -338,7 +343,7 @@
   color: #0046c7;
   padding: 0 12px;
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 700;
   cursor: pointer;
   display: inline-flex;
   align-items: center;

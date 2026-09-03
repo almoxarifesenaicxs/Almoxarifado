@@ -22,7 +22,7 @@
   font-size: 48px;
   line-height: 1.15;
   font-weight: 800;
-  color: #0f172a;
+  color: #0057d9 !important;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -156,7 +156,6 @@
   color: #dc2626;
 }
 
-html.dark .header-title h2,
 html.dark .header-menu-button,
 html.dark .header-profile-user strong {
   color: #f8fafc;

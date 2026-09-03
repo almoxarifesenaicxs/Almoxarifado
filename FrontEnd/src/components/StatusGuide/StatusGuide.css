@@ -1,0 +1,189 @@
+.status-guide-atalho {
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  z-index: 40;
+  width: 58px;
+  height: 58px;
+  border: 1px solid var(--status-waiting-border);
+  border-radius: 50%;
+  background: var(--app-surface);
+  color: var(--status-waiting-text);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.status-guide-atalho:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 34px rgba(15, 23, 42, 0.24);
+}
+
+.status-guide-atalho > svg {
+  width: 25px;
+  height: 25px;
+}
+
+.status-guide {
+  position: fixed;
+  right: 14px;
+  bottom: 84px;
+  z-index: 39;
+  width: min(440px, calc(100vw - 40px));
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+  border: 1px solid var(--app-border);
+  border-radius: 16px;
+  background: var(--app-surface);
+  color: var(--app-text);
+  box-shadow: 0 18px 48px rgba(15, 23, 42, 0.22);
+}
+
+.status-guide > header {
+  min-height: 62px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--app-border);
+}
+
+.status-guide > header > div {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-guide > header > div > svg {
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  padding: 9px;
+  border: 1px solid var(--status-waiting-border);
+  border-radius: 11px;
+  background: var(--status-waiting-bg);
+  color: var(--status-waiting-text);
+}
+
+.status-guide h2 {
+  margin: 0;
+  color: var(--app-text);
+  font-size: 16px;
+}
+
+.status-guide-fechar {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--app-border);
+  border-radius: 9px;
+  background: var(--app-surface-soft);
+  color: var(--app-text);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.status-guide-lista {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  padding: 14px;
+}
+
+.status-guide-item {
+  min-width: 0;
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--app-surface-soft);
+}
+
+.status-guide-item p {
+  margin: 7px 0 0;
+  color: var(--app-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.status-guide-badge {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border: 1px solid;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status-guide-badge > span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-guide-badge.aguardando {
+  color: var(--status-waiting-text);
+  background: var(--status-waiting-bg);
+  border-color: var(--status-waiting-border);
+}
+
+.status-guide-badge.andamento {
+  color: var(--status-progress-text);
+  background: var(--status-progress-bg);
+  border-color: var(--status-progress-border);
+}
+
+.status-guide-badge.analise {
+  color: #6d28d9;
+  background: #f5f3ff;
+  border-color: #c4b5fd;
+}
+
+html.dark .status-guide-badge.analise {
+  color: #c4b5fd;
+  background: rgba(124, 58, 237, 0.18);
+  border-color: rgba(167, 139, 250, 0.55);
+}
+
+.status-guide-badge.material {
+  color: #c96f00;
+  background: #fff7ed;
+  border-color: #fdba74;
+}
+
+html.dark .status-guide-badge.material {
+  color: #fcd34d;
+  background: rgba(217, 119, 6, 0.18);
+  border-color: rgba(245, 158, 11, 0.55);
+}
+
+.status-guide-badge.concluido {
+  color: var(--status-done-text);
+  background: var(--status-done-bg);
+  border-color: var(--status-done-border);
+}
+
+.status-guide-badge.cancelado {
+  color: var(--status-cancelled-text);
+  background: var(--status-cancelled-bg);
+  border-color: var(--status-cancelled-border);
+}
+
+@media (max-width: 560px) {
+  .status-guide-atalho {
+    right: 10px;
+    bottom: 10px;
+  }
+
+  .status-guide {
+    right: 10px;
+    bottom: 80px;
+    width: calc(100vw - 20px);
+  }
+}

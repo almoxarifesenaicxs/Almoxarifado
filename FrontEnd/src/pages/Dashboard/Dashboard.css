@@ -227,6 +227,42 @@ html.dark .priority.urgent {
   border: 1px solid var(--status-progress-border);
 }
 
+.status.open {
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px solid #93c5fd;
+}
+
+.status.analysis {
+  color: #6d28d9;
+  background: #f5f3ff;
+  border: 1px solid #c4b5fd;
+}
+
+.status.material {
+  color: #c96f00;
+  background: #fff7ed;
+  border: 1px solid #fdba74;
+}
+
+html.dark .status.open {
+  color: #93c5fd;
+  background: rgba(37, 99, 235, 0.12);
+  border-color: rgba(96, 165, 250, 0.45);
+}
+
+html.dark .status.analysis {
+  color: #c4b5fd;
+  background: rgba(124, 58, 237, 0.18);
+  border-color: rgba(167, 139, 250, 0.55);
+}
+
+html.dark .status.material {
+  color: #fcd34d;
+  background: rgba(217, 119, 6, 0.18);
+  border-color: rgba(245, 158, 11, 0.55);
+}
+
 .status.waiting {
   color: var(--status-waiting-text);
   background: var(--status-waiting-bg);

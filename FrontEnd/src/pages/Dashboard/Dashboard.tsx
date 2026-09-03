@@ -43,17 +43,12 @@ function obterClassePrioridade(prioridade: string) {
 }
 
 function obterClasseStatus(status: string) {
+  if (status === "Em Análise") return "analysis";
   if (status === "Em Andamento") return "progress";
-  if (normalizar(status) === "concluida") return "done";
+  if (status === "Aguardando Material") return "material";
+  if (status === "Concluída") return "done";
   if (status === "Cancelada") return "cancelled";
-  return "waiting";
-}
-
-function normalizar(valor: string) {
-  return valor
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
+  return "open";
 }
 
 export default function Dashboard() {
@@ -87,14 +82,16 @@ export default function Dashboard() {
 
   const totalDemandas = demandas.length;
   const abertas = demandas.filter((d) => d.status === "Aberta").length;
+  const emAnalise = demandas.filter((d) => d.status === "Em Análise").length;
   const aguardandoAtendimento = demandas.filter(
-    (d) => d.status === "Aberta" || normalizar(d.status) === "em analise"
+    (d) => d.status === "Aberta" || d.status === "Em Análise"
   ).length;
   const emAndamento = demandas.filter((d) => d.status === "Em Andamento").length;
   const aguardandoMaterial = demandas.filter(
     (d) => d.status === "Aguardando Material"
   ).length;
-  const concluidas = demandas.filter((d) => normalizar(d.status) === "concluida").length;
+  const concluidas = demandas.filter((d) => d.status === "Concluída").length;
+  const canceladas = demandas.filter((d) => d.status === "Cancelada").length;
   const urgentes = demandas.filter((d) => d.prioridade === "Urgente").length;
 
   const prioridadeUrgente = demandas.filter(
@@ -134,10 +131,12 @@ export default function Dashboard() {
   ];
 
   const statusData = [
-    { name: "Abertas", value: abertas, color: "#2563eb" },
-    { name: "Em andamento", value: emAndamento, color: "#ff8906" },
-    { name: "Aguard. material", value: aguardandoMaterial, color: "#7c3aed" },
-    { name: "Concluídas", value: concluidas, color: "#22c55e" },
+    { name: "Aberta", value: abertas, color: "#2563eb" },
+    { name: "Em Análise", value: emAnalise, color: "#7c3aed" },
+    { name: "Em Andamento", value: emAndamento, color: "#0ea5e9" },
+    { name: "Aguardando Material", value: aguardandoMaterial, color: "#f59e0b" },
+    { name: "Concluída", value: concluidas, color: "#22c55e" },
+    { name: "Cancelada", value: canceladas, color: "#e11d48" },
   ];
 
   const recentDemands = [...demandas]
@@ -155,7 +154,7 @@ export default function Dashboard() {
       deadline: formatarData(demanda.dataHoraNecessaria),
       priority: demanda.prioridade,
       priorityClass: obterClassePrioridade(demanda.prioridade),
-      status: demanda.status === "Aberta" ? "Aguardando" : demanda.status,
+      status: demanda.status,
       statusClass: obterClasseStatus(demanda.status),
     }));
 

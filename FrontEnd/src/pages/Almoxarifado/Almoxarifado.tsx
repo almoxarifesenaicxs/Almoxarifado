@@ -17,6 +17,8 @@ import {
 } from "react-icons/fi";
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import StatusGuide from "../../components/StatusGuide/StatusGuide";
+import { STATUS_GUIDE_DEMANDAS } from "../../components/StatusGuide/statusGuideData";
 import {
   alterarStatusDemandaApi,
   listarDemandasApi,
@@ -31,9 +33,11 @@ const colunas: Array<{
   status: StatusDemanda;
 }> = [
   { titulo: "Abertas", status: "Aberta" },
+  { titulo: "Em Análise", status: "Em Análise" },
   { titulo: "Em Andamento", status: "Em Andamento" },
   { titulo: "Aguardando Material", status: "Aguardando Material" },
   { titulo: "Concluídas", status: "Concluída" },
+  { titulo: "Canceladas", status: "Cancelada" },
 ];
 
 function formatarData(data: string) {
@@ -57,7 +61,8 @@ function textoPrazo(status: StatusDemanda) {
 }
 
 function proximoStatus(status: StatusDemanda): StatusDemanda {
-  if (status === "Aberta") return "Em Andamento";
+  if (status === "Aberta") return "Em Análise";
+  if (status === "Em Análise") return "Em Andamento";
   if (status === "Em Andamento") return "Aguardando Material";
   if (status === "Aguardando Material") return "Concluída";
   return "Aberta";
@@ -186,6 +191,10 @@ function Almoxarifado() {
           </header>
 
           {erro && <div className="almoxarifado-alerta">{erro}</div>}
+          <StatusGuide
+            titulo="Entenda os status das demandas"
+            itens={STATUS_GUIDE_DEMANDAS}
+          />
           <section className="almoxarifado-resumo">
             <article className="almoxarifado-resumo-card abertas">
               <div className="almoxarifado-resumo-icone">
@@ -199,6 +208,14 @@ function Almoxarifado() {
                   }
                 </strong>
                 <span>Abertas</span>
+              </div>
+            </article>
+
+            <article className="almoxarifado-resumo-card analise">
+              <div className="almoxarifado-resumo-icone"><FiClock /></div>
+              <div>
+                <strong>{demandas.filter((demanda) => demanda.status === "Em Análise").length}</strong>
+                <span>Em Análise</span>
               </div>
             </article>
 
@@ -246,6 +263,14 @@ function Almoxarifado() {
                   }
                 </strong>
                 <span>Concluídas</span>
+              </div>
+            </article>
+
+            <article className="almoxarifado-resumo-card canceladas">
+              <div className="almoxarifado-resumo-icone"><FiSlash /></div>
+              <div>
+                <strong>{demandas.filter((demanda) => demanda.status === "Cancelada").length}</strong>
+                <span>Canceladas</span>
               </div>
             </article>
           </section>
@@ -498,7 +523,26 @@ function Almoxarifado() {
                   onClick={() => void alterarStatus(demandaAberta.id, "Aberta")}
                 >
                   <FiFileText />
-                  Aberta
+                  <span>Aberta</span>
+                  <FiAlertCircle
+                    className="acao-ajuda"
+                    aria-label="Aberta: demanda registrada e aguardando atendimento."
+                    title="Demanda registrada e aguardando atendimento."
+                  />
+                </button>
+
+                <button
+                  type="button"
+                  className="acao analise"
+                  onClick={() => void alterarStatus(demandaAberta.id, "Em Análise")}
+                >
+                  <FiClock />
+                  <span>Em análise</span>
+                  <FiAlertCircle
+                    className="acao-ajuda"
+                    aria-label="Em análise: demanda em avaliação antes do atendimento."
+                    title="Demanda em avaliação antes do atendimento."
+                  />
                 </button>
 
                 <button
@@ -509,7 +553,12 @@ function Almoxarifado() {
                   }
                 >
                   <FiPlayCircle />
-                  Em andamento
+                  <span>Em andamento</span>
+                  <FiAlertCircle
+                    className="acao-ajuda"
+                    aria-label="Em andamento: demanda sendo atendida pelo almoxarifado."
+                    title="Demanda sendo atendida pelo almoxarifado."
+                  />
                 </button>
 
                 <button
@@ -520,7 +569,12 @@ function Almoxarifado() {
                   }
                 >
                   <FiPackage />
-                  Aguardando material
+                  <span>Aguardando material</span>
+                  <FiAlertCircle
+                    className="acao-ajuda"
+                    aria-label="Aguardando material: atendimento pausado até a chegada do material necessário."
+                    title="Atendimento pausado até a chegada do material necessário."
+                  />
                 </button>
 
                 <button
@@ -529,7 +583,12 @@ function Almoxarifado() {
                   onClick={() => void alterarStatus(demandaAberta.id, "Concluída")}
                 >
                   <FiCheckCircle />
-                  Concluída
+                  <span>Concluída</span>
+                  <FiAlertCircle
+                    className="acao-ajuda"
+                    aria-label="Concluída: atendimento finalizado."
+                    title="Atendimento finalizado."
+                  />
                 </button>
 
                 <button
@@ -538,7 +597,12 @@ function Almoxarifado() {
                   onClick={() => void alterarStatus(demandaAberta.id, "Cancelada")}
                 >
                   <FiSlash />
-                  Cancelar demanda
+                  <span>Cancelar demanda</span>
+                  <FiAlertCircle
+                    className="acao-ajuda"
+                    aria-label="Cancelar demanda: encerra a solicitação sem concluir o atendimento."
+                    title="Encerra a solicitação sem concluir o atendimento."
+                  />
                 </button>
               </div>
             </section>

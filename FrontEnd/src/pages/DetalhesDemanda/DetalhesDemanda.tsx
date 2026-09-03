@@ -181,8 +181,7 @@ function DetalhesDemanda() {
   const podeCancelar =
     usuarioLogado?.matricula === demanda.professorMatricula &&
     demanda.status !== "Cancelada" &&
-    demanda.status !== "Concluída" &&
-    demanda.status !== "Concluida";
+    demanda.status !== "Concluída";
 
   return (
     <div className="detalhes-demanda-layout">

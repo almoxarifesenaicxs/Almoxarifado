@@ -9,16 +9,19 @@
   flex: 1;
   min-width: 0;
   height: 100vh;
-  overflow: hidden;
+  min-height: 0;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
   background: #ffffff;
 }
 
 .compras-conteudo {
-  height: 100vh;
+  height: auto !important;
+  min-height: 100vh;
   padding: 56px 44px 34px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible !important;
 }
 
 .compras-cabecalho {
@@ -126,16 +129,19 @@
 }
 
 .compras-card {
-  flex: 1;
-  min-height: 0;
+  flex: none;
+  min-height: 360px;
   border: 1px solid #e1e7ef;
   border-radius: 14px;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: visible;
 }
 
 .compras-tabela-wrapper {
-  height: 100%;
-  overflow: auto;
+  height: auto;
+  min-height: 358px;
+  overflow-x: auto;
+  overflow-y: visible;
 }
 
 .compras-tabela {
@@ -405,4 +411,28 @@
   .compras-filtros {
     grid-template-columns: 1fr;
   }
+}
+
+.compras-status.aguardando {
+  color: var(--status-waiting-text);
+  background: var(--status-waiting-bg);
+  border: 1px solid var(--status-waiting-border);
+}
+
+.compras-status.aprovado {
+  color: var(--status-progress-text);
+  background: var(--status-progress-bg);
+  border: 1px solid var(--status-progress-border);
+}
+
+.compras-status.rejeitado {
+  color: var(--status-cancelled-text);
+  background: var(--status-cancelled-bg);
+  border: 1px solid var(--status-cancelled-border);
+}
+
+.compras-status.concluido {
+  color: var(--status-done-text);
+  background: var(--status-done-bg);
+  border: 1px solid var(--status-done-border);
 }

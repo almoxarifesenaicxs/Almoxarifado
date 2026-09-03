@@ -26,6 +26,9 @@
   --status-cancelled-text: #dc2626;
   --status-cancelled-bg: #fef2f2;
   --status-cancelled-border: #fca5a5;
+  --scrollbar-track: #e8edf4;
+  --scrollbar-thumb: #94a3b8;
+  --scrollbar-thumb-hover: #64748b;
 }
 
 html.dark {
@@ -50,6 +53,46 @@ html.dark {
   --status-cancelled-text: #fca5a5;
   --status-cancelled-bg: rgba(220, 38, 38, 0.16);
   --status-cancelled-border: rgba(248, 113, 113, 0.45);
+  --scrollbar-track: #111827;
+  --scrollbar-thumb: #475569;
+  --scrollbar-thumb-hover: #64748b;
+}
+
+/* Barra de rolagem padrão do sistema. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb {
+  min-height: 36px;
+  border: 2px solid var(--scrollbar-track);
+  border-radius: 999px;
+  background: var(--scrollbar-thumb);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+*::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 html,
@@ -151,7 +194,11 @@ html:not(.dark) :is(
   .compras-layout,
   .nova-compra-layout,
   .nova-demanda-layout,
+  .detalhes-compra-layout,
   .detalhes-demanda-layout,
+  .execucao-layout,
+  .historico-layout,
+  .visualizar-layout,
   .notificacoes-layout,
   .relatorios-layout
 ) {
@@ -169,13 +216,18 @@ html:not(.dark) :is(
   .compras-main,
   .nova-compra-main,
   .nova-demanda-main,
+  .detalhes-compra-main,
   .detalhes-demanda-main,
+  .execucao-main,
+  .historico-main,
+  .visualizar-main,
   .notificacoes-main,
   .relatorios-main
 ) {
   height: 100dvh !important;
   min-height: 0 !important;
-  overflow: hidden !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
 }
 
 * {
@@ -219,7 +271,7 @@ video {
   .notificacoes-conteudo,
   .relatorios-conteudo
 ) {
-  padding: 40px 44px 32px !important;
+  padding: 12px 44px 32px !important;
 }
 
 :is(
@@ -231,15 +283,17 @@ video {
   .compras-conteudo,
   .nova-compra-conteudo,
   .nova-demanda-conteudo,
+  .detalhes-compra-conteudo,
   .detalhes-demanda-conteudo,
+  .execucao-conteudo,
+  .historico-conteudo,
+  .visualizar-conteudo,
   .notificacoes-conteudo,
   .relatorios-conteudo
 ) {
-  height: calc(100dvh - 72px) !important;
-  min-height: 0 !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
-  scrollbar-gutter: stable;
+  height: auto !important;
+  min-height: calc(100dvh - 100px) !important;
+  overflow: visible !important;
 }
 
 :is(
@@ -672,7 +726,7 @@ html.dark :is(th, td) {
 }
 
 html.dark .login-logo h1 {
-  color: #60a5fa;
+  color: #0057d9;
 }
 
 html.dark .campo-input input {
@@ -734,13 +788,17 @@ html.dark .campo-input input::placeholder {
     .compras-conteudo,
     .nova-compra-conteudo,
     .nova-demanda-conteudo,
+    .detalhes-compra-conteudo,
     .detalhes-demanda-conteudo,
+    .execucao-conteudo,
+    .historico-conteudo,
+    .visualizar-conteudo,
     .notificacoes-conteudo,
     .relatorios-conteudo
   ) {
     height: auto !important;
-    min-height: calc(100dvh - 64px) !important;
-    padding: 28px 18px 24px !important;
+    min-height: calc(100dvh - 78px) !important;
+    padding: 12px 18px 24px !important;
     overflow: visible !important;
   }
 
@@ -767,7 +825,11 @@ html.dark .campo-input input::placeholder {
     .compras-conteudo,
     .nova-compra-conteudo,
     .nova-demanda-conteudo,
+    .detalhes-compra-conteudo,
     .detalhes-demanda-conteudo,
+    .execucao-conteudo,
+    .historico-conteudo,
+    .visualizar-conteudo,
     .notificacoes-conteudo,
     .relatorios-conteudo
   ) {

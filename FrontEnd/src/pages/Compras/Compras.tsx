@@ -4,15 +4,43 @@ import { FiCheck, FiEye, FiPlus, FiSearch, FiX } from "react-icons/fi";
 
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import StatusGuide, {
+  type StatusGuideItem,
+} from "../../components/StatusGuide/StatusGuide";
 import { getUsuarioLogado } from "../../services/auth";
 import { temPermissao } from "../../services/permissoes";
 import {
+  STATUS_COMPRA,
   atualizarStatusCompraApi,
   listarComprasApi,
   type SolicitacaoCompra,
+  type StatusCompra,
 } from "../../services/compras";
 
 import "./Compras.css";
+
+const statusCompras: StatusGuideItem[] = [
+  {
+    nome: "Aguardando",
+    descricao: "A solicitação foi enviada e aguarda avaliação do responsável.",
+    tipo: "aguardando",
+  },
+  {
+    nome: "Aprovado",
+    descricao: "A compra foi autorizada e pode seguir para aquisição.",
+    tipo: "andamento",
+  },
+  {
+    nome: "Concluído",
+    descricao: "O processo de compra foi finalizado.",
+    tipo: "concluido",
+  },
+  {
+    nome: "Rejeitado",
+    descricao: "A solicitação não foi aprovada e o processo foi encerrado.",
+    tipo: "cancelado",
+  },
+];
 
 function normalizarTexto(texto: string) {
   return texto
@@ -80,7 +108,7 @@ function Compras() {
     (c) => normalizarTexto(c.status) === "concluido",
   ).length;
 
-  async function atualizarStatus(id: string, status: string) {
+  async function atualizarStatus(id: string, status: StatusCompra) {
     try {
       const compraAtualizada = await atualizarStatusCompraApi(id, status);
 
@@ -123,6 +151,11 @@ function Compras() {
 
           {erro && <p style={{ color: "#b91c1c", marginBottom: 12 }}>{erro}</p>}
 
+          <StatusGuide
+            titulo="Entenda os status das compras"
+            itens={statusCompras}
+          />
+
           <section className="compras-indicadores">
             <div>
               <strong>{total}</strong>
@@ -161,10 +194,9 @@ function Compras() {
               onChange={(e) => setStatusFiltro(e.target.value)}
             >
               <option value="">Todos os status</option>
-              <option value="Aguardando">Aguardando</option>
-              <option value="Aprovado">Aprovado</option>
-              <option value="Rejeitado">Rejeitado</option>
-              <option value="Concluído">Concluído</option>
+              {STATUS_COMPRA.map((status) => (
+                <option key={status} value={status}>{status}</option>
+              ))}
             </select>
           </section>
 

@@ -200,6 +200,60 @@
   font-size: 14px;
 }
 
+html.dark .historico-busca,
+html.dark .historico-filtros select,
+html.dark .historico-filtros input[type="date"] {
+  background: var(--app-surface-soft);
+  border-color: var(--app-border);
+  color: var(--app-text);
+}
+
+html.dark .historico-busca input {
+  background: transparent;
+  color: var(--app-text);
+}
+
+html.dark .historico-filtros input[type="date"] {
+  color-scheme: dark;
+}
+
+html.dark .historico-indicadores div,
+html.dark .historico-card {
+  background: var(--app-surface);
+  border-color: var(--app-border);
+}
+
+html.dark .historico-indicadores strong {
+  color: var(--app-text);
+}
+
+html.dark .historico-indicadores span,
+html.dark .historico-vazio {
+  color: var(--app-muted);
+}
+
+html.dark .historico-indicadores .ok strong {
+  color: #86efac;
+}
+
+html.dark .historico-indicadores .alerta strong {
+  color: #fcd34d;
+}
+
+html.dark .historico-indicadores .critico strong {
+  color: #fca5a5;
+}
+
+html.dark .historico-tabela th {
+  background: var(--app-surface-soft);
+  color: #cbd5e1;
+}
+
+html.dark .historico-categoria {
+  background: rgba(37, 99, 235, 0.18);
+  color: #93c5fd;
+}
+
 @media (max-width: 1100px) {
   .historico-filtros {
     grid-template-columns: 1fr 1fr;

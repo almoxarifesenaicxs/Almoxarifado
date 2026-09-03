@@ -1,18 +1,19 @@
 .login-pagina {
-  min-height: 100vh;
-  height: 100vh;
+  min-height: 100dvh;
+  height: auto;
   padding: 8px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   background: #f7f8fb;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
 .login-conteudo {
   width: 100%;
-
   max-width: 600px;
+  margin: auto;
   text-align: center;
 }
 
@@ -141,9 +142,9 @@
 
 /* Mantém o alerta legível quando as cores globais do tema escuro são aplicadas. */
 html.dark .mensagem-erro {
-  background: #fee2e2;
-  color: #991b1b;
-  border-color: #fecaca;
+  background: rgba(127, 29, 29, 0.42);
+  color: #fecaca !important;
+  border-color: #ef4444;
 }
 
 
@@ -354,10 +355,17 @@ html.dark .mensagem-erro {
 /* ===== TEMA DA TELA INICIAL ===== */
 
 .login-logo h1 {
+  color: #0057d9 !important;
   font-size: clamp(56px, 5vw, 76px);
   line-height: 0.95;
   margin-bottom: 18px;
   text-shadow: 0 8px 24px rgba(0, 87, 217, 0.16);
+}
+
+html.dark .login-logo h1 {
+  text-shadow:
+    0 0 5px rgba(255, 255, 255, 0.18),
+    0 0 10px rgba(255, 255, 255, 0.08);
 }
 
 .login-tema-flutuante {
