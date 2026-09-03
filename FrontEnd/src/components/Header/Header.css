@@ -156,6 +156,10 @@
   color: #dc2626;
 }
 
+html.dark .header-title h2 {
+  color: #f8fafc !important;
+}
+
 html.dark .header-menu-button,
 html.dark .header-profile-user strong {
   color: #f8fafc;
