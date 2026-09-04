@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   FiArchive,
+  FiArrowLeft,
   FiBarChart2,
   FiBell,
+  FiChevronLeft,
   FiChevronDown,
+  FiChevronRight,
   FiClipboard,
   FiFileText,
+  FiGrid,
   FiHome,
   FiLogOut,
   FiMoon,
@@ -22,6 +26,7 @@ import "./Sidebar.css";
 import { alternarTema } from "../../services/theme";
 import { temPermissao, type Recurso } from "../../services/permissoes";
 import { api, obterMensagemErroApi } from "../../services/api";
+import { limparProgramaSelecionado } from "../../services/programas";
 
 type Perfil = "Desenvolvedor" | "Admin" | "Coordenador" | "Professor" | "Almoxarife" | "Almoxarifado";
 
@@ -31,6 +36,8 @@ type ItemMenu = {
   caminho: string;
   recurso: Recurso;
 };
+
+const SIDEBAR_RECOLHIDA_KEY = "@senai:sidebar-recolhida";
 
 const itensMenu: ItemMenu[] = [
   {
@@ -120,6 +127,9 @@ function gerarIniciais(nome: string) {
 export default function Sidebar() {
   const navigate = useNavigate();
   const [usuario, setUsuario] = useState(obterUsuarioLogado);
+  const [sidebarRecolhida, setSidebarRecolhida] = useState(
+    () => localStorage.getItem(SIDEBAR_RECOLHIDA_KEY) === "true",
+  );
 
   const [menuAberto, setMenuAberto] = useState(false);
   const [menuUsuarioAberto, setMenuUsuarioAberto] = useState(false);
@@ -150,15 +160,31 @@ export default function Sidebar() {
     };
   }, []);
 
+  function alternarSidebar() {
+    setSidebarRecolhida((estadoAtual) => {
+      const novoEstado = !estadoAtual;
+      localStorage.setItem(SIDEBAR_RECOLHIDA_KEY, String(novoEstado));
+      setMenuUsuarioAberto(false);
+      return novoEstado;
+    });
+  }
+
   function sairDaConta() {
     localStorage.removeItem("@senai:user");
     localStorage.removeItem("@senai:token");
+    limparProgramaSelecionado();
     navigate("/login");
   }
 
   function alternarModoEscuro() {
     alternarTema();
     setMenuUsuarioAberto(false);
+  }
+
+  function trocarPrograma() {
+    limparProgramaSelecionado();
+    setMenuUsuarioAberto(false);
+    navigate("/programas");
   }
 
   async function abrirEdicaoPerfil() {
@@ -216,11 +242,17 @@ export default function Sidebar() {
         onClick={() => setMenuAberto(false)}
       />
 
-      <aside className={`sidebar ${menuAberto ? "mobile-open" : ""}`}>
+      <aside
+        className={`sidebar ${sidebarRecolhida ? "recolhida" : ""} ${
+          menuAberto ? "mobile-open" : ""
+        }`}
+      >
         <div>
           <div className="sidebar-logo-row">
             <div className="sidebar-logo">
-              <h1>SENAI</h1>
+              <h1>
+                <span className="sidebar-logo-completa">SENAI</span>
+              </h1>
             </div>
 
             <button
@@ -234,6 +266,17 @@ export default function Sidebar() {
           </div>
 
           <nav className="sidebar-menu">
+            <button
+              type="button"
+              className="sidebar-programas"
+              onClick={trocarPrograma}
+              title="Escolher programa"
+              aria-label="Voltar para a escolha de programas"
+            >
+              <FiArrowLeft />
+              <span>Voltar</span>
+            </button>
+
             {itensPermitidos.map((item) => (
               <NavLink
                 key={item.titulo}
@@ -245,6 +288,8 @@ export default function Sidebar() {
                 className={({ isActive }) =>
                   `sidebar-item ${isActive ? "active" : ""}`
                 }
+                title={sidebarRecolhida ? item.titulo : undefined}
+                aria-label={sidebarRecolhida ? item.titulo : undefined}
               >
                 {item.icone}
                 <span>{item.titulo}</span>
@@ -252,6 +297,17 @@ export default function Sidebar() {
             ))}
           </nav>
         </div>
+
+        <button
+          type="button"
+          className="sidebar-toggle"
+          onClick={alternarSidebar}
+          aria-label={sidebarRecolhida ? "Expandir menu lateral" : "Recolher menu lateral"}
+          title={sidebarRecolhida ? "Expandir menu" : "Recolher menu"}
+          aria-pressed={sidebarRecolhida}
+        >
+          {sidebarRecolhida ? <FiChevronRight /> : <FiChevronLeft />}
+        </button>
 
         <div className="sidebar-user-wrapper">
           <button
@@ -276,6 +332,11 @@ export default function Sidebar() {
 
           {menuUsuarioAberto && (
             <div className="sidebar-user-menu">
+              <button type="button" onClick={trocarPrograma}>
+                <FiGrid />
+                Trocar programa
+              </button>
+
               {usuario.perfil !== "Coordenador" && (
                 <button type="button" onClick={() => void abrirEdicaoPerfil()}>
                   <FiUser />

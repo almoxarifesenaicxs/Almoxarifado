@@ -144,7 +144,7 @@ function Demandas() {
       <Sidebar />
 
       <main className="demandas-main">
-        <Header titulo="Demandas ao almoxarife" />
+        <Header titulo="Demandas" />
 
         <section className="demandas-conteudo">
           <div className="demandas-cabecalho">

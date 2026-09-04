@@ -70,7 +70,7 @@ function NovaCompra() {
       <Sidebar />
 
       <main className="nova-compra-main">
-        <Header titulo="Nova Solicitação de Compra" />
+        <Header titulo="Nova Compra" />
         {toast && <div className={`toast ${toast.tipo}`}>{toast.mensagem}</div>}
 
         <section className="nova-compra-conteudo">

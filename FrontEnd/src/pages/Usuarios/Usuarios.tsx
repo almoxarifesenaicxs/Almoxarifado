@@ -14,6 +14,7 @@ import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { getUsuarioLogado } from "../../services/auth";
 import { api } from "../../services/api";
+import { listarUsuariosOnline } from "../../services/presenca";
 
 import "./Usuarios.css";
 
@@ -97,6 +98,9 @@ export default function Usuarios() {
   const podeAdministrar =
     usuarioLogado?.perfil === "Coordenador" ||
     usuarioLogado?.perfil === "Desenvolvedor";
+  const podeVerPresenca =
+    usuarioLogado?.perfil === "Desenvolvedor" ||
+    usuarioLogado?.perfil === "Coordenador";
 
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [carregando, setCarregando] = useState(true);
@@ -106,6 +110,31 @@ export default function Usuarios() {
   const [modoModal, setModoModal] = useState<"criar" | "editar" | null>(null);
   const [matriculaOriginal, setMatriculaOriginal] = useState("");
   const [formulario, setFormulario] = useState<UsuarioForm>(formularioVazio);
+  const [matriculasOnline, setMatriculasOnline] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    if (!podeVerPresenca) return;
+
+    let ativo = true;
+    const carregarPresencas = async () => {
+      try {
+        const presencas = await listarUsuariosOnline();
+        if (ativo) {
+          setMatriculasOnline(new Set(presencas.map((p) => p.matricula)));
+        }
+      } catch {
+        // A tabela de usuarios continua disponivel se a presenca falhar.
+      }
+    };
+
+    void carregarPresencas();
+    const intervalo = window.setInterval(carregarPresencas, 30_000);
+
+    return () => {
+      ativo = false;
+      window.clearInterval(intervalo);
+    };
+  }, [podeVerPresenca]);
 
   const carregarUsuarios = useCallback(async () => {
     setCarregando(true);
@@ -120,7 +149,7 @@ export default function Usuarios() {
     } finally {
       setCarregando(false);
     }
-  }, [usuarioLogado?.perfil]);
+  }, []);
 
   useEffect(() => {
     let ativo = true;
@@ -305,6 +334,7 @@ export default function Usuarios() {
                     <th>E-mail</th>
                     <th>Telefone</th>
                     <th>Status</th>
+                    {podeVerPresenca && <th>Presença</th>}
                 <th>Ações</th>
                   </tr>
                 </thead>
@@ -312,7 +342,7 @@ export default function Usuarios() {
                 <tbody>
                   {carregando && (
                     <tr>
-                      <td colSpan={7} className="users-empty">
+                      <td colSpan={podeVerPresenca ? 8 : 7} className="users-empty">
                     Carregando usuários...
                       </td>
                     </tr>
@@ -347,6 +377,23 @@ export default function Usuarios() {
                             {usuario.ativo ? "Ativo" : "Inativo"}
                           </span>
                         </td>
+
+                        {podeVerPresenca && (
+                          <td>
+                            <span
+                              className={`user-presence ${
+                                matriculasOnline.has(usuario.matricula)
+                                  ? "online"
+                                  : "offline"
+                              }`}
+                            >
+                              <span aria-hidden="true" />
+                              {matriculasOnline.has(usuario.matricula)
+                                ? "Online"
+                                : "Offline"}
+                            </span>
+                          </td>
+                        )}
 
                         <td>
                           {podeAdministrar &&
@@ -412,7 +459,7 @@ export default function Usuarios() {
 
                   {!carregando && usuariosOrdenados.length === 0 && (
                     <tr>
-                      <td colSpan={7} className="users-empty">
+                      <td colSpan={podeVerPresenca ? 8 : 7} className="users-empty">
                     Nenhum usuário cadastrado.
                       </td>
                     </tr>

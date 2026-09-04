@@ -11,7 +11,6 @@
   height: 100vh;
   overflow: hidden;
   background: #ffffff;
-  font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
 .notificacoes-conteudo {
@@ -510,19 +509,20 @@ html.dark .notificacoes-resumo span {
 
 .notificacoes-lixeira-atalho {
   position: fixed;
-  right: 28px;
-  bottom: 28px;
+  right: 14px;
+  bottom: 14px;
   z-index: 40;
   width: 58px;
   height: 58px;
-  border: 1px solid #fecaca;
+  border: 1px solid var(--status-cancelled-border);
   border-radius: 50%;
-  background: #ffffff;
-  color: #dc2626;
+  background: var(--app-surface);
+  color: var(--status-cancelled-text);
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
   display: grid;
   place-items: center;
   cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease;
 }
 
 .notificacoes-lixeira-atalho > svg {
@@ -548,9 +548,8 @@ html.dark .notificacoes-resumo span {
 }
 
 .notificacoes-lixeira-atalho:hover {
-  background: #fef2f2;
-  border-color: #dc2626;
   transform: translateY(-2px);
+  box-shadow: 0 15px 34px rgba(15, 23, 42, 0.24);
 }
 
 .notificacoes-lixeira-fundo {
@@ -822,8 +821,8 @@ html.dark .notificacoes-lixeira-rodape button {
   }
 
   .notificacoes-lixeira-atalho {
-    right: 18px;
-    bottom: 18px;
+    right: 10px;
+    bottom: 10px;
   }
 
   .notificacoes-lixeira-painel {

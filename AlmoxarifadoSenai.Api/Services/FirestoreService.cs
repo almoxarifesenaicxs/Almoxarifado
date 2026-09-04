@@ -10,6 +10,7 @@ namespace AlmoxarifadoSenai.Api.Services
     {
         private readonly FirestoreDb _db;
         private const string ColecaoUsuarios = "usuarios";
+        private const string ColecaoPresencas = "presencasUsuarios";
 
         public FirestoreService(IConfiguration configuration)
         {
@@ -26,6 +27,24 @@ namespace AlmoxarifadoSenai.Api.Services
         public FirestoreDb GetDatabase()
         {
             return _db;
+        }
+
+        public async Task AtualizarPresencaAsync(PresencaUsuario presenca)
+        {
+            var docRef = _db.Collection(ColecaoPresencas).Document(presenca.Matricula);
+            await docRef.SetAsync(presenca, SetOptions.Overwrite);
+        }
+
+        public async Task<List<PresencaUsuario>> ObterPresencasDesdeAsync(DateTime limite)
+        {
+            var snapshot = await _db.Collection(ColecaoPresencas)
+                .WhereGreaterThanOrEqualTo(nameof(PresencaUsuario.UltimaAtividade), limite)
+                .GetSnapshotAsync();
+
+            return snapshot.Documents
+                .Where(documento => documento.Exists)
+                .Select(documento => documento.ConvertTo<PresencaUsuario>())
+                .ToList();
         }
 
         // 1. Cria ou Atualiza Usuário

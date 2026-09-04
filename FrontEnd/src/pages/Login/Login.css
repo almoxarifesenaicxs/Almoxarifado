@@ -356,16 +356,19 @@ html.dark .mensagem-erro {
 
 .login-logo h1 {
   color: #0057d9 !important;
-  font-size: clamp(56px, 5vw, 76px);
-  line-height: 0.95;
+  font-family: "Arial Black", Arial, Helvetica, sans-serif;
+  font-size: 90px;
+  font-weight: 900;
+  font-style: italic;
+  line-height: 1;
+  transform: skewX(-4deg);
   margin-bottom: 18px;
-  text-shadow: 0 8px 24px rgba(0, 87, 217, 0.16);
+  text-shadow: none;
 }
 
 html.dark .login-logo h1 {
-  text-shadow:
-    0 0 5px rgba(255, 255, 255, 0.18),
-    0 0 10px rgba(255, 255, 255, 0.08);
+  color: #0057d9 !important;
+  text-shadow: none;
 }
 
 .login-tema-flutuante {

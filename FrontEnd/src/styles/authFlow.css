@@ -33,10 +33,16 @@
 
 .auth-logo h1 {
   color: #0057d9;
-  font-size: 32px;
+  font-family: "Arial Black", Arial, Helvetica, sans-serif;
+  font-size: 90px;
   font-weight: 900;
   font-style: italic;
   line-height: 1;
+  transform: skewX(-4deg);
+}
+
+html.dark .auth-logo h1 {
+  color: #0057d9;
 }
 
 .auth-logo p {

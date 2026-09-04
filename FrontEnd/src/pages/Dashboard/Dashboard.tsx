@@ -257,18 +257,29 @@ export default function Dashboard() {
           <div className="panel status-panel">
             <h3>Demandas por Status</h3>
 
-            <ResponsiveContainer width="100%" height={240}>
-              <BarChart data={statusData}>
-                <CartesianGrid stroke="#e5e7eb" vertical={false} />
-                <XAxis dataKey="name" tickLine={false} axisLine={false} />
-                <YAxis tickLine={false} axisLine={false} allowDecimals={false} />
-                <Bar dataKey="value" radius={[6, 6, 0, 0]} barSize={50}>
-                  {statusData.map((item) => (
-                    <Cell key={item.name} fill={item.color} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+            <div className="status-chart-scroll">
+              <div className="status-chart-inner">
+                <ResponsiveContainer width="100%" height={240}>
+                  <BarChart data={statusData} margin={{ right: 12, left: 0 }}>
+                    <CartesianGrid stroke="#e5e7eb" vertical={false} />
+                    <XAxis
+                      dataKey="name"
+                      tickLine={false}
+                      axisLine={false}
+                      interval={0}
+                      tickMargin={10}
+                      tick={{ fontSize: 12 }}
+                    />
+                    <YAxis tickLine={false} axisLine={false} allowDecimals={false} />
+                    <Bar dataKey="value" radius={[6, 6, 0, 0]} barSize={42}>
+                      {statusData.map((item) => (
+                        <Cell key={item.name} fill={item.color} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
           </div>
         </section>
 

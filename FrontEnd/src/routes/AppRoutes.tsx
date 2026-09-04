@@ -24,13 +24,16 @@ import DetalhesCompra from "../pages/DetalhesCompra/DetalhesCompra";
 import Notificacoes from "../pages/Notificacoes/Notificacoes";
 import Relatorios from "../pages/Relatorios/Relatorios";
 import ComunicadosSistema from "../pages/ComunicadosSistema/ComunicadosSistema";
+import Programas from "../pages/Programas/Programas";
 
 import PrivateRoute from "./PrivateRoute";
 import { perfisPermitidos } from "../services/permissoes";
+import OnlineHeartbeat from "../components/OnlineHeartbeat/OnlineHeartbeat";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
+      <OnlineHeartbeat />
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
 
@@ -41,6 +44,15 @@ function AppRoutes() {
         <Route path="/atualizar-senha" element={<AtualizarSenha />} />
         <Route path="/senha-redefinida" element={<SenhaRedefinida />} />
         <Route path="/suporte-acesso" element={<SuporteAcesso />} />
+
+        <Route
+          path="/programas"
+          element={
+            <PrivateRoute requireProgram={false}>
+              <Programas />
+            </PrivateRoute>
+          }
+        />
 
         <Route
           path="/dashboard"

@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -104,7 +106,7 @@ body,
 
 body {
   font-family:
-    Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    Manrope, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   background: var(--app-bg);
   color: var(--app-text);
   overflow-x: hidden;
@@ -835,5 +837,276 @@ html.dark .campo-input input::placeholder {
   ) {
     padding-right: 14px !important;
     padding-left: 14px !important;
+  }
+}
+
+/* Layout mobile compartilhado entre as telas autenticadas. */
+@media (max-width: 700px) {
+  .header {
+    min-height: 68px !important;
+    padding-inline: 14px !important;
+    gap: 10px !important;
+  }
+
+  .header-title {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .header-title h2 {
+    max-width: none !important;
+    font-size: clamp(24px, 7vw, 30px) !important;
+    line-height: 1.1 !important;
+  }
+
+  .header-profile {
+    gap: 6px;
+  }
+
+  .notificacoes-cabecalho > div,
+  .users-header > div,
+  .almoxarifado-cabecalho > div,
+  .relatorios-cabecalho > div:first-child {
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .notificacoes-cabecalho p,
+  .users-header p,
+  .almoxarifado-cabecalho p,
+  .relatorios-cabecalho p {
+    width: 100%;
+    max-width: 100% !important;
+    margin-inline: auto !important;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+
+  :is(
+    .dashboard-header,
+    .users-header,
+    .demandas-cabecalho,
+    .almoxarifado-cabecalho,
+    .checklists-cabecalho,
+    .compras-cabecalho,
+    .nova-compra-cabecalho,
+    .nova-demanda-topo,
+    .detalhes-compra-titulo,
+    .detalhes-demanda-topo,
+    .execucao-titulo,
+    .historico-cabecalho,
+    .visualizar-cabecalho,
+    .notificacoes-cabecalho,
+    .relatorios-cabecalho,
+    .comunicados-cabecalho
+  ) h1 {
+    font-family: Manrope, "Segoe UI", sans-serif !important;
+    font-size: 28px !important;
+    line-height: 1.2 !important;
+    font-weight: 800 !important;
+    letter-spacing: 0 !important;
+  }
+
+  :is(
+    .dashboard-header,
+    .users-header,
+    .demandas-cabecalho,
+    .almoxarifado-cabecalho,
+    .checklists-cabecalho,
+    .compras-cabecalho,
+    .nova-compra-cabecalho,
+    .nova-demanda-topo,
+    .detalhes-compra-titulo,
+    .detalhes-demanda-topo,
+    .historico-cabecalho,
+    .visualizar-cabecalho,
+    .notificacoes-cabecalho,
+    .relatorios-cabecalho,
+    .comunicados-cabecalho
+  ) p {
+    font-family: Manrope, "Segoe UI", sans-serif !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    font-weight: 400 !important;
+    letter-spacing: 0 !important;
+  }
+
+  .header-notifications,
+  .header-avatar,
+  .header-menu-button {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+  }
+
+  :is(
+    .dashboard-conteudo,
+    .users-conteudo,
+    .demandas-conteudo,
+    .almoxarifado-conteudo,
+    .checklists-conteudo,
+    .compras-conteudo,
+    .nova-compra-conteudo,
+    .nova-demanda-conteudo,
+    .detalhes-compra-conteudo,
+    .detalhes-demanda-conteudo,
+    .execucao-conteudo,
+    .historico-conteudo,
+    .visualizar-conteudo,
+    .notificacoes-conteudo,
+    .relatorios-conteudo,
+    .comunicados-conteudo
+  ) {
+    width: 100% !important;
+    min-height: calc(100dvh - 68px) !important;
+    padding: 14px 14px 84px !important;
+  }
+
+  :is(
+    .dashboard-header,
+    .users-header,
+    .demandas-cabecalho,
+    .almoxarifado-cabecalho,
+    .checklists-cabecalho,
+    .compras-cabecalho,
+    .nova-compra-cabecalho,
+    .nova-demanda-topo,
+    .detalhes-compra-cabecalho,
+    .detalhes-demanda-cabecalho,
+    .execucao-cabecalho,
+    .historico-cabecalho,
+    .visualizar-cabecalho,
+    .notificacoes-cabecalho,
+    .relatorios-cabecalho
+  ) {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    margin-bottom: 16px !important;
+  }
+
+  :is(
+    .stats-grid,
+    .charts-grid,
+    .compras-indicadores,
+    .almoxarifado-resumo,
+    .checklists-indicadores,
+    .notificacoes-resumo,
+    .relatorios-indicadores,
+    .detalhes-compra-resumo,
+    .detalhes-demanda-resumo,
+    .execucao-resumo,
+    .nova-compra-grid,
+    .nova-compra-formulario,
+    .nova-demanda-formulario
+  ) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  :is(
+    .demandas-filtros,
+    .compras-filtros,
+    .checklists-filtros,
+    .notificacoes-filtros,
+    .almoxarifado-filtros-topo,
+    .relatorios-acoes
+  ) {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  :is(
+    .demandas-filtros,
+    .compras-filtros,
+    .checklists-filtros,
+    .notificacoes-filtros,
+    .almoxarifado-filtros-topo
+  ) > * {
+    width: 100% !important;
+  }
+
+  :is(
+    .new-user-button,
+    .demandas-botao-novo,
+    .compras-botao-novo,
+    .checklists-botao-novo,
+    .notificacoes-botao-marcar,
+    .nova-compra-salvar,
+    .nova-compra-cancelar,
+    .nova-demanda-salvar,
+    .nova-demanda-cancelar,
+    .execucao-finalizar,
+    .execucao-salvar,
+    .relatorios-acoes button,
+    .relatorios-acoes label
+  ) {
+    width: 100% !important;
+    min-height: 44px;
+    justify-content: center;
+  }
+
+  :is(
+    .panel,
+    .users-card,
+    .demandas-tabela-card,
+    .almoxarifado-card,
+    .checklists-card,
+    .compras-card,
+    .nova-compra-card,
+    .nova-demanda-card,
+    .detalhes-compra-card,
+    .detalhes-demanda-card,
+    .execucao-card,
+    .historico-card,
+    .visualizar-card,
+    .notificacoes-card,
+    .relatorios-card,
+    .comunicados-card
+  ) {
+    max-width: 100%;
+    border-radius: 12px !important;
+  }
+
+  :is(
+    .table-panel,
+    .users-table-wrap,
+    .users-table-wrapper,
+    .demandas-tabela-area,
+    .demandas-tabela-wrapper,
+    .compras-tabela-wrapper,
+    .checklists-tabela-wrapper,
+    .execucao-tabela-wrapper,
+    .historico-tabela-wrapper,
+    .relatorios-tabela-wrapper,
+    .status-chart-scroll
+  ) {
+    max-width: 100%;
+    overflow-x: auto !important;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  :is(
+    .perfil-modal-fundo,
+    .checklists-modal-fundo,
+    .almoxarifado-modal-fundo,
+    .modal-overlay
+  ) {
+    padding: 12px !important;
+  }
+
+  :is(
+    .perfil-modal,
+    .checklists-modal,
+    .almoxarifado-modal,
+    .user-modal,
+    .modal-confirmacao
+  ) {
+    width: 100% !important;
+    max-width: none !important;
+    max-height: calc(100dvh - 24px) !important;
+    padding: 18px 16px !important;
+    overflow-y: auto !important;
   }
 }

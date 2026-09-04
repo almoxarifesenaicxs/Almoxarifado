@@ -402,6 +402,11 @@
     flex-direction: column;
   }
 
+  .compras-cabecalho > div {
+    width: 100%;
+    text-align: center;
+  }
+
   .compras-botao-novo {
     width: 100%;
     justify-content: center;

@@ -49,7 +49,7 @@ function Login() {
 
       await login(matricula, dataNascimento);
 
-      navigate("/dashboard");
+      navigate("/programas");
     } catch {
       setErro("Matrícula ou senha inválida.");
     } finally {

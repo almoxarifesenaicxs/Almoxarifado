@@ -11,3 +11,4 @@ obj/
 AlmoxarifadoSenai.Api/firebase-credentials.json
 
 AlmoxarifadoSenai.Api/.codex-build/
+.build-api-check/

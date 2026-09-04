@@ -3,6 +3,7 @@ import axios from "axios";
 const apiUrl = import.meta.env.VITE_API_URL ?? "/api";
 const TOKEN_KEY = "@senai:token";
 const USUARIO_KEY = "@senai:user";
+const PROGRAMA_KEY = "@senai:programa";
 
 export const api = axios.create({
   baseURL: apiUrl,
@@ -28,6 +29,7 @@ api.interceptors.response.use(
     ) {
       localStorage.removeItem(TOKEN_KEY);
       localStorage.removeItem(USUARIO_KEY);
+      sessionStorage.removeItem(PROGRAMA_KEY);
 
       if (!window.location.pathname.startsWith("/login")) {
         window.location.replace("/login?motivo=sessao-expirada");

@@ -425,6 +425,11 @@
     font-size: 25px;
   }
 
+  .checklists-cabecalho > div:first-child {
+    width: 100%;
+    text-align: center;
+  }
+
   .checklists-cabecalho p {
     font-size: 14px;
   }

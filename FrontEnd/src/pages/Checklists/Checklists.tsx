@@ -213,7 +213,6 @@ function Checklists() {
         <section className="checklists-conteudo">
           <header className="checklists-cabecalho">
             <div>
-              <h1>Modelos de Checklists</h1>
           <p>Modelos cadastrados para execução operacional.</p>
             </div>
 

@@ -379,25 +379,31 @@
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 10px;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 12px;
   align-items: center;
   background: #f8fafc;
 }
 
 .nova-demanda-anexo-item span {
+  min-width: 0;
   font-size: 13px;
   color: #334155;
-  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .nova-demanda-anexo-item button {
+  min-width: max-content;
   border: none;
   background: transparent;
   color: #dc2626;
   font-weight: 800;
   cursor: pointer;
+}
+
+html.dark .nova-demanda-anexo-item span {
+  color: var(--app-text);
 }
 
 /* =========================================================
@@ -486,5 +492,15 @@ html.dark .nova-demanda-prioridades button.ativo span {
 
   .nova-demanda-acoes button {
     width: 100%;
+  }
+
+  .nova-demanda-card {
+    min-width: 0;
+    padding: 18px 16px;
+  }
+
+  .nova-demanda-anexo-item {
+    width: 100%;
+    padding: 10px 12px;
   }
 }

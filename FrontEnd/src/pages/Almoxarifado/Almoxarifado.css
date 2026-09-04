@@ -238,6 +238,24 @@
   gap: 8px;
 }
 
+.almoxarifado-fila {
+  width: 100%;
+  padding: 18px;
+  border: 1px solid #dfe5ee;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+.almoxarifado-fila-titulo {
+  margin: 0 0 16px;
+  color: #111827;
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 800;
+  text-align: center;
+}
+
 .almoxarifado-kanban {
   flex: none;
   height: clamp(420px, calc(100dvh - 360px), 620px);
@@ -298,7 +316,7 @@
 
 .almoxarifado-coluna-topo h2 {
   margin: 0;
-  font-size: 17px;
+  font-size: 15px;
   line-height: 1.2;
   font-weight: 600;
   color: #111827;
@@ -336,14 +354,16 @@
   min-height: 0;
   overflow-x: hidden;
   overflow-y: auto;
-  scrollbar-gutter: stable;
+  scrollbar-gutter: stable both-edges;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
   padding: 0 10px 10px;
 }
 
 .almoxarifado-card {
+  width: 100%;
   background: #ffffff;
   border: 1px solid #e1e7ef;
   border-radius: 10px;
@@ -729,6 +749,16 @@
     overflow: visible;
   }
 
+  .almoxarifado-fila {
+    padding: 14px;
+  }
+
+  .almoxarifado-fila-titulo {
+    margin-bottom: 14px;
+    font-size: 20px;
+    text-align: center;
+  }
+
   .almoxarifado-coluna {
     min-height: 420px;
     height: 420px;
@@ -751,6 +781,20 @@
 html.dark .almoxarifado-layout,
 html.dark .almoxarifado-main {
   background: var(--app-bg) !important;
+}
+
+.almoxarifado-vazio {
+  width: 100%;
+}
+
+html.dark .almoxarifado-fila {
+  background: var(--app-surface);
+  border-color: var(--app-border);
+  box-shadow: var(--app-shadow);
+}
+
+html.dark .almoxarifado-fila-titulo {
+  color: var(--app-text);
 }
 
 html.dark .almoxarifado-conteudo {

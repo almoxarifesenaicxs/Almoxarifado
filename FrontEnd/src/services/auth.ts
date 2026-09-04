@@ -1,5 +1,6 @@
 import { api } from "./api";
 import type { UsuarioLogado } from "../types/user";
+import { limparProgramaSelecionado } from "./programas";
 
 const USUARIO_KEY = "@senai:user";
 const TOKEN_KEY = "@senai:token";
@@ -18,6 +19,7 @@ export async function login(matricula: string, dataNascimento: string) {
 
   localStorage.setItem(TOKEN_KEY, response.data.token);
   localStorage.setItem(USUARIO_KEY, JSON.stringify(response.data.usuario));
+  limparProgramaSelecionado();
 
   return response.data.usuario;
 }
@@ -40,4 +42,5 @@ export function getUsuarioLogado(): UsuarioLogado | null {
 export function logout() {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(USUARIO_KEY);
+  limparProgramaSelecionado();
 }

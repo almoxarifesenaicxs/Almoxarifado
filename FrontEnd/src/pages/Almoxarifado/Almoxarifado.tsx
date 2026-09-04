@@ -185,7 +185,6 @@ function Almoxarifado() {
         <section className="almoxarifado-conteudo">
           <header className="almoxarifado-cabecalho">
             <div>
-              <h1>Fila de Demandas</h1>
               <p>Gerencie e priorize as demandas do almoxarifado.</p>
             </div>
           </header>
@@ -340,8 +339,11 @@ function Almoxarifado() {
             </button>
           </div>
 
-          <div className="almoxarifado-kanban">
-            {colunas.map((coluna) => {
+          <section className="almoxarifado-fila">
+            <h2 className="almoxarifado-fila-titulo">Fila de Demandas</h2>
+
+            <div className="almoxarifado-kanban">
+              {colunas.map((coluna) => {
               const demandasDaColuna = demandasOrdenadas.filter(
                 (demanda) => demanda.status === coluna.status,
               );
@@ -427,8 +429,9 @@ function Almoxarifado() {
                   )}
                 </section>
               );
-            })}
-          </div>
+              })}
+            </div>
+          </section>
         </section>
       </main>
 

@@ -133,7 +133,6 @@ function Compras() {
         <section className="compras-conteudo">
           <header className="compras-cabecalho">
             <div>
-          <h1>Solicitações de Compra</h1>
           <p>Acompanhe as solicitações registradas no sistema.</p>
             </div>
 

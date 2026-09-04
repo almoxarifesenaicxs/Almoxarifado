@@ -450,8 +450,17 @@ html.dark .toast.erro {
   }
 
   .nova-compra-formulario {
-    display: flex;
-    flex-direction: column;
+    width: 100%;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 18px;
+  }
+
+  .nova-compra-card,
+  .nova-compra-resumo {
+    width: 100%;
+    min-width: 0;
+    grid-column: 1 !important;
   }
 
   .nova-compra-card {
@@ -476,7 +485,39 @@ html.dark .toast.erro {
 }
 
 @media (max-width: 700px) {
+  .nova-compra-main .header-title h2 {
+    font-size: 22px !important;
+  }
+
+  .nova-compra-conteudo {
+    width: 100%;
+    padding: 14px 14px 84px !important;
+  }
+
   .nova-compra-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .nova-compra-card,
+  .nova-compra-resumo {
+    border-radius: 12px;
+  }
+
+  .nova-compra-card {
+    padding: 18px 16px;
+  }
+
+  .nova-compra-card input,
+  .nova-compra-card select,
+  .nova-compra-card textarea {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .nova-compra-resumo-titulo,
+  .nova-compra-resumo-item,
+  .nova-compra-acoes {
+    padding-right: 16px;
+    padding-left: 16px;
   }
 }

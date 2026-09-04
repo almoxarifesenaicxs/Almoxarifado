@@ -40,6 +40,17 @@
   margin-bottom: 12px;
 }
 
+.status-chart-scroll {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.status-chart-inner {
+  width: 100%;
+  min-width: 760px;
+}
+
 .panel {
   background: #ffffff;
   border: 1px solid #e5e7eb;

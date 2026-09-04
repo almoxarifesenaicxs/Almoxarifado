@@ -216,7 +216,7 @@ function NovaDemanda() {
 
             <div className="nova-demanda-grupo">
               <label>
-                Prazo <span>*</span>
+                Prazo para realização da demanda <span>*</span>
               </label>
               <div className="nova-demanda-data">
                 <input
@@ -271,14 +271,14 @@ function NovaDemanda() {
                 Descrição da Demanda <span>*</span>
               </label>
               <textarea
-                maxLength={500}
+                maxLength={1200}
                 placeholder="Descreva com detalhes o que precisa ser realizado..."
                 value={descricaoDemanda}
                 onChange={(evento) => setDescricaoDemanda(evento.target.value)}
                 required
               />
               <p className="nova-demanda-contador">
-                {descricaoDemanda.length} / 500
+                {descricaoDemanda.length} / 1200
               </p>
             </div>
           </section>
